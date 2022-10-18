@@ -1,0 +1,141 @@
+footer {
+    /* variables */
+    --padding: 10px;
+    --gap: 10px;
+
+    /* color variables */
+    --foreground-color: var(--foreground-color-200);
+    --background-color: var(--background-color-200);
+    --selector-color: var(--selector-color);
+}
+
+footer * {
+    margin: 0;
+}
+
+footer .container {
+    /* sizing */
+    padding: calc(var(--padding) * 2) min(calc(var(--padding) * 4), max(4vw, var(--padding)));
+
+    /* grid */
+    display: grid;
+    grid-template-rows: repeat(auto-fit, minmax(min(282px, 100%), 1fr));
+    gap: calc(var(--gap) * 4);
+
+    /* stling */
+    background-color: var(--background-color);
+    color: var(--foreground-color);
+
+    /* transition*/
+    transition: var(--default-transition-color), var(--default-transition-background_color);
+}
+
+footer .row {
+    /* grid */
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(282px, 100%), 1fr));
+    gap: var(--gap);
+}
+
+footer .column {
+    /* sizing */
+    width: min(282px, 100%);
+
+    /* flex */
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--gap) / 2);
+}
+
+footer .content {
+    padding: 0 var(--padding);
+
+    /* flex */
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--gap) / 2);
+}
+
+footer .divider {
+    /* sizing */
+    height: 2px;
+    flex-shrink: 0;
+    
+    /* styling */
+    color: inherit;
+    background-color: currentColor;
+}
+
+footer .release {
+    /* spacing */
+    padding: 2px 10px;
+
+    /* styling */
+    background-color: var(--foreground-color);
+    color: var(--background-color);
+    border-radius: 5px;
+
+    /* text */
+    text-transform: uppercase;
+    font-weight: 600;
+
+    /* transition*/
+    transition: var(--default-transition-color), var(--default-transition-background_color);
+}
+
+footer .application {
+
+    /* styling */
+    border-radius: 5px;
+
+    /* text */
+    /* text-transform: uppercase; */
+    font-weight: 600;
+
+    /* transition*/
+    transition: var(--default-transition-color), var(--default-transition-background_color);
+}
+
+footer .column .sect {
+    /* flex */
+    display: flex;
+    gap: calc(var(--gap) / 2);
+    justify-content: left;
+    align-items: center;
+    flex-direction: row;
+}
+
+footer a {
+    /* text */
+    font-size: 16px;
+    font-weight: 500;
+    text-decoration: none;
+
+    /* styling */
+    color: inherit !important;
+}
+
+footer a:hover{
+    /* text */
+    font-weight: 600;
+    text-decoration: underline;
+}
+
+footer a:focus,
+footer a:focus-visible {
+    /* text */
+    font-weight: 600;
+
+    /* outline */
+    outline-offset: 3px;
+    outline: 2px solid currentColor;
+    border-radius: 1px;
+}
+
+footer a:active {
+    /* text */
+    font-weight: 600;
+    text-decoration: underline;
+    outline: none !important;
+    color: var(--selector-color) !important;
+}

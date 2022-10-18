@@ -1,0 +1,88 @@
+/* logo */
+.logo-border {
+    /* position */
+    position: relative;
+
+    /* sizing */
+    height: 100%;
+    max-height: 32px;
+    width: fit-content;
+
+    /* pointer */
+    pointer-events: none;
+
+    /* flex */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    /* styling */
+    color: inherit;
+
+    /* variables */
+    --hover-length: 0.5s;
+}
+
+.logo-border::after,
+.logo-border::before {
+    /* content */
+    content: "";
+
+    /* position */
+    position: absolute;
+    top: 0;
+
+    /* sizing */
+    display: block;
+    width: 100%;
+    height: 3px;
+
+    /* styling */
+    color: inherit;
+    background-color: currentColor;
+
+    /* animation */
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform var(--hover-length) ease-in-out;
+}
+
+.logo-border::before {
+    /* position */
+    top: auto;
+    bottom: 0;
+}
+
+.logo-xcwalker:hover .logo-border::after,
+.logo-xcwalker:hover .logo-border::before {
+    /* animation */
+    transform: scaleX(1);
+    transform-origin: left;
+}
+
+.logo-xcwalker .end {
+    width: 10px;
+    height: 100%;
+    color: inherit;
+    border: 3px solid currentColor;
+}
+
+.logo-xcwalker .end:first-of-type {
+    border-right: none !important;
+}
+
+.logo-xcwalker .end:last-of-type {
+    border-left: none !important;
+}
+
+.logo-xcwalker span {
+    /* spacing */
+    margin: 0;
+
+    /* text */
+    font-size: 26.4px;
+    font-weight: 700;
+    line-height: 1.1;
+    text-transform: uppercase;
+    color: currentColor;
+}

@@ -1,0 +1,321 @@
+/**** login ****/
+section.accounts {
+    /* position */
+    position: relative;
+
+    /* sizing */
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+
+    /* flex */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+
+    /* variables */
+    --border-radius: 10px;
+
+    /* color variables */
+    --foreground-color: var(--foreground-color-200);
+    --background-alt-color: var(--background-color-300);
+    --background-color: var(--background-color-200);
+}
+
+section.accounts * {
+    transition: background-color ease-in-out 0.5s, color ease-in-out 0.5s;
+}
+
+section.accounts .container {
+    /* sizing */
+    height: fit-content;
+    width: min(500px, calc(100% - max(8vw, 20px)));
+    margin: 0 auto;
+    padding: 40px 10px;
+
+    /* grid */
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(400px, 100%), 1fr));
+    gap: 20px;
+
+    /* styling */
+    /* background-color: var(--background-color); */
+    border-radius: var(--border-radius);
+    backdrop-filter: brightness(.8) blur(15px) opacity(1);
+}
+
+section.accounts h2 {
+    /* spacing */
+    margin: 0;
+    padding-bottom: 10px;
+
+    /* text */
+    font-size: 25px;
+    font-weight: 800;
+    line-height: 1;
+
+    /* styling */
+    color: var(--foreground-color);
+}
+
+section.accounts form,
+section.accounts .alternate {
+    /* position */
+    position: relative;
+
+    /* sizing */
+    width: 100%;
+    height: 100%;
+
+    /* flex */
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 10px;
+}
+
+/*** form ***/
+section.accounts form .error {
+    /* sizing */
+    padding: 10px 20px;
+    max-width: 400px;
+    width: 100%;
+
+    /* styling */
+    background-color: rgb(255, 0, 0, .25);
+    border: 2px solid red;
+    border-radius: var(--border-radius);
+    color: var(--foreground-color);
+
+    /* text */
+    font-weight: 600;
+    font-size: 16px;
+}
+
+section.accounts form .group {
+    /* position */
+    position: relative;
+
+    /* sizing */
+    width: min(400px, 100%);
+
+    /* flex */
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+    gap: 5px;
+}
+
+section.accounts form label {
+    /* flex */
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+
+    /* text */
+    font-size: 16px;
+    font-weight: 700;
+
+    /* styling */
+    color: var(--foreground-color);
+}
+
+section.accounts a {
+    /* text */
+    font-size: 16px;
+    font-weight: 500;
+    text-decoration: none;
+
+    /* styling */
+    color: var(--foreground-color);
+}
+
+section.accounts a:hover {
+    /* text */
+    font-weight: 600;
+    text-decoration: underline;
+}
+
+section.accounts a:focus,
+section.accounts a:focus-visible {
+    /* text */
+    font-weight: 600;
+
+    /* outline */
+    outline-offset: 4px;
+    outline: 2px solid currentColor;
+    border-radius: 1px;
+}
+
+section.accounts a:active {
+    /* text */
+    font-weight: 600;
+    text-decoration: underline;
+    outline: none !important;
+    color: var(--selector-color) !important;
+}
+
+section.accounts form input {
+    /* sizing */
+    padding: 0 15px;
+    width: min(400px, 100%);
+    height: 40px;
+
+    /* flex */
+    display: flex;
+    justify-content: left;
+    align-items: center;
+
+    /* text */
+    font-size: 18px;
+    font-weight: 600;
+
+    /* styling */
+    background: transparent;
+    border: 2px solid transparent;
+    border-radius: var(--border-radius);
+    color: var(--foreground-color);
+}
+
+section.accounts form input:focus {
+    outline: 2px solid var(--form-color-selector);
+    outline-offset: 5px;
+}
+
+section.accounts form input::placeholder {
+    /* styling */
+    color: var(--primary-text-color);
+}
+
+section.accounts form input:valid:focus {
+    border-color: var(--form-color-valid-hold);
+    background-color: var(--form-color-valid-hold-opac);
+}
+
+section.accounts form input:valid:not(:focus) {
+    border-color: var(--form-color-valid);
+    background-color: var(--form-color-valid-opac);
+}
+
+section.accounts form input:invalid:focus {
+    border-color: var(--form-color-invalid-hold);
+    background-color: var(--form-color-invalid-hold-opac);
+}
+
+section.accounts form input:invalid:not(:focus),
+section.accounts form input:not([value]) {
+    border-color: var(--form-color-invalid);
+    background-color: var(--form-color-invalid-opac);
+}
+
+section.accounts form span {
+    /* spacing */
+    margin: 0;
+    padding: 0 5px;
+    /* text */
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--tertiary-text-color);
+
+}
+
+/*** alternates ***/
+section.accounts button {
+    /* sizing */
+    padding: 0 15px;
+    width: min(400px, 100%);
+    height: 40px;
+
+    /* flex */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    /* text */
+    font-size: 18px;
+    font-weight: 600;
+
+    /* styling */
+    background: transparent;
+    border: 2px solid transparent;
+    border-radius: var(--border-radius);
+    color: var(--primary-text-color);
+    backdrop-filter: brightness(.6) blur(15px) opacity(1);
+}
+
+section.accounts button:hover,
+section.accounts button:focus,
+section.accounts button:focus-visible {
+    background: var(--form-color-selector);
+}
+
+section.accounts button:active {
+    background: transparent;
+    color: var(--form-color-selector);
+    border-color: currentColor;
+}
+
+/* background */
+section.accounts .background {
+    /* position */
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+
+    /* sizing */
+    width: 100%;
+    height: 100%;
+}
+
+section.accounts .background .item {
+    /* position */
+    position: absolute;
+    left: -35vw;
+    bottom: -75vw;
+
+    /* sizing */
+    width: 100vmax;
+    height: 100vmax;
+
+    /* styling */
+    border-radius: min(10vw, 10vh);
+    border: 3vmin solid currentColor;
+    color: var(--form-color-invalid-hold);
+    border-right: none;
+    border-bottom: none;
+
+    /* transform */
+    rotate: 45deg;
+}
+
+section.accounts .background .item:nth-child(1) {
+    /* position */
+    left: -10vw;
+    bottom: -85vw;
+
+    /* styling */
+    color: var(--form-color-valid-hold);
+}
+
+section.accounts .background .item:nth-child(2) {
+    /* position */
+    left: -45vw;
+    bottom: -95vw;
+
+    /* styling */
+    color: var(--form-color-selector);
+}
+
+section.accounts .background .item:nth-child(3) {
+    /* position */
+    left: 0vw;
+    bottom: -65vw;
+
+    /* styling */
+    color: var(--form-color-invalid);
+}

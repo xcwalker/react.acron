@@ -1,0 +1,18 @@
+*,
+*::after,
+*::before {
+    /* sizing */
+    box-sizing: border-box;
+
+    /* font */
+    font-family: 'Montserrat', sans-serif;
+}
+
+html {
+    /* background */
+    background-color: var(--background-color-100);
+    color: var(--foreground-color-100);
+
+    /* transition */
+    transition: background-color ease-in-out 0.5s, color ease-in-out 0.5s;
+}

@@ -1,0 +1,63 @@
+
+
+@media (prefers-color-scheme: dark) {
+    html {
+        /** colors **/
+        /* foreground */
+        --foreground-color-100: hsl(0, 0%, 93%);
+        --foreground-color-200: hsl(0, 0%, 87%);
+        --foreground-color-300: hsl(0, 0%, 81%);
+    
+        /* background */
+        --background-color-100: hsl(0, 0%, 7%);
+        --background-color-200: hsl(0, 0%, 13%);
+        --background-color-300: hsl(0, 0%, 19%);
+    
+        /* selector */
+        --selector-color: hsl(214, 100%, 44%);
+    
+        /* forms */
+        --form-color-selector: hsl(214, 100%, 44%);
+        --form-color-invalid: hsl(0, 100%, 50%);
+        --form-color-invalid-hold: hsl(39, 100%, 50%);
+        --form-color-valid-hold: hsl(120, 100%, 38%);
+        --form-color-valid: hsl(120, 100%, 25%);
+        
+        --form-color-selector-opac: hsl(214, 100%, 44%, 0.25);
+        --form-color-invalid-opac: hsl(0, 100%, 50%, 0.25);
+        --form-color-invalid-hold-opac: hsl(39, 100%, 50%, 0.25);
+        --form-color-valid-hold-opac: hsl(120, 100%, 38%, 0.25);
+        --form-color-valid-opac: hsl(120, 100%, 25%, 0.25);
+    }
+}
+
+@media (prefers-color-scheme: light) {
+    html {
+        /** colors **/
+        /* foreground */
+        --foreground-color-100: hsl(0, 0%, 7%);
+        --foreground-color-200: hsl(0, 0%, 13%);
+        --foreground-color-300: hsl(0, 0%, 19%);
+    
+        /* background */
+        --background-color-100: hsl(0, 0%, 93%);
+        --background-color-200: hsl(0, 0%, 87%);
+        --background-color-300: hsl(0, 0%, 81%);
+    
+        /* selector */
+        --selector-color: hsl(214, 100%, 44%);
+    
+        /* forms */
+        --form-color-selector: hsl(214, 100%, 44%);
+        --form-color-invalid: hsl(0, 100%, 50%);
+        --form-color-invalid-hold: hsl(39, 100%, 50%);
+        --form-color-valid-hold: hsl(120, 100%, 38%);
+        --form-color-valid: hsl(120, 100%, 25%);
+        
+        --form-color-selector-opac: hsl(214, 100%, 44%, 0.25);
+        --form-color-invalid-opac: hsl(0, 100%, 50%, 0.25);
+        --form-color-invalid-hold-opac: hsl(39, 100%, 50%, 0.25);
+        --form-color-valid-hold-opac: hsl(120, 100%, 38%, 0.25);
+        --form-color-valid-opac: hsl(120, 100%, 25%, 0.25);
+    }
+}

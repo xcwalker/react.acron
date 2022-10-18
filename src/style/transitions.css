@@ -1,0 +1,7 @@
+html {
+    --default-transition-color: color ease-in-out 0.5s;
+    --default-transition-background_color: background-color ease-in-out 0.5s;
+
+    --quick-transition-color: color ease-in-out 0.25s;
+    --quick-transition-background_color: background-color ease-in-out 0.25s;
+}
