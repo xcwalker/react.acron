@@ -1,4 +1,9 @@
 /* logo */
+.logo-xcwalker {
+    /* pointer events */
+    pointer-events: fill;
+}
+
 .logo-border {
     /* position */
     position: relative;
@@ -60,22 +65,22 @@
     transform-origin: left;
 }
 
-.logo-xcwalker .end {
+.logo-xcwalker .logo-border .logo-end {
     width: 10px;
     height: 100%;
     color: inherit;
     border: 3px solid currentColor;
 }
 
-.logo-xcwalker .end:first-of-type {
+.logo-xcwalker .logo-border .logo-end:first-of-type {
     border-right: none !important;
 }
 
-.logo-xcwalker .end:last-of-type {
+.logo-xcwalker .logo-border .logo-end:last-of-type {
     border-left: none !important;
 }
 
-.logo-xcwalker span {
+.logo-xcwalker .logo-border .logo-span {
     /* spacing */
     margin: 0;
 
@@ -85,4 +90,7 @@
     line-height: 1.1;
     text-transform: uppercase;
     color: currentColor;
+
+    /* pointer events */
+    pointer-events: none;
 }

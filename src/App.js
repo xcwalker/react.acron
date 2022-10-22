@@ -11,12 +11,13 @@ import {
 } from "react-router-dom";
 import { Helmet } from 'react-helmet';
 
-// Components
+// Pages && Components
 import { Navbar } from './components/Navbar'
 import { Footer } from './components/Footer'
 import { Homepage } from './pages/Homepage';
-import { Error404 } from './pages/ErrorPage';
+import { Error404 } from './pages/ErrorPages';
 import { AccountIndex, Forgot, Login, Register } from "./pages/AccountPages";
+import { UserProfile, UserProfileEdit } from "./pages/UserPages";
 
 function App() {
   return (<>
@@ -37,12 +38,23 @@ function App() {
             <Route path='register' element={<Register />} />
             <Route path='forgot' element={<Forgot />} />
           </Route>
+          {/* Trees */}
+          <Route path='tree'>
+              {/* <Route index element={<UserProfile />} /> */}
+            <Route path=':id'>
+              {/* <Route index element={<UserProfile />} />
+              <Route path='edit' element={<UserProfileEdit />} /> */}
+            </Route>
+          </Route>
           {/* Signed In */}
-          {/* <Route path='me' element={<Me />}>
-          <Route path='profile' element={<Profile />} />
-          <Route path='account' element={<UserUpdate />} />
-        </Route>
-        <Route path='dashboard' element={<Dashboard />} /> */}
+          <Route path='user'>
+            {/* <Route index element={<UserIndex />} />
+            <Route path='edit' element={<UserIndexProfile />} /> */}
+            <Route path=':id'>
+              <Route index element={<UserProfile />} />
+              <Route path='edit' element={<UserProfileEdit />} />
+            </Route>
+          </Route>
           {/* post(s) */}
           {/* <Route path='post'>
           <Route index element={<NewPost />} />

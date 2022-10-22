@@ -48,13 +48,13 @@ export function Footer() {
                     <div className="content">
                         {/* conditional (if !user)*/}
                         {!currentUser && <>
-                            <Link to={routeUser + "/login"}>Login</Link>
-                            <Link to={routeUser + "/register"}>Register</Link>
-                            <Link to={routeUser + "/forgot"}>Forgot Password</Link>
+                            <Link aria-label="login" to={routeUser + "/login"}>Login</Link>
+                            <Link aria-label="register" to={routeUser + "/register"}>Register</Link>
+                            <Link aria-label="forgot password" to={routeUser + "/forgot"}>Forgot Password</Link>
                         </>}
                         {/* conditional (if user)*/}
                         {currentUser && <>
-                            <Link to={"user/" + currentUser.uid}>Profile</Link>
+                            <Link aria-label="your profile" to={"user/" + currentUser.uid}>Profile</Link>
                         </>}
                     </div>
                     <div className="divider" />
@@ -65,14 +65,14 @@ export function Footer() {
                         <h3>Developer</h3>
                         <div className="content">
                             {/* conditional (if !dev && user)*/}
-                            <Link to={routeDev + "/register"}>DevReg™</Link>
+                            <Link aria-label="Developer Register" to={routeDev + "/register"}>DevReg™</Link>
                             {/* conditional (if dev)*/}
-                            <Link to={routeDev + "/dashboard"}>DevDash™</Link>
-                            <Link to={routeDev + currentUser.uid}>DevPro™</Link>
-                            <Link to={routeDev + "/post"}>DevPost™</Link>
-                            <Link to={routeDev + "/board"}>DevBoard™</Link>
+                            <Link aria-label="Developer Dashboard" to={routeDev + "/dashboard"}>DevDash™</Link>
+                            <Link aria-label="Developer Profile" to={routeDev + currentUser.uid}>DevPro™</Link>
+                            <Link aria-label="Developer Post" to={routeDev + "/post"}>DevPost™</Link>
+                            <Link aria-label="Developer Board" to={routeDev + "/board"}>DevBoard™</Link>
                             {/* conditional (if coreDev)*/}
-                            <Link to={routeDev + "/applications"}>DevApps™</Link>
+                            <Link aria-label="Developer Applications" to={routeDev + "/applications"}>DevApps™</Link>
                         </div>
                         <div className="divider" />
                     </div>
@@ -89,9 +89,9 @@ export function Footer() {
                     <div className="divider" />
                     <h3>Contact</h3>
                     <div className="content">
-                        <a href={"mailto:" + contactEmail}>{contactEmail}</a>
-                        <a href={"mailto:" + contactEmailMainDev}>{contactEmailMainDev}</a>
-                        <a href={discordServer}>Discord Server</a>
+                        <a aria-label="Contact xcwalker by Email" href={"mailto:" + contactEmail}>{contactEmail}</a>
+                        <a aria-label="Contact Xander by Email" href={"mailto:" + contactEmailMainDev}>{contactEmailMainDev}</a>
+                        <a aria-label="xcwalker discord server" href={discordServer}>Discord Server</a>
                     </div>
                     <div className="divider" />
                 </div>

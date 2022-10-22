@@ -4,9 +4,9 @@ import "../style/logo-code.css"
 export function LogoXCWalker() {
     return <div className="logo-xcwalker">
         <div className="logo-border">
-            <div className="end"></div>
-            <span>XCWalker</span>
-            <div className="end"></div>
+            <div className="logo-end"></div>
+            <span className="logo-span">XCWalker</span>
+            <div className="logo-end"></div>
         </div>
     </div>
 }

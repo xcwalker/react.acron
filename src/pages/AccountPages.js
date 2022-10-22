@@ -74,7 +74,7 @@ export function Register() {
 
     const page = "Register"
 
-    async function handleSubmit(e) {
+    async function HandleSubmit(e) {
         e.preventDefault();
         setLoading(true);
         await register(emailRef.current.value, passwordRef.current.value);
@@ -89,7 +89,7 @@ export function Register() {
         <section className="accounts">
             <div className="container">
                 {currentUser && <Navigate to={'/user/' + currentUser.uid} />}
-                <form action="" onSubmit={handleSubmit}>
+                <form action="" onSubmit={HandleSubmit}>
                     <h2>{page}</h2>
                     {error && <div className="error">Error: {error}</div>}
                     <div className="group">

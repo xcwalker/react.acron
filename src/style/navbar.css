@@ -43,6 +43,13 @@ header .container .logo-xcwalker {
 header .container .nav {
     /* sizing */
     height: 32px;
+
+    /* flex */
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: calc(var(--gap) * 2);
 }
 
 header .container .nav nav {
@@ -65,5 +72,105 @@ header .container .nav nav ul {
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    gap: var(--gap);
+    gap: calc(var(--gap) * 2);
+}
+
+header a {
+    /* styling */
+    color: var(--foreground-color-200);
+    text-decoration: none;
+    font-weight: 600;
+    border-radius: 2px;
+}
+
+header a:hover {
+    /* text */
+    text-decoration: underline;
+}
+
+header a:focus,
+header a:focus-visible {
+    /* text */
+    text-decoration: underline;
+    outline: 2px solid var(--form-color-selector);
+    outline-offset: 5px;
+}
+
+header a:active {
+    /* text */
+    outline: none !important;
+    color: var(--form-color-selector) !important;
+}
+
+header a.alt {
+    /* sizing */
+    height: 32px;
+    padding: 0 25px;
+
+    /* flex */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    /* styling */
+    border-radius: 10px;
+    background-color: var(--form-color-selector);
+}
+
+header a.alt:active {
+    /* text */
+    outline: none !important;
+    color: var(--form-color-selector) !important;
+    background-color: var(--foreground-color-200);
+}
+
+/*** avatar ***/
+header button.avatar {
+    /* sizing */
+    --size: 32px;
+    width: var(--size);
+    height: var(--size);
+
+    /* flex */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    /* styling */
+    border: none;
+    border-radius: 50%;
+    background-color: var(--foreground-color);
+
+    /* transition */
+    transition: var(--quick-transition-background_color);
+}
+
+header button.avatar:hover,
+header button.avatar:focus,
+header button.avatar:focus-visible {
+    background-color: var(--foreground-color);
+}
+
+header button.avatar:active {
+    background-color: var(--form-color-selector);
+}
+
+header button.avatar .avatar {
+    /* sizing */
+    --size: 32px;
+    width: var(--size);
+    height: var(--size);
+
+    /* styling */
+    border-radius: 50%;
+
+    /* transition */
+    transition: var(--quick-transition-scale);
+
+}
+
+header button.avatar:hover .avatar,
+header button.avatar:focus .avatar,
+header button.avatar:focus-visible .avatar {
+    scale: 0.8;
 }

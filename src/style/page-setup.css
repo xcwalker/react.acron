@@ -8,11 +8,27 @@
     font-family: 'Montserrat', sans-serif;
 }
 
-html {
+body {
+    /* sizing */
+    width: 100%;
+    min-height: 100vh;
+
     /* background */
     background-color: var(--background-color-100);
     color: var(--foreground-color-100);
 
     /* transition */
     transition: background-color ease-in-out 0.5s, color ease-in-out 0.5s;
+}
+
+main {
+    min-height: 70vh;
+}
+
+.material-symbols-outlined {
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 400,
+  'GRAD' 0,
+  'opsz' 48
 }

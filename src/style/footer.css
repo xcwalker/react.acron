@@ -17,9 +17,9 @@ footer .container {
     /* sizing */
     padding: calc(var(--padding) * 2) min(calc(var(--padding) * 4), max(4vw, var(--padding)));
 
-    /* grid */
-    display: grid;
-    grid-template-rows: repeat(auto-fit, minmax(min(282px, 100%), 1fr));
+    /* flex */
+    display: flex;
+    flex-direction: column;
     gap: calc(var(--gap) * 4);
 
     /* stling */
