@@ -342,6 +342,7 @@ export async function updateTree(treeID, currentUser, setLoading, setReload, ori
     if (treeArr.title === "") {treeArr.title = treeID}
     if (treeArr.authedUser === []) {treeArr.authedUser = [originalUserID]}
     if (!treeArr.authedUser.includes(originalUserID)) {treeArr.authedUser.push(originalUserID)}
+    if (treeArr.links === undefined) {treeArr.links = []}
 
     try {
         await updateDoc(doc(db, "trees", treeID), {
@@ -350,7 +351,8 @@ export async function updateTree(treeID, currentUser, setLoading, setReload, ori
             useOringinalUserLinks: treeArr.useOringinalUserLinks,
             showOriginalUser: treeArr.showOriginalUser,
             showAuthedUser: treeArr.showAuthedUser,
-            authedUser: treeArr.authedUser
+            authedUser: treeArr.authedUser,
+            links: treeArr.links
         })
     } catch (e) {
         console.error("Error adding document (lN): ", e);

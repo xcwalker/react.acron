@@ -50,17 +50,42 @@ section.tree .container .main {
     padding: min(calc(var(--padding) * 4), max(4vw, var(--padding)));
 
     /* grid */
-    display: grid;
-    grid-template-columns: min(350px, 100%) 1fr;
+    /* display: grid;
+    grid-template-columns: min(350px, 100%) max(min(350px, 100%), 1fr);
+    gap: var(--gap); */
+
+    /* flex */
+    display: flex;
+    flex-wrap: wrap;
     gap: var(--gap);
+}
+
+section.tree .container .main .mainbar {
+    /* sizing */
+    width: 100%;
+    max-width: calc(100% - 350px - var(--gap));
+    min-width: min(500px, 100%);
 }
 
 /*** sidebar ***/
 section.tree .container .main .sidebar {
+    /* sizing */
+    max-width: 350px;
+    width: 100%;
+
     /* flex */
     display: flex;
     flex-direction: column;
     gap: var(--gap);
+}
+
+@media (max-width: 934px) {
+
+    section.tree .container .main .mainbar,
+    section.tree .container .main .sidebar {
+        width: 100%;
+        max-width: 100%;
+    }
 }
 
 /*** sidebar default ***/
@@ -644,3 +669,90 @@ section.tree .container .main .sidebar .sidebar-item form.type-2 button {
 
 /*** mainbar ***/
 section.tree .container .main .mainbar {}
+
+section.tree .container .main .mainbar .links {
+    /* spacing */
+    padding: 10px;
+
+    /* styling */
+    border-radius: 10px;
+    background-color: var(--background-color-200);
+    color: var(--foreground-color-200);
+
+    /* transition */
+    transition: var(--default-transition-color), var(--default-transition-background_color);
+}
+
+section.tree .container .main .mainbar .links ul {
+    /* spacing */
+    padding: 0;
+    margin: 0;
+
+    /* flex */
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--gap) * 2);
+}
+
+section.tree .container .main .mainbar .links ul a {
+    /* spacing */
+    padding: 10px;
+    overflow: clip;
+
+    /* flex */
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: var(--gap);
+
+    /* text */
+    text-decoration: none;
+
+    /* styling */
+    border-radius: 10px;
+
+    /* transition */
+    transition: var(--quick-transition-color), var(--quick-transition-background_color);
+}
+
+section.tree .container .main .mainbar .links ul a:hover {
+    /* styling */
+    background-color: var(--background-color-300);
+}
+
+section.tree .container .main .mainbar .links ul a img.favicon {
+    /* sizing */
+    --size: 50px;
+    height: var(--size);
+    width: var(--size);
+
+    /* styling */
+    border-radius: 10px;
+}
+
+section.tree .container .main .mainbar .links ul a div {
+    /* flex */
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--gap) / 2);
+}
+
+section.tree .container .main .mainbar .links ul a span.title {
+    /* text */
+    font-weight: 700;
+    font-size: 22px;
+    text-overflow: ellipsis;
+
+    /* styling */
+    color: var(--foreground-color-200);
+}
+
+section.tree .container .main .mainbar .links ul a span.url {
+    /* text */
+    font-weight: 500;
+    font-size: 16px;
+    text-overflow: ellipsis;
+
+    /* styling */
+    color: var(--foreground-color-300);
+}
