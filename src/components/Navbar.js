@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 
 // custom
 import { LogoXCWalker } from "./Logo";
-import { routeUser } from "../App";
+import { routeAccount, routeUser } from "../App";
 
 // css
 import "../style/navbar.css"
@@ -59,11 +59,11 @@ export function Navbar() {
                     <ul>
                         <Link to="/">Home</Link>
                         {!currentUser && <>
-                            <Link to={routeUser + "/register"}>Register</Link>
-                            <Link className="alt" to={routeUser + "/login"}>Login</Link>
+                            <Link to={routeAccount + "/register"}>Register</Link>
+                            <Link className="alt" to={routeAccount + "/login"}>Login</Link>
                         </>}
                         {currentUser && <>
-                            <Link to={"user/" + currentUser.uid}>Profile</Link>
+                            <Link to={routeUser + "/" + currentUser.uid}>Profile</Link>
                         </>}
                     </ul>
                 </nav>

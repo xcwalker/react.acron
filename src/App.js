@@ -7,17 +7,20 @@ import "./style/variables.css"
 import {
   BrowserRouter as Router,
   Routes,
-  Route
+  Route,
+  useLocation
 } from "react-router-dom";
 import { Helmet } from 'react-helmet';
+import { useEffect } from 'react';
 
 // Pages && Components
 import { Navbar } from './components/Navbar'
 import { Footer } from './components/Footer'
 import { Homepage } from './pages/Homepage';
 import { Error404 } from './pages/ErrorPages';
-import { AccountIndex, Forgot, Login, Register } from "./pages/AccountPages";
-import { UserProfile, UserProfileEdit } from "./pages/UserPages";
+import { AccountIndex, AccountForgot, AccountLogin, AccountRegister, AccountEdit } from "./pages/AccountPages";
+import { UserIndex, UserIndexProfile, UserProfile, UserProfileEdit } from "./pages/UserPages";
+import { TreeSearch, TreeIndex, TreeEdit, TreeDashboard } from "./pages/TreePages";
 
 function App() {
   return (<>
@@ -26,30 +29,33 @@ function App() {
       <meta name="description" content="A website for listing all of xcwalker's projects | {url}" />
     </Helmet>
     <Router>
+      <ScrollToTop />
       <Navbar />
       <main>
         <Routes>
           {/* Home */}
           <Route path='/' element={<Homepage />} />
           {/* Accounts */}
-          <Route path={routeUser}>
+          <Route path={routeAccount}>
             <Route index element={<AccountIndex />} />
-            <Route path='login' element={<Login />} />
-            <Route path='register' element={<Register />} />
-            <Route path='forgot' element={<Forgot />} />
+            <Route path='login' element={<AccountLogin />} />
+            <Route path='register' element={<AccountRegister />} />
+            <Route path='forgot' element={<AccountForgot />} />
+            <Route path='edit' element={<AccountEdit />} />
           </Route>
           {/* Trees */}
-          <Route path='tree'>
-              {/* <Route index element={<UserProfile />} /> */}
+          <Route path={routeTree}>
+            <Route index element={<TreeSearch />} />
+            <Route path='dashboard' element={<TreeDashboard />} />
             <Route path=':id'>
-              {/* <Route index element={<UserProfile />} />
-              <Route path='edit' element={<UserProfileEdit />} /> */}
+              <Route index element={<TreeIndex />} />
+              <Route path='edit' element={<TreeEdit />} />
             </Route>
           </Route>
           {/* Signed In */}
-          <Route path='user'>
-            {/* <Route index element={<UserIndex />} />
-            <Route path='edit' element={<UserIndexProfile />} /> */}
+          <Route path={routeUser}>
+            <Route index element={<UserIndex />} />
+            <Route path='edit' element={<UserIndexProfile />} />
             <Route path=':id'>
               <Route index element={<UserProfile />} />
               <Route path='edit' element={<UserProfileEdit />} />
@@ -71,6 +77,16 @@ function App() {
   );
 }
 
+function ScrollToTop() {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  return null;
+}
+
 export default App;
 
 export const application = "code"
@@ -82,5 +98,7 @@ export const contactEmail = "contact@" + network + "." + release
 export const contactEmailMainDev = "xander@" + network + "." + release
 export const discordServer = "https://discord.gg/rjd7Spr"
 
-export const routeUser = "account"
+export const routeAccount = "account"
+export const routeUser = "user"
 export const routeDev = "developer"
+export const routeTree = "tree"

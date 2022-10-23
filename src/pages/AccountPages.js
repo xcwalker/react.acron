@@ -1,26 +1,37 @@
 // react
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, Navigate } from "react-router-dom";
 import { Helmet } from "react-helmet";
 
 import { error, forgot, login, register, useAuth } from "../Firebase";
-import { application, network, release, url } from "../App";
+import { application, network, release, routeUser, url } from "../App";
 
 // css
 import "../style/AccountPages.css"
 
 export function AccountIndex() {
-    const currentUser = useAuth();
-    // if user
-    // Navigate => profile
-    if (currentUser) { return <Navigate to={'/user/' + currentUser.uid} /> }
+    const currentUser = useAuth(null);
+    const [loggedIn, setLoggedIn] = useState()
 
-    // if !user
-    // Navigate => login
-    if (!currentUser) { return <Navigate to="./login" /> }
+    useEffect(() => {
+        console.info(currentUser)
+        if (currentUser && currentUser !== null) {setLoggedIn(1)}
+        if (currentUser === null) {setLoggedIn(0)}
+    }, [currentUser])
+
+    return <>
+        {loggedIn === 1 && <>
+            <Navigate to={"./edit"} />
+        </>}
+        {loggedIn === 0 && <>
+            <Navigate to={"./login"} />
+        </>}
+    </>
 }
 
-export function Login() {
+export function AccountLogin() {
+    const urlParams = new URLSearchParams(window.location.search);
+
     const [loading, setLoading] = useState(false);
     const currentUser = useAuth();
 
@@ -43,7 +54,8 @@ export function Login() {
         </Helmet>
         <section className="accounts">
             <div className="container">
-                {currentUser && <Navigate to={'/user/' + currentUser.uid} />}
+                {currentUser && urlParams.get("from") && <Navigate to={urlParams.get("from")} />}
+                {currentUser && <Navigate to={'/'+ routeUser + '/' + currentUser.uid} />}
                 <form action="" onSubmit={handleSubmit}>
                     <h2>{page}</h2>
                     {error && <div className="error">Error: {error}</div>}
@@ -64,7 +76,7 @@ export function Login() {
     </>
 }
 
-export function Register() {
+export function AccountRegister() {
     const [loading, setLoading] = useState(false);
     const currentUser = useAuth();
 
@@ -88,7 +100,7 @@ export function Register() {
         </Helmet>
         <section className="accounts">
             <div className="container">
-                {currentUser && <Navigate to={'/user/' + currentUser.uid} />}
+                {currentUser && <Navigate to={'/'+ routeUser + '/' + currentUser.uid} />}
                 <form action="" onSubmit={HandleSubmit}>
                     <h2>{page}</h2>
                     {error && <div className="error">Error: {error}</div>}
@@ -113,7 +125,7 @@ export function Register() {
     </>
 }
 
-export function Forgot() {
+export function AccountForgot() {
 
     const [loading, setLoading] = useState(false);
     const currentUser = useAuth();
@@ -136,7 +148,7 @@ export function Forgot() {
         </Helmet>
         <section className="accounts">
             <div className="container">
-                {currentUser && <Navigate to={'/user/' + currentUser.uid} />}
+                {currentUser && <Navigate to={'/'+ routeUser + '/' + currentUser.uid} />}
                 <form action="" onSubmit={handleSubmit}>
                     <h2>{page}</h2>
                     {error && <div className="error">Error: {error}</div>}
@@ -153,6 +165,11 @@ export function Forgot() {
     </>
 }
 
+export function AccountEdit() {
+    return "hello world"
+}
+
+// other
 function Background() {
     return <div className="background">
         <div className="item" />

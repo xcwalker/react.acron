@@ -129,3 +129,9 @@ section.hero .background .item:nth-child(3) {
     /* styling */
     color: var(--form-color-invalid);
 }
+
+/* hero user */
+section.hero.user .container h1 {
+    /* text */
+    font-size: min(90px, 8vw);
+}

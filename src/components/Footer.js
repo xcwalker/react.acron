@@ -8,8 +8,10 @@ import {
     contactEmail,
     contactEmailMainDev,
     discordServer,
-    routeUser,
-    routeDev
+    routeAccount,
+    routeDev,
+    routeTree,
+    routeUser
 } from "../App"
 
 import { Link } from "react-router-dom"
@@ -48,13 +50,14 @@ export function Footer() {
                     <div className="content">
                         {/* conditional (if !user)*/}
                         {!currentUser && <>
-                            <Link aria-label="login" to={routeUser + "/login"}>Login</Link>
-                            <Link aria-label="register" to={routeUser + "/register"}>Register</Link>
-                            <Link aria-label="forgot password" to={routeUser + "/forgot"}>Forgot Password</Link>
+                            <Link aria-label="login" to={routeAccount + "/login"}>Login</Link>
+                            <Link aria-label="register" to={routeAccount + "/register"}>Register</Link>
+                            <Link aria-label="forgot password" to={routeAccount + "/forgot"}>Forgot Password</Link>
                         </>}
                         {/* conditional (if user)*/}
                         {currentUser && <>
-                            <Link aria-label="your profile" to={"user/" + currentUser.uid}>Profile</Link>
+                            <Link aria-label="your profile" to={routeAccount + "/edit"}>Account</Link>
+                            <Link aria-label="your profile" to={routeUser + "/" + currentUser.uid}>Profile</Link>
                         </>}
                     </div>
                     <div className="divider" />
@@ -68,15 +71,25 @@ export function Footer() {
                             <Link aria-label="Developer Register" to={routeDev + "/register"}>DevReg™</Link>
                             {/* conditional (if dev)*/}
                             <Link aria-label="Developer Dashboard" to={routeDev + "/dashboard"}>DevDash™</Link>
-                            <Link aria-label="Developer Profile" to={routeDev + currentUser.uid}>DevPro™</Link>
+                            <Link aria-label="Developer Profile" to={routeDev + "/" + currentUser.uid}>DevPro™</Link>
                             <Link aria-label="Developer Post" to={routeDev + "/post"}>DevPost™</Link>
                             <Link aria-label="Developer Board" to={routeDev + "/board"}>DevBoard™</Link>
+                            <Link aria-label="Developer Board" to={routeDev + "/contact"}>DevCon™</Link>
                             {/* conditional (if coreDev)*/}
                             <Link aria-label="Developer Applications" to={routeDev + "/applications"}>DevApps™</Link>
                         </div>
                         <div className="divider" />
                     </div>
                 </>}
+                <div className="column">
+                    <div className="divider" />
+                    <h3>Trees</h3>
+                    <div className="content">
+                    <Link to={routeTree}>TreeSearch™</Link>
+                    <Link to={routeTree + "/dashboard"}>TreeDash™</Link>
+                    </div>
+                    <div className="divider" />
+                </div>
                 <div className="column">
                     <div className="divider" />
                     <h3>About</h3>

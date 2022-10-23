@@ -1,26 +1,27 @@
+import { useEffect, useState } from "react";
 import { url } from "../App"
 import { LogoXCWalker } from "../components/Logo"
-import { logout, useAuth } from "../Firebase";
+import { getUserInfo, useAuth } from "../Firebase";
 
-import "../style/homepage.css"
+import "../style/HomePage.css"
 
 export function Homepage() {
     const currentUser = useAuth();
 
-    async function handleSignout() {
-        try {
-            await logout();
-        } catch {
-            alert("Error!");
-        }
-    }
-
     return <>
-        <Hero />
-        {currentUser && <button onClick={handleSignout}>(TEMP) signOut</button>}
+        {/* not logged in */}
+        {!currentUser && <>
+            <Hero />
+        </>}
+
+        {/* logged in */}
+        {currentUser && <>
+            <UserHero />
+        </>}
     </>
 }
 
+// not logged in
 function Hero() {
     return <>
         <section className="hero">
@@ -37,6 +38,42 @@ function Hero() {
     </>
 }
 
+// logged in
+
+
+function UserHero() {
+    const currentUser = useAuth();
+    const [user, setUser] = useState({});
+    const [loading, setLoading] = useState({});
+
+    useEffect(() => {
+        if (!currentUser) return
+        getUserInfo(currentUser.uid).then(res => {
+            if (!res) return
+            setUser(res);
+            setLoading(false)
+            console.info(res)
+        })
+    }, [currentUser])
+
+    return <>
+        {!loading && <>
+            <section className="hero user">
+                <div className="container">
+                    <LogoXCWalker />
+                    <h1>Welcome Back</h1>
+                    <span>{user.firstname} {user.lastname} | {user.displayname}</span>
+                </div>
+                <HeroBackground />
+            </section>
+            <section className="">
+                <div className="container"></div>
+            </section>
+        </>}
+    </>
+}
+
+// other
 function HeroBackground() {
     return <div className="background">
         <div className="item" />

@@ -150,6 +150,7 @@ section.errorPage .background .bigCode {
     /* text */
     font-size: 75vmin;
     font-weight: 700;
+    opacity: 0.5;
 }
 
 section.errorPage .background .item {
@@ -173,7 +174,7 @@ section.errorPage .background .item {
     rotate: 45deg;
 }
 
-section.errorPage .background .item:nth-child(1) {
+section.errorPage .background .item.i2 {
     /* position */
     left: -10vw;
     bottom: -85vw;
@@ -182,7 +183,7 @@ section.errorPage .background .item:nth-child(1) {
     color: var(--form-color-valid-hold);
 }
 
-section.errorPage .background .item:nth-child(2) {
+section.errorPage .background .item.i3 {
     /* position */
     left: -45vw;
     bottom: -95vw;
@@ -191,7 +192,7 @@ section.errorPage .background .item:nth-child(2) {
     color: var(--form-color-selector);
 }
 
-section.errorPage .background .item:nth-child(3) {
+section.errorPage .background .item.i4 {
     /* position */
     left: 0vw;
     bottom: -65vw;

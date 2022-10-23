@@ -1,6 +1,6 @@
 // css
 import { Link } from 'react-router-dom';
-import { routeDev, routeUser } from '../App';
+import { routeDev, routeAccount } from '../App';
 import { useAuth } from '../Firebase';
 import '../style/ErrorPages.css';
 
@@ -17,7 +17,7 @@ export function Error403() {
       <div className='actions'>
         <Link to="/">Home</Link>
         {currentUser && <Link to={"user/" + currentUser.uid}>Profile</Link>}
-        {!currentUser && <Link to={routeUser + "/login"}>Login</Link>}
+        {!currentUser && <Link to={routeAccount + "/login"}>Login</Link>}
       </div>
       {currentUser && <Link to={routeDev + "/dashboard"}>DevDash™</Link>}
     </div>
@@ -38,7 +38,7 @@ export function Error404() {
       <div className='actions'>
         <Link to="/">Home</Link>
         {currentUser && <Link to={"user/" + currentUser.uid}>Profile</Link>}
-        {!currentUser && <Link to={routeUser + "/login"}>Login</Link>}
+        {!currentUser && <Link to={routeAccount + "/login"}>Login</Link>}
       </div>
       {currentUser && <Link to={routeDev + "/dashboard"}>DevDash™</Link>}
     </div>
@@ -48,10 +48,10 @@ export function Error404() {
 
 function Background(props) {
   return <div className='background'>
-    <div className="item" />
-    <div className="item" />
-    <div className="item" />
-    <div className="item" />
+    <div className="item i1" />
+    <div className="item i2" />
     <span className='bigCode'>{props.errorCode}</span>
+    <div className="item i3" />
+    <div className="item i4" />
   </div>
 }

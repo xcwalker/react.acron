@@ -1,0 +1,646 @@
+section.tree {
+    /* variables */
+    --padding: 10px;
+    --gap: 10px;
+}
+
+section.tree .container {}
+
+/*** header ***/
+section.tree .container .spacer {
+    /* sizing */
+    width: 100%;
+    height: 52px;
+}
+
+section.tree .container .header {
+    /* position */
+    position: relative;
+
+    /* sizing */
+    width: 100%;
+    height: 352px;
+
+    /* navbar spacing */
+    padding: calc(var(--padding) * 2) min(calc(var(--padding) * 4), max(4vw, var(--padding)));
+    padding-top: 62px;
+
+    /* flex */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+section.tree .container .header .background {
+    /* position */
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+
+    /* sizing */
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    object-fit: cover;
+}
+
+/**** main ****/
+section.tree .container .main {
+    /* sizing */
+    padding: min(calc(var(--padding) * 4), max(4vw, var(--padding)));
+
+    /* grid */
+    display: grid;
+    grid-template-columns: min(350px, 100%) 1fr;
+    gap: var(--gap);
+}
+
+/*** sidebar ***/
+section.tree .container .main .sidebar {
+    /* flex */
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap);
+}
+
+/*** sidebar default ***/
+section.tree .container .main .sidebar .sidebar-item {
+    /* sizing */
+    padding: 10px;
+
+    /* styling */
+    border-radius: 10px;
+    background-color: var(--background-color-200);
+    color: var(--foreground-color-200);
+
+    /* transition */
+    transition: var(--default-transition-color), var(--default-transition-background_color);
+}
+
+section.tree .container .main .sidebar .sidebar-item h3 {
+    /* spacing */
+    margin: 0;
+    padding: 0;
+    padding-bottom: calc(var(--gap) / 2);
+
+    /* text */
+    font-weight: 700;
+    font-size: 16px;
+
+    /* transition */
+    transition: var(--default-transition-color), var(--default-transition-background_color);
+}
+
+/*** sidebar info ***/
+section.tree .container .main .sidebar .sidebar-item.info h2 {
+    /* spacing */
+    margin: 0;
+    padding: 0;
+
+    /* text */
+    font-weight: 700;
+    font-size: 24px;
+
+    /* transition */
+    transition: var(--default-transition-color), var(--default-transition-background_color);
+}
+
+section.tree .container .main .sidebar .sidebar-item.info span {
+    /* spacing */
+    padding-left: 5px;
+
+    /* text */
+    color: var(--foreground-color-300);
+    font-weight: 600;
+    font-size: 12px;
+
+    /* transition */
+    transition: var(--default-transition-color), var(--default-transition-background_color);
+}
+
+/*** sidebar markdown ***/
+section.tree .container .main .sidebar .sidebar-item.markdown {
+    /* whitespace */
+    white-space: pre-line;
+
+    /* flex */
+    display: flex;
+    flex-direction: column;
+}
+
+section.tree .container .main .sidebar .sidebar-item.markdown ul {
+    /* spacing */
+    margin: 0;
+
+    /* whitespace */
+    white-space: initial;
+}
+
+section.tree .container .main .sidebar .sidebar-item.markdown ul li {
+    /* whitespace */
+    white-space: pre-line;
+}
+
+/*** sidebar user ***/
+section.tree .container .main .sidebar .sidebar-item.user {
+    /* position */
+    position: relative;
+
+    /* flex */
+    display: flex;
+    flex-direction: row;
+    gap: var(--gap);
+
+    /* text */
+    text-decoration: none;
+
+    /* styling */
+    color: var(--foreground-color-200);
+
+    /* transition */
+    transition: var(--quick-transition-color), var(--quick-transition-background_color);
+}
+
+section.tree .container .main .sidebar .sidebar-item.user:hover {
+    background-color: var(--background-color-300);
+}
+
+section.tree .container .main .sidebar .sidebar-item.user:focus,
+section.tree .container .main .sidebar .sidebar-item.user:focus-visible {
+    background-color: var(--background-color-300);
+    outline-offset: 3px;
+    outline: 2px solid currentColor;
+}
+
+section.tree .container .main .sidebar .sidebar-item.user:active {
+    color: var(--form-color-selector);
+}
+
+section.tree .container .main .sidebar .sidebar-item.user .content {
+    /* flex */
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    justify-content: center;
+}
+
+section.tree .container .main .sidebar .sidebar-item.user h2 {
+    /* spacing */
+    margin: 0;
+    padding: 0;
+
+    /* text */
+    font-weight: 700;
+    font-size: 24px;
+
+    /* styling */
+    color: var(--foreground-color-200);
+
+    /* transition */
+    transition: var(--default-transition-color), var(--default-transition-background_color);
+}
+
+section.tree .container .main .sidebar .sidebar-item.user span:not(.open) {
+    /* text */
+    color: var(--foreground-color-300);
+    font-weight: 600;
+    font-size: 12px;
+
+    /* transition */
+    transition: var(--default-transition-color), var(--default-transition-background_color);
+}
+
+section.tree .container .main .sidebar .sidebar-item.user span.open {
+    /* position */
+    position: absolute;
+    top: 10px;
+    right: 10px;
+
+    /* text */
+    font-size: 18px;
+}
+
+section.tree .container .main .sidebar .sidebar-item.user .avatar {
+    /* sizing */
+    --size: 50px;
+    width: var(--size);
+    height: var(--size);
+    flex-shrink: 0;
+}
+
+section.tree .container .main .sidebar .sidebar-item.user .avatar img {
+    /* sizing */
+    width: 100%;
+    height: 100%;
+
+    /* styling */
+    border-radius: 50%;
+}
+
+/*** authedUsers ***/
+section.tree .container .main .sidebar .sidebar-item .authedUsers {
+    /* variables */
+    --column-width: 330px;
+    --gap: 10px;
+
+    /* grid */
+    display: grid;
+    grid-template-columns: min(calc((var(--column-width) - var(--gap)) / 2), 100%) min(calc((var(--column-width) - 10px) / 2), 100%);
+    gap: 10px;
+}
+
+section.tree .container .main .sidebar .sidebar-item .authedUsers a {
+    /* position */
+    position: relative;
+
+    /* sizing */
+    width: 100%;
+    padding: var(--padding);
+
+    /* flex */
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    gap: calc(var(--gap) / 2);
+
+    /* text */
+    text-decoration: none;
+
+    /* styling */
+    border-radius: 10px;
+    color: var(--foreground-color-200);
+
+    /* transition */
+    transition: var(--quick-transition-color), var(--quick-transition-background_color);
+}
+
+section.tree .container .main .sidebar .sidebar-item .authedUsers a:hover {
+    background-color: var(--background-color-300);
+}
+
+section.tree .container .main .sidebar .sidebar-item .authedUsers a:focus,
+section.tree .container .main .sidebar .sidebar-item .authedUsers a:focus-visible {
+    background-color: var(--background-color-300);
+    outline-offset: 3px;
+    outline: 2px solid currentColor;
+}
+
+section.tree .container .main .sidebar .sidebar-item .authedUsers a:active {
+    color: var(--form-color-selector);
+}
+
+section.tree .container .main .sidebar .sidebar-item .authedUsers .avatar {
+    /* sizing */
+    --size: 50px;
+    width: var(--size);
+    height: var(--size);
+    flex-shrink: 0;
+}
+
+section.tree .container .main .sidebar .sidebar-item .authedUsers .avatar img {
+    /* sizing */
+    width: 100%;
+    height: 100%;
+
+    /* styling */
+    border-radius: 50%;
+}
+
+section.tree .container .main .sidebar .sidebar-item .authedUsers .content {
+    /* flex */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+section.tree .container .main .sidebar .sidebar-item .authedUsers span.type-1 {
+    /* text */
+    color: var(--foreground-color-200);
+    font-weight: 700;
+    font-size: 14px;
+
+    /* transition */
+    transition: var(--default-transition-color), var(--default-transition-background_color);
+}
+
+section.tree .container .main .sidebar .sidebar-item .authedUsers span.type-2 {
+    /* text */
+    color: var(--foreground-color-300);
+    font-weight: 600;
+    font-size: 11px;
+
+    /* transition */
+    transition: var(--default-transition-color), var(--default-transition-background_color);
+}
+
+section.tree .container .main .sidebar .sidebar-item .authedUsers span.open {
+    /* position */
+    position: absolute;
+    top: 10px;
+    right: 10px;
+
+    /* text */
+    font-size: 18px;
+}
+
+/*** markdown ***/
+section.tree .container .main .sidebar .sidebar-item.markdown *:not(ul) {
+    /* spacing */
+    margin: 0;
+    padding: 0;
+}
+
+section.tree .container .main .sidebar .sidebar-item:not(.markdown, .links) ul {
+    /* spacing */
+    margin: 0;
+    padding: 0;
+
+    /* list */
+    list-style: none;
+
+    /* flex */
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap);
+}
+
+section.tree .container .main .sidebar .sidebar-item:not(.markdown, .links) ul li {
+    /* position */
+    position: relative;
+
+    /* flex */
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    gap: var(--gap);
+
+    /* cursor */
+    cursor: help;
+}
+
+section.tree .container .main .sidebar .sidebar-item ul li svg {
+    /* sizing */
+    padding: 2px;
+}
+
+section.tree .container .main .sidebar .sidebar-item ul li span {
+    /* pointer events */
+    pointer-events: none;
+
+    /* text */
+    font-weight: 600;
+}
+
+section.tree .container .main .sidebar .sidebar-item ul li span.identifier {
+    /* position */
+    position: absolute;
+    left: 34px;
+
+    /* sizing */
+    width: calc(100% - 34px);
+
+    /* text */
+    font-weight: 600;
+
+    /* translate */
+    translate: 0 100%;
+    opacity: 0;
+    scale: 1 0;
+
+    /* transition */
+    transition: translate 0.25s ease-in-out, opacity 0.25s ease-in-out, scale 0.25s ease-in-out;
+}
+
+section.tree .container .main .sidebar .sidebar-item ul li:hover span.identifier {
+    /* translate */
+    translate: 0 0;
+    opacity: 1;
+    scale: 1 1;
+}
+
+section.tree .container .main .sidebar .sidebar-item ul li span:not(.material-symbols-outlined, .identifier) {
+    /* translate */
+    translate: 0 0;
+    opacity: 1;
+    scale: 1 1;
+
+    /* transition */
+    transition: translate 0.25s ease-in-out, opacity 0.25s ease-in-out, scale 0.25s ease-in-out;
+
+    /* text */
+    text-transform: capitalize;
+}
+
+section.tree .container .main .sidebar .sidebar-item ul li:hover span:not(.material-symbols-outlined, .identifier) {
+    /* translate */
+    translate: 0 -100%;
+    opacity: 0;
+    scale: 1 0;
+}
+
+
+section.tree .container .main .sidebar .sidebar-item.links ul {
+    /* sizing */
+    --size: 36.25px;
+
+    /* spacing */
+    margin: 0;
+    padding: 0;
+
+    /* list */
+    list-style: none;
+
+    /* grid */
+    display: grid;
+    grid-template-columns: repeat(auto-fit, var(--size));
+    gap: var(--gap);
+}
+
+section.tree .container .main .sidebar .sidebar-item.links ul li {
+    /* position */
+    position: relative;
+
+    /* sizing */
+    width: var(--size);
+    height: var(--size);
+
+    /* flex */
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    gap: var(--gap);
+
+    /* cursor */
+    cursor: help;
+}
+
+section.tree .container .main .sidebar .sidebar-item.links ul li a {
+    /* sizing */
+    width: var(--size);
+    height: var(--size);
+    flex-shrink: 0;
+
+    /* flex */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    /* styling */
+    border-radius: 4px;
+    color: var(--foreground-color-100);
+}
+
+section.tree .container .main .sidebar .sidebar-item.links ul li:hover a {
+    /* styling */
+    background-color: var(--background-color-300);
+}
+
+section.tree .container .main .sidebar .sidebar-item.links ul li a:focus,
+section.tree .container .main .sidebar .sidebar-item.links ul li a:focus-visible {
+    /* styling */
+    outline: 2px solid currentColor;
+}
+
+section.tree .container .main .sidebar .sidebar-item.links ul li a:active {
+    /* styling */
+    color: var(--form-color-selector);
+}
+
+section.tree .container .main .sidebar .sidebar-item .avatarPreview {
+    /* sizing */
+    width: 100%;
+    aspect-ratio: 1/1;
+
+    /* stling */
+    border-radius: 50%;
+}
+
+section.tree .container .main .sidebar .sidebar-item.controls {
+    /* sizing */
+    --column-width: 330px;
+    --gap: 10px;
+
+    /* grid */
+    display: grid;
+    grid-template-columns: min(calc((var(--column-width) - var(--gap)) / 2), 100%) min(calc((var(--column-width) - 10px) / 2), 100%);
+    gap: 10px;
+}
+
+section.tree .container .main .sidebar .sidebar-item.controls a,
+section.tree .container .main .sidebar .sidebar-item.controls button {
+    /* sizing */
+    height: 36.25px;
+
+    /* flex */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    /* styling */
+    border: none;
+    border-radius: 4px;
+    background-color: var(--background-color-300);
+    color: var(--foreground-color-300);
+
+    /* text */
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 16px;
+
+    /* cursor */
+    cursor: pointer;
+}
+
+section.tree .container .main .sidebar .sidebar-item.controls a {
+    /* styling */
+    background-color: var(--form-color-invalid-hold-opac);
+    color: var(--foreground-color-300);
+    border: 2px solid var(--form-color-invalid-hold);
+}
+
+section.tree .container .main .sidebar .sidebar-item.controls a:hover,
+section.tree .container .main .sidebar .sidebar-item.controls a:focus,
+section.tree .container .main .sidebar .sidebar-item.controls a:focus-visible {
+    /* styling */
+    background-color: var(--form-color-invalid-hold);
+}
+
+section.tree .container .main .sidebar .sidebar-item.controls a:active,
+section.tree .container .main .sidebar .sidebar-item.controls button:active {
+    /* styling */
+    background-color: transparent !important;
+    color: var(--foreground-color-300);
+    border: 2px solid currentColor;
+    outline: none !important;
+}
+
+section.tree .container .main .sidebar .sidebar-item.controls button {
+    /* styling */
+    background-color: var(--form-color-invalid-opac);
+    color: var(--foreground-color-300);
+    border: 2px solid var(--form-color-invalid);
+}
+
+section.tree .container .main .sidebar .sidebar-item.controls button:hover,
+section.tree .container .main .sidebar .sidebar-item.controls button:focus,
+section.tree .container .main .sidebar .sidebar-item.controls button:focus-visible {
+    /* styling */
+    background-color: var(--form-color-invalid);
+}
+
+section.tree .container .main .sidebar .sidebar-item.controls a:focus,
+section.tree .container .main .sidebar .sidebar-item.controls a:focus-visible,
+section.tree .container .main .sidebar .sidebar-item.controls button:focus,
+section.tree .container .main .sidebar .sidebar-item.controls button:focus-visible {
+    /* styling */
+    outline: 2px solid currentColor;
+    outline-offset: 2px;
+}
+
+section.tree .container .main .sidebar .sidebar-item .content {
+    /* sizing */
+    width: 100%;
+}
+
+section.tree .container .main .sidebar .sidebar-item form:not(.type-2),
+section.tree .container .main .sidebar .sidebar-item .content-2 {
+    /* sizing */
+    width: 100%;
+
+    /* flex */
+    display: flex;
+    gap: 10px;
+}
+
+section.tree .container .main .sidebar .sidebar-item form input,
+section.tree .container .main .sidebar .sidebar-item .content-2 input {
+    /* sizing */
+    width: 100%;
+}
+
+section.tree .container .main .sidebar .sidebar-item form button,
+section.tree .container .main .sidebar .sidebar-item .content-2 button {
+    /* sizing */
+    width: 75px;
+    flex-shrink: 0;
+}
+
+section.tree .container .main .sidebar .sidebar-item form.type-2 {
+    /* sizing */
+    width: 100%;
+
+    /* flex */
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+section.tree .container .main .sidebar .sidebar-item form.type-2 button {
+    /* sizing */
+    width: 100%;
+}
+
+/*** mainbar ***/
+section.tree .container .main .mainbar {}

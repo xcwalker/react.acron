@@ -1,23 +1,59 @@
 import { useEffect, useRef, useState } from "react";
 import { Helmet } from "react-helmet";
-import { Link, useParams } from "react-router-dom";
+import { Link, Navigate, useParams } from "react-router-dom";
 import ReactMarkdown from 'react-markdown'
-import { application, network } from "../App";
+import { application, network, routeAccount, routeUser } from "../App";
 import { getUserInfo, logout, profileInitial, updateDisplayName, updateFirstName, updateGender, updateLastName, updateLinks, updateLocation, updatePronouns, updateStatement, uploadProfileBackgroundPicture, uploadProfilePicture, useAuth } from "../Firebase";
 
 import "../style/UserPages.css"
-import { Error403 } from "./ErrorPages";
+import { Error403, Error404 } from "./ErrorPages";
 
-export function UserIndex() { }
+export function UserIndex() {
+    const currentUser = useAuth(null);
+    const [loggedIn, setLoggedIn] = useState()
 
-export function UserIndexProfile() { }
+    useEffect(() => {
+        if (currentUser && currentUser !== null) {setLoggedIn(1)}
+        if (currentUser === null) {setLoggedIn(0)}
+    }, [currentUser])
+
+    return <>
+        {loggedIn === 1 && <>
+            <Navigate to={"/" + routeUser + "/" + currentUser.uid} />
+        </>}
+        {loggedIn === 0 && <>
+            <Navigate to={"/" + routeAccount + "/login?from=/" + routeUser} />
+        </>}
+    </>
+}
+
+export function UserIndexProfile() {    
+    const currentUser = useAuth(null);
+    const [loggedIn, setLoggedIn] = useState()
+
+    useEffect(() => {
+        console.log(currentUser)
+        if (currentUser && currentUser !== null) {setLoggedIn(1)}
+        if (currentUser === null) {setLoggedIn(0)}
+    }, [currentUser])
+
+    return <>
+        {loggedIn === 1 && <>
+            <Navigate to={"/" + routeUser + "/" + currentUser.uid + "/edit"} />
+        </>}
+        {loggedIn === 0 && <>
+            <Navigate to={"/" + routeAccount + "/login?from=/" + routeUser + "/edit"} />
+        </>}
+    </>
+}
 
 export function UserProfile() {
     const params = useParams();
     const currentUser = useAuth();
-    const [user, setUser] = useState({});
+    const [user, setUser] = useState();
     const [reload, setReload] = useState(0);
     const [date, setDate] = useState();
+    const [error, setError] = useState();
 
     useEffect(() => {
         getUserInfo(params.id).then(res => {
@@ -36,6 +72,9 @@ export function UserProfile() {
         if (currentUser?.uid === params.id && reload === 1) {
             profileInitial(currentUser)
             setReload(0)
+        }
+        if (currentUser?.uid !== params.id && reload === 1) {
+            setError(404)
         }
     }, [currentUser, params.id, reload])
 
@@ -67,7 +106,7 @@ export function UserProfile() {
                                     <img src={user.photoURL} alt="" />
                                 </div>
                                 <div className="content">
-                                    <h2>{user.lastname}, {user.firstname}</h2>
+                                    <h2>{user.firstname} {user.lastname}</h2>
                                     <span>{user.displayname}</span>
                                 </div>
                             </div>
@@ -76,11 +115,7 @@ export function UserProfile() {
                             </ReactMarkdown>}
                             <div className="sidebar-item">
                                 <ul>
-                                    <li>
-                                        {!user.gender && <>
-                                            <span className="material-symbols-outlined">wc</span>
-                                            <span>Unknown</span>
-                                        </>}
+                                    {user.gender && <li>
                                         {user.gender && (user.gender !== "male" && user.gender !== "female" && user.gender !== "transgender") && <>
                                             <span className="material-symbols-outlined">wc</span>
                                             <span>{user.gender}</span>
@@ -90,27 +125,21 @@ export function UserProfile() {
                                             <span>{user.gender}</span>
                                         </>}
                                         <span className="identifier">Gender</span>
-                                    </li>
-                                    <li>
+                                    </li>}
+                                    {user.pronouns && <li>
                                         <svg width="24" height="24" viewBox="0 0 40 39" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <circle cx="12" cy="26.2803" r="10" stroke="currentColor" strokeWidth="4" />
                                             <circle cx="28" cy="26.2803" r="10" stroke="currentColor" strokeWidth="4" />
                                             <circle cx="20" cy="12.2002" r="10" stroke="currentColor" strokeWidth="4" />
                                         </svg>
-                                        {!user.gender && <>
-                                            <span>Unknown</span>
-                                        </>}
-                                        {user.pronouns && <>
-                                            <span>{user.pronouns}</span>
-                                        </>}
+                                        <span>{user.pronouns}</span>
                                         <span className="identifier">Pronouns</span>
-                                    </li>
-                                    <li>
+                                    </li>}
+                                    {user.location && <li>
                                         <span className="material-symbols-outlined">map</span>
-                                        {!user.location && <span>Unknown</span>}
-                                        {user.location && <span>{user.location}</span>}
+                                        <span>{user.location}</span>
                                         <span className="identifier">Location</span>
-                                    </li>
+                                    </li>}
                                     <li>
                                         <span className="material-symbols-outlined">schedule</span>
                                         {date && <span>{date?.getFullYear()}-{Number(date?.getMonth()) + 1}-{date?.getDate()}</span>}
@@ -152,6 +181,7 @@ export function UserProfile() {
                 </div>
             </section>
         </>}
+        {error === 404 && <Error404 />}
     </>
 }
 

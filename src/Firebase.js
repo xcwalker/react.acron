@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { initializeApp } from "firebase/app";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut, updateProfile, sendPasswordResetEmail } from "firebase/auth";
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
-import { doc, getDoc, getFirestore, setDoc, updateDoc } from "firebase/firestore";
+import { arrayUnion, collection, doc, getDoc, getDocs, getFirestore, query, setDoc, updateDoc, where } from "firebase/firestore";
 
 const firebaseConfig = {
     apiKey: process.env.REACT_APP_FIREBASE_AUTH_API_KEY,
@@ -290,4 +290,73 @@ export async function getUserInfo(userID) {
     } catch (e) {
         console.error("Error getting user: ", e);
     }
+}
+
+export async function claimTree(treeID, currentUser, setLoading, setReload) {
+    setLoading(true)
+    setDoc(doc(db, "trees", treeID), {
+        title: treeID,
+        useOringinalUserLinks: true,
+        originalUser: currentUser.uid,
+        showOriginalUser: true,
+        authedUser: [currentUser.uid]
+    }).then(() => {
+        updateDoc(doc(db, "users", currentUser.uid), {
+            trees: arrayUnion(treeID)
+        })
+    }).catch(err => {
+        error = err
+    })
+    setLoading(false)
+    setReload(1)
+}
+
+export async function getUsersTrees(currentUser, setLoading) {
+    setLoading(true)
+
+    let arr = [];
+
+    const q = query(collection(db, "trees"), where("authedUser", "array-contains", currentUser.uid));
+
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+        arr.push({id: doc.id, data: doc.data()});
+    });
+
+    setLoading(false)
+    return arr
+}
+
+export async function getTreeInfo(treeID) {
+    try {
+        const docSnap = await getDoc(doc(db, "trees", treeID));
+        return docSnap.data();
+    } catch (e) {
+        console.error("Error getting tree: ", e);
+    }
+}
+
+export async function updateTree(treeID, currentUser, setLoading, setReload, originalUserID, treeArr) {
+    setLoading(true);
+
+    if (treeArr.title === "") {treeArr.title = treeID}
+    if (treeArr.authedUser === []) {treeArr.authedUser = [originalUserID]}
+    if (!treeArr.authedUser.includes(originalUserID)) {treeArr.authedUser.push(originalUserID)}
+
+    try {
+        await updateDoc(doc(db, "trees", treeID), {
+            title: treeArr.title,
+            description: treeArr.description,
+            useOringinalUserLinks: treeArr.useOringinalUserLinks,
+            showOriginalUser: treeArr.showOriginalUser,
+            showAuthedUser: treeArr.showAuthedUser,
+            authedUser: treeArr.authedUser
+        })
+    } catch (e) {
+        console.error("Error adding document (lN): ", e);
+    }
+
+    setReload(1);
+    setLoading(false);
+    alert("Links changed, refresh page to view changes.");
 }
