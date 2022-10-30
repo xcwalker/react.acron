@@ -125,7 +125,7 @@ header a.alt:active {
 }
 
 /*** avatar ***/
-header button.avatar {
+header a.avatar {
     /* sizing */
     --size: 32px;
     width: var(--size);
@@ -145,17 +145,17 @@ header button.avatar {
     transition: var(--quick-transition-background_color);
 }
 
-header button.avatar:hover,
-header button.avatar:focus,
-header button.avatar:focus-visible {
+header a.avatar:hover,
+header a.avatar:focus,
+header a.avatar:focus-visible {
     background-color: var(--foreground-color);
 }
 
-header button.avatar:active {
+header a.avatar:active {
     background-color: var(--form-color-selector);
 }
 
-header button.avatar .avatar {
+header a.avatar .avatar {
     /* sizing */
     --size: 32px;
     width: var(--size);
@@ -169,8 +169,8 @@ header button.avatar .avatar {
 
 }
 
-header button.avatar:hover .avatar,
-header button.avatar:focus .avatar,
-header button.avatar:focus-visible .avatar {
+header a.avatar:hover .avatar,
+header a.avatar:focus .avatar,
+header a.avatar:focus-visible .avatar {
     scale: 0.8;
 }

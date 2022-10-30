@@ -11,7 +11,9 @@ import {
     routeAccount,
     routeDev,
     routeTree,
-    routeUser
+    routeUser,
+    routePost,
+    routePostNew
 } from "../App"
 
 import { Link } from "react-router-dom"
@@ -81,6 +83,15 @@ export function Footer() {
                         <div className="divider" />
                     </div>
                 </>}
+                <div className="column">
+                    <div className="divider" />
+                    <h3>Feed</h3>
+                    <div className="content">
+                    <Link to={routePost}>Feed</Link>
+                    <Link to={routePost + "/" + routePostNew}>New Post</Link>
+                    </div>
+                    <div className="divider" />
+                </div>
                 <div className="column">
                     <div className="divider" />
                     <h3>Trees</h3>

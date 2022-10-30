@@ -118,7 +118,7 @@ export function UserProfile() {
                                     <span>{user.about.displayname}</span>
                                 </div>
                             </div>
-                            {(user.organisation?.name === currentUserDetails.organisation?.name || user.settings?.showOrganisation) && user.organisation?.name && user.organisation?.roles && <div className="sidebar-item roles">
+                            {(user.organisation?.name === currentUserDetails?.organisation?.name || user.settings?.showOrganisation) && user.organisation?.name && user.organisation?.roles && <div className="sidebar-item roles">
                                 <h3>{user.organisation.name}</h3>
                                 <ul>
                                     {user.organisation.roles.map((role, index) => {

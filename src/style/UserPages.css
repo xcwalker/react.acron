@@ -49,9 +49,26 @@ section.user .container .main {
     gap: var(--gap);
 }
 
+/*** background ***/
+section.user .container .main .background {
+    /* position */
+    position: absolute;
+    inset: calc(-1 * min(calc(var(--padding) * 4), max(4vw, var(--padding))));
+    z-index: -1;
+    top: -62px;
+
+    /* sizing */
+    width: calc(100% + 2 * (min(calc(var(--padding) * 4), max(4vw, var(--padding)))));
+    height: calc(100% + 62px + 1 * (min(calc(var(--padding) * 4), max(4vw, var(--padding)))));
+    overflow: hidden;
+
+    /* image */
+    object-fit: cover;
+}
+
 /*** sidebar ***/
 section.user .container .main .sidebar,
-section.user .container .main .sidebar > form {
+section.user .container .main .sidebar>form {
     /* sizing */
     max-width: 350px;
     width: 100%;
@@ -549,7 +566,8 @@ section.user .container .main .mainbar {
 }
 
 /*** smaller screens ***/
-@media (max-width: 771px) {    
+@media (max-width: 771px) {
+
     section.user .container .main .mainbar,
     section.user .container .main .sidebar {
         width: 100%;

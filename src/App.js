@@ -22,6 +22,8 @@ import { AccountIndex, AccountForgot, AccountLogin, AccountRegister, AccountEdit
 import { UserIndex, UserIndexProfile, UserProfile, UserProfileEdit } from "./pages/UserPages";
 import { TreeSearch, TreeIndex, TreeEdit, TreeDashboard } from "./pages/TreePages";
 import { Toaster } from "react-hot-toast";
+import { Feed, FeedNewPost, FeedViewPost, FeedViewPostComment } from "./pages/FeedPages";
+import { Sidebar } from "./components/Sidebar";
 
 function App() {
   return (<>
@@ -32,6 +34,7 @@ function App() {
     <Router>
       <ScrollToTop />
       <Navbar />
+      <Sidebar />
       <Toaster
         position="top-left"
         reverseOrder={true}
@@ -71,11 +74,13 @@ function App() {
             </Route>
           </Route>
           {/* post(s) */}
-          {/* <Route path='post'>
-          <Route index element={<NewPost />} />
-          <Route path=':postID' element={<Post />} />
-        </Route>
-        <Route path='feed' element={<Feed />} /> */}
+          <Route path={routePost} >
+            <Route index element={<Feed />} />
+            <Route path={routePostNew} element={<FeedNewPost />} />
+            <Route path=':postID' element={<FeedViewPost />} >
+              <Route path=':commentID' element={<FeedViewPostComment />} />
+            </Route>
+          </Route>
           {/* 404 */}
           <Route path='*' element={<Error404 />} />
         </Routes>
@@ -107,10 +112,13 @@ export const contactEmail = "contact@" + network + "." + release
 export const contactEmailMainDev = "xander@" + network + "." + release
 export const discordServer = "https://discord.gg/rjd7Spr"
 
+export const routeAbout = "about"
 export const routeAccount = "account"
 export const routeUser = "user"
 export const routeDev = "developer"
 export const routeTree = "tree"
+export const routePost = "feed"
+export const routePostNew = "post"
 
 export const toastStyle_default = {
   borderRadius: '5px',

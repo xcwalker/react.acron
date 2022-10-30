@@ -1,0 +1,136 @@
+menu {
+    /* position */
+    position: fixed;
+    inset: 0;
+    left: auto;
+    z-index: 998;
+
+    /* sizing */
+    height: 100vh;
+    width: 52px;
+
+    /* spacing */
+    padding: 0;
+    margin: 0;
+
+    /* variables */
+    --padding: 10px;
+    --gap: 10px;
+    --foreground-color: var(--foreground-color-200);
+    --background-color: var(--background-color-200);
+    --selector-color: var(--selector-color);
+}
+
+menu .container {
+    /* sizing */
+    height: 100%;
+    width: 100%;
+    padding: 10px;
+
+    /* flex */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+
+    /* transition */
+    transition: var(--quick-transition-color), var(--quick-transition-background_color), var(--quick-transition-translate);
+}
+
+.scrolled menu .container {
+    /* styling */
+    background-color: var(--background-color);
+
+    /* translate */
+    translate: 100% 0;
+}
+
+.scrolled.scrolledUp menu .container {
+    /* translate */
+    translate: 0 0;
+}
+
+menu .container ul {
+    /* spacing */
+    margin: 0;
+    padding: 0;
+
+    /* flex */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 15px;
+}
+
+menu .container ul.upper {
+    /* flex */
+    justify-content: flex-start;
+
+    /* scroll */
+    scrollbar-width: none;
+    overflow-y: auto;
+    overflow-x: clip;
+}
+
+menu .container ul a.link {
+    /* text */
+    font-size: 32px;
+    text-decoration: none;
+
+    /* styling */
+    color: var(--foreground-color);
+}
+
+
+/*** avatar ***/
+menu .container ul a.avatar {
+    /* sizing */
+    --size: 32px;
+    width: var(--size);
+    height: var(--size);
+
+    /* flex */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    /* styling */
+    border: none;
+    border-radius: 50%;
+    background-color: var(--foreground-color);
+
+    /* transition */
+    transition: var(--quick-transition-background_color);
+}
+
+menu .container ul a.avatar:hover,
+menu .container ul a.avatar:focus,
+menu .container ul a.avatar:focus-visible {
+    background-color: var(--foreground-color);
+}
+
+menu .container ul a.avatar:active {
+    background-color: var(--form-color-selector);
+}
+
+menu .container ul a.avatar .avatar {
+    /* sizing */
+    --size: 32px;
+    width: var(--size);
+    height: var(--size);
+
+    /* styling */
+    border-radius: 50%;
+
+    /* transition */
+    transition: var(--quick-transition-scale);
+
+}
+
+menu .container ul a.avatar:hover .avatar,
+menu .container ul a.avatar:focus .avatar,
+menu .container ul a.avatar:focus-visible .avatar {
+    scale: 0.8;
+}

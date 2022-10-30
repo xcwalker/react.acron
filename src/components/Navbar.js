@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 
 // custom
 import { LogoXCWalker } from "./Logo";
-import { routeAccount, routeUser, toastStyle_success } from "../App";
+import { routeAccount, routePost, routePostNew, routeUser, toastStyle_success } from "../App";
 
 // css
 import "../style/navbar.css"
@@ -20,8 +20,16 @@ export function Navbar() {
         if (currentUser.photoURL) {setPhotoURL(currentUser.photoURL)}
     }, [currentUser])
 
+    let navScrollLastKnown = 0;
     const navScroll = () => {
         document.addEventListener("scroll", e => {
+            if (window.scrollY > navScrollLastKnown) {
+                document.body.classList.remove("scrolledUp")
+            } else if (window.scrollY < navScrollLastKnown) {
+                document.body.classList.add("scrolledUp")
+            }
+            navScrollLastKnown = window.scrollY;
+
             if (document.body.getBoundingClientRect().top >= 0) {
                 document.body.classList.remove("scrolled")
             } else if (document.body.getBoundingClientRect().top < 0) {
@@ -64,13 +72,13 @@ export function Navbar() {
                             <Link className="alt" to={routeAccount + "/login"}>Login</Link>
                         </>}
                         {currentUser && <>
-                            <Link to={routeUser + "/" + currentUser.uid}>Profile</Link>
+                            <Link to={routePost + "/" + routePostNew}>Post</Link>
                         </>}
                     </ul>
                 </nav>
-                {currentUser && <button className="avatar" onClick={() => { showMenu() }} onBlur={() => { showMenu(false) }}>
+                {currentUser && <Link to={routeUser + "/" + currentUser.uid} className="avatar" >
                     <img src={photoURL} alt="Avatar" className="avatar" />
-                </button>}
+                </Link>}
             </div>
         </div>
     </header>
