@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 
 // custom
 import { LogoXCWalker } from "./Logo";
-import { routeAccount, routeUser } from "../App";
+import { routeAccount, routeUser, toastStyle_success } from "../App";
 
 // css
 import "../style/navbar.css"
@@ -16,7 +16,8 @@ export function Navbar() {
 
     useEffect(() => {
         if (!currentUser) return
-        setPhotoURL(currentUser.photoURL)
+        if (!currentUser.photoURL) {setPhotoURL("https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png")}
+        if (currentUser.photoURL) {setPhotoURL(currentUser.photoURL)}
     }, [currentUser])
 
     const navScroll = () => {

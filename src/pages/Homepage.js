@@ -62,7 +62,7 @@ function UserHero() {
                 <div className="container">
                     <LogoXCWalker />
                     <h1>Welcome Back</h1>
-                    <span>{user.firstname} {user.lastname} | {user.displayname}</span>
+                    <span>{user.about.firstname} {user.about.lastname} | {user.about.displayname}</span>
                 </div>
                 <HeroBackground />
             </section>

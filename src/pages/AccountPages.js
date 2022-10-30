@@ -50,7 +50,7 @@ export function AccountLogin() {
     return <>
         <Helmet>
             <title>{page} | {application} | {network}</title>
-            <meta name="description" content="{page} for an {release} {application} account. | A website for listing all of xcwalker's projects | {url}" />
+            <meta name="description" content={page + " for an " + release + " " + application + " account. | A website for listing all of xcwalker's projects | " + url} />
         </Helmet>
         <section className="accounts">
             <div className="container">
@@ -96,7 +96,7 @@ export function AccountRegister() {
     return <>
         <Helmet>
             <title>{page} | {application} | {network}</title>
-            <meta name="description" content="{page} for an {release} {application} account. | A website for listing all of xcwalker's projects | {url}" />
+            <meta name="description" content={page + " for an " + release + " " + application + " account. | A website for listing all of xcwalker's projects | " + url} />
         </Helmet>
         <section className="accounts">
             <div className="container">
@@ -144,7 +144,7 @@ export function AccountForgot() {
     return <>
         <Helmet>
             <title>{page} | {application} | {network}</title>
-            <meta name="description" content="{page} for an {release} {application} account. | A website for listing all of xcwalker's projects | {url}" />
+            <meta name="description" content={page + " for an " + release + " " + application + " account. | A website for listing all of xcwalker's projects | " + url} />
         </Helmet>
         <section className="accounts">
             <div className="container">

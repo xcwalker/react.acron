@@ -49,11 +49,6 @@ section.tree .container .main {
     /* sizing */
     padding: min(calc(var(--padding) * 4), max(4vw, var(--padding)));
 
-    /* grid */
-    /* display: grid;
-    grid-template-columns: min(350px, 100%) max(min(350px, 100%), 1fr);
-    gap: var(--gap); */
-
     /* flex */
     display: flex;
     flex-wrap: wrap;
@@ -147,6 +142,9 @@ section.tree .container .main .sidebar .sidebar-item.info span {
 section.tree .container .main .sidebar .sidebar-item.markdown {
     /* whitespace */
     white-space: pre-line;
+
+    /* resize */
+    resize: none;
 
     /* flex */
     display: flex;
@@ -755,4 +753,378 @@ section.tree .container .main .mainbar .links ul a span.url {
 
     /* styling */
     color: var(--foreground-color-300);
+}
+
+/*** TreeSearch ***/
+section.treeSearch,
+section.treeUser {
+    /* spacing */
+    padding: 20px min(40px, max(4vw, 10px));
+    padding-top: 62px;
+}
+
+section.treeUser {
+    /* spacing */
+    padding-top: 0px;
+}
+
+section.treeSearch .container,
+section.treeUser .container {
+    /* flex */
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/** header **/
+section.treeSearch .container .header {
+    /* sizing */
+    width: 100%;
+    height: 52px;
+    padding: 10px;
+
+    /* flex */
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+section.treeSearch .container .header input {
+    /* sizing */
+    height: 100%;
+    width: min(400px, 100%);
+    padding-left: 20px;
+
+    /* styling */
+    outline: none !important;
+    border: none;
+    border-radius: 0;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    background-color: var(--background-color-200);
+    color: var(--foreground-color-200);
+
+    /* text */
+    font-size: 18px;
+    font-weight: 500;
+
+    /* transition */
+    transition: var(--quick-transition-background_color), var(--quick-transition-color);
+}
+
+section.treeSearch .container .header input:focus {
+    background-color: var(--background-color-300);
+    color: var(--foreground-color-300);
+}
+
+section.treeSearch .container .header button {
+    /* sizing */
+    height: 100%;
+    width: min(100px, 100%);
+
+    /* styling */
+    outline: none !important;
+    border: none;
+    border-radius: 0;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    background-color: var(--background-color-200);
+    color: var(--foreground-color-200);
+
+    /* text */
+    font-size: 16px;
+    font-weight: 700;
+
+    transition: font-size 0.125s ease-in-out;
+}
+
+section.treeSearch .container .header button:valid {
+    /* styling */
+    background-color: var(--form-color-selector);
+}
+
+section.treeSearch .container .header button:valid:hover {
+    /* styling */
+    color: var(--form-color-selector);
+    background-color: var(--foreground-color-200);
+}
+
+section.treeSearch .container .header button:focus {
+    /* text */
+    font-size: 18px;
+}
+
+section.treeSearch .container .header .search-box {
+    /* sizing */
+    height: 100%;
+    width: min(500px, 100%);
+
+    /* flex */
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+
+    /* styling */
+    border-radius: 10px;
+}
+
+section.treeSearch .container .header .search-box:focus-within {
+    outline: 3px solid var(--form-color-selector);
+    outline-offset: 2px;
+}
+
+section.treeUser .container h2 {
+    /* text */
+    text-align: center;
+}
+
+/** results **/
+section.treeSearch .container .results {}
+
+section.treeSearch .container .results span.no-results {
+    /* sizing */
+    width: 100%;
+    height: 250px;
+
+    /* flex */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    /* text */
+    font-size: 26px;
+    font-weight: 700;
+}
+
+section.treeSearch .container .results ul,
+section.treeUser .container ul {
+    /* spacing */
+    padding: 0;
+    margin: 0;
+
+    /* flex */
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+section.treeSearch .container .results ul .search-item,
+section.treeUser .container ul .search-item {
+    /* position */
+    position: relative;
+
+    /* sizing */
+    padding: 10px;
+    width: min(282px, 100%);
+    height: 120px;
+    overflow: hidden;
+
+    /* flex */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    /* styling */
+    border: none;
+    border-radius: 10px;
+    background-color: var(--background-color-200);
+    color: var(--foreground-color-200);
+
+    /* text */
+    text-decoration: none;
+
+    /* pointer */
+    cursor: pointer;
+}
+
+section.treeSearch .container .results ul .search-item h3,
+section.treeUser .container ul .search-item h3 {
+    /* position */
+    position: relative;
+    z-index: 1;
+
+    /* spacing */
+    padding: 0;
+    margin: 0;
+
+    /* text */
+    font-size: 22px;
+    font-weight: 700;
+
+    /* styling */
+    text-shadow: 2px 2px 0 var(--background-color-200);
+}
+
+section.treeSearch .container .results ul .search-item span,
+section.treeUser .container ul .search-item span {
+    /* position */
+    position: absolute;
+    inset: 10px;
+    top: auto;
+    z-index: 1;
+
+    /* spacing */
+    padding: 0;
+    margin: 0;
+
+    /* text */
+    text-align: center;
+    font-size: 14px;
+    font-weight: 500;
+
+    /* styling */
+    color: var(--foreground-color-300);
+    text-shadow: 1px 1px 0 var(--background-color-200);
+}
+
+section.treeSearch .container .results ul .search-item span.material-symbols-outlined {
+    /* position */
+    inset: 10px;
+    right: auto;
+    bottom: auto;
+    z-index: 2;
+
+    /* sizing */
+    --size: 26px;
+    height: var(--size);
+    width: var(--size);
+
+    /* flex */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    /* text */
+    font-size: 18px;
+    font-weight: 600;
+
+    /* styling */
+    border-radius: 50%;
+    background-color: var(--background-color-300);
+    color: var(--foreground-color-300);
+    text-shadow: none !important;
+}
+
+section.treeSearch .container .results ul .search-item span.hover {
+    /* position */
+    inset: 10px;
+    left: 23px;
+    right: auto;
+    bottom: auto;
+    z-index: 1;
+
+    /* sizing */
+    height: 26px;
+    padding-left: 18px;
+    padding-right: 20px;
+
+    /* flex */
+    display: flex;
+    align-items: center;
+
+    /* styling */
+    background-color: var(--background-color-300);
+    border-top-right-radius: 13px;
+    border-bottom-right-radius: 13px;
+
+    /* visibility */
+    translate: -5px 0;
+    opacity: 0;
+
+    /* transition */
+    transition: translate 0.125s ease-in-out, opacity 0.125s ease-in-out;
+}
+
+section.treeSearch .container .results ul .search-item span.material-symbols-outlined:hover+span.hover {
+    /* visibility */
+    translate: 0 0;
+    opacity: 1;
+}
+
+section.treeSearch .container .results ul .search-item .background,
+section.treeUser .container ul .search-item .background {
+    /* position */
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+
+    /* sizing */
+    width: 100%;
+    height: 100%;
+
+    /* transition */
+    transition: translate 0.125s ease-in-out;
+}
+
+section.treeSearch .container .results ul .search-item:hover .background,
+section.treeSearch .container .results ul .search-item:focus .background,
+section.treeSearch .container .results ul .search-item:focus-visible .background,
+section.treeUser .container ul .search-item:hover .background,
+section.treeUser .container ul .search-item:focus .background,
+section.treeUser .container ul .search-item:focus-visible .background {
+    /* transform */
+    translate: 5% 5%;
+}
+
+section.treeSearch .container .results ul .search-item:focus,
+section.treeSearch .container .results ul .search-item:focus-visible,
+section.treeUser .container ul .search-item:focus,
+section.treeUser .container ul .search-item:focus-visible {
+    /* outline */
+    outline: 5px solid var(--form-color-selector);
+}
+
+section.treeSearch .container .results ul .search-item .background .item,
+section.treeUser .container ul .search-item .background .item {
+    /* position */
+    position: absolute;
+    left: -5%;
+    bottom: -30%;
+
+    /* sizing */
+    width: 100%;
+    height: 100%;
+
+    /* styling */
+    border-radius: 35px;
+    border: 10px solid currentColor;
+    color: var(--form-color-invalid-hold);
+    border-right: none;
+
+    /* transform */
+    rotate: 45deg;
+}
+
+section.treeSearch .container .results ul .search-item .background .item:nth-child(1),
+section.treeUser .container ul .search-item .background .item:nth-child(1) {
+    /* position */
+    left: 25%;
+    bottom: -85%;
+
+    /* styling */
+    color: var(--form-color-valid-hold);
+}
+
+section.treeSearch .container .results ul .search-item .background .item:nth-child(2),
+section.treeUser .container ul .search-item .background .item:nth-child(2) {
+    /* position */
+    left: -45%;
+    bottom: -95%;
+
+    /* styling */
+    color: var(--form-color-selector);
+}
+
+section.treeSearch .container .results ul .search-item .background .item:nth-child(3),
+section.treeUser .container ul .search-item .background .item:nth-child(3) {
+    /* position */
+    left: 40%;
+    bottom: -65%;
+
+    /* styling */
+    color: var(--form-color-invalid);
 }

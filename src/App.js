@@ -21,16 +21,25 @@ import { Error404 } from './pages/ErrorPages';
 import { AccountIndex, AccountForgot, AccountLogin, AccountRegister, AccountEdit } from "./pages/AccountPages";
 import { UserIndex, UserIndexProfile, UserProfile, UserProfileEdit } from "./pages/UserPages";
 import { TreeSearch, TreeIndex, TreeEdit, TreeDashboard } from "./pages/TreePages";
+import { Toaster } from "react-hot-toast";
 
 function App() {
   return (<>
     <Helmet>
       <title>{application} | {network}</title>
-      <meta name="description" content="A website for listing all of xcwalker's projects | {url}" />
+      <meta name="description" content={"A website for listing all of xcwalker's projects | " + url} />
     </Helmet>
     <Router>
       <ScrollToTop />
       <Navbar />
+      <Toaster
+        position="top-left"
+        reverseOrder={true}
+        containerStyle={{
+          top: 62,
+          left: "min(40px, max(4vw, 10px))"
+        }}
+      />
       <main>
         <Routes>
           {/* Home */}
@@ -102,3 +111,24 @@ export const routeAccount = "account"
 export const routeUser = "user"
 export const routeDev = "developer"
 export const routeTree = "tree"
+
+export const toastStyle_default = {
+  borderRadius: '5px',
+  background: 'var(--background-color-300)',
+  color: 'var(--foreground-color-300)',
+  fontWeight: '600',
+}
+export const toastStyle_error = {
+  borderRadius: '5px',
+  background: 'var(--form-color-invalid-opac)',
+  border: '2px solid var(--form-color-invalid)',
+  color: 'var(--foreground-color-300)',
+  fontWeight: '600',
+}
+export const toastStyle_success = {
+  borderRadius: '5px',
+  background: 'var(--form-color-valid-opac)',
+  border: '2px solid var(--form-color-valid)',
+  color: 'var(--foreground-color-300)',
+  fontWeight: '600',
+}

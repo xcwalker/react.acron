@@ -1,14 +1,48 @@
 import { forwardRef, useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import ReactMarkdown from "react-markdown";
-import { Link, useParams } from "react-router-dom";
-import { application, network, routeUser } from "../App";
-import { claimTree, getTreeInfo, getUserInfo, getUsersTrees, updateTree, useAuth } from "../Firebase";
+import { Link, Navigate, useParams, useSearchParams } from "react-router-dom";
+import { application, network, routeUser, url } from "../App";
+import { claimTree, deleteTree, getTreeInfo, getUserInfo, getUsersOwnTrees, getUsersTrees, searchTrees, updateTree, useAuth } from "../Firebase";
 
 import "../style/TreePages.css"
 import { Error403 } from "./ErrorPages";
 
 export function TreeSearch() {
+    const currentUser = useAuth();
+
+    const [loading, setLoading] = useState(false);
+    const [searchLoading, setSearchLoading] = useState(false);
+    const [searchResults, setSearchResults] = useState();
+    const [searchParams, setSearchParams] = useSearchParams();
+    const [searchQuery, setSearchQuery] = useState(searchParams.get("q"))
+    const [canClaim, setCanClaim] = useState(false)
+    const [claimed, setClaimed] = useState(false)
+    const [userTrees, setUserTrees] = useState()
+    const [userOwnTrees, setUserOwnTrees] = useState()
+
+    useEffect(() => {
+        if (!searchParams.get("q")) return
+        searchTrees(searchParams.get("q"), setSearchLoading)
+            .then(res => {
+                console.info(res)
+                setSearchResults(res)
+                if (res.some(e => e.id === searchParams.get("q"))) return
+                setCanClaim(true)
+            })
+    }, [searchParams])
+
+    useEffect(() => {
+        getUsersTrees(currentUser, setLoading)
+            .then(res => {
+                setUserTrees(res)
+            })
+        getUsersOwnTrees(currentUser, setLoading)
+            .then(res => {
+                setUserOwnTrees(res)
+            })
+    }, [currentUser])
+
     // Search Existing Trees
     // Using:
     // User Displayname && Firstname && Lastname
@@ -17,6 +51,103 @@ export function TreeSearch() {
     // Tree Statement
     // Tree Links
     // Show if TreeID is unclimaed
+
+    const handleSearch = (e) => {
+        e.preventDefault();
+
+        let updatedSearchParams = new URLSearchParams(searchParams.toString());
+        updatedSearchParams.set('q', searchQuery);
+        setSearchParams(updatedSearchParams.toString());
+    }
+
+    const handleSearchUpdate = (e) => {
+        setSearchQuery(e.target.value)
+    }
+
+    const handleTreeClaim = (e) => {
+        claimTree(searchParams.get("q"), currentUser)
+            .then(() => {
+                setClaimed(true)
+            })
+    }
+
+    return <>
+        <section className="treeSearch">
+            <div className="container">
+                <form className="header" onSubmit={handleSearch}>
+                    <div className="search-box">
+                        <input type="search" name="" id="" value={searchQuery} onChange={handleSearchUpdate} />
+                        <button type="submit" disabled={searchLoading || !searchQuery}>Search</button>
+                    </div>
+                </form>
+                <div className="results">
+                    {!searchResults && !canClaim && <>
+                        <span className="no-results">Let's Search For Something...</span>
+                    </>}
+                    {searchResults && <ul>
+                        {canClaim && <button className="search-item" onClick={handleTreeClaim}>
+                            <h3>Claim?</h3>
+                            <span>/{searchParams.get("q")}</span>
+                            <TreeSearchItemBackground />
+                            {claimed && <Navigate to={"./" + searchParams.get("q")} />}
+                        </button>}
+                        {searchResults.map((result, index) => {
+                            return <Link to={"./" + result.id} key={index} className="search-item">
+                                {result.data.originalUser === currentUser.uid && <>
+                                    <span className="material-symbols-outlined">person</span>
+                                    <span className="hover">Owner</span>
+                                </>}
+                                {result.data.originalUser !== currentUser.uid && result.data.authedUser.includes(currentUser.uid) && <>
+                                    <span className="material-symbols-outlined">group</span>
+                                    <span className="hover">Contributor</span>
+                                </>}
+                                <h3>{result.data.title}</h3>
+                                <span>/{result.id}</span>
+                                <TreeSearchItemBackground />
+                            </Link>
+                        })}
+                    </ul>}
+                </div>
+            </div>
+        </section>
+        {!loading && currentUser && <section className="treeUser">
+            <div className="container">
+                <div className="owner">
+                    <h2>Owner</h2>
+                    {userOwnTrees && <ul>
+                        {userOwnTrees.map((tree, index) => {
+                            return <Link to={"./" + tree.id} key={index} className="search-item">
+                                <h3>{tree.data.title}</h3>
+                                <span>/{tree.id}</span>
+                                <TreeSearchItemBackground />
+                            </Link>
+                        })}
+                    </ul>}
+                </div>
+                {userTrees && <div className="contributor">
+                    <h2>Contributor</h2>
+                    <ul>
+                        {userTrees.map((tree, index) => {
+                            return <Link to={"./" + tree.id} key={index} className="search-item">
+                                <h3>{tree.data.title}</h3>
+                                <span>/{tree.id}</span>
+                                <TreeSearchItemBackground />
+                            </Link>
+                        })}
+                    </ul>
+                </div>}
+            </div>
+        </section>}
+    </>
+}
+
+function TreeSearchItemBackground() {
+    return <div className="background">
+        <div className="item" />
+        <div className="item" />
+        <div className="item" />
+        <div className="item" />
+    </div>
 }
 
 export function TreeIndex() {
@@ -30,9 +161,8 @@ export function TreeIndex() {
 
     useEffect(() => {
         getTreeInfo(params.id).then(res => {
-            if (res !== undefined) {
-                setTree(res)
-            }
+            setTree(res)
+
             setLoading(false)
             setReload(0)
         })
@@ -40,16 +170,14 @@ export function TreeIndex() {
 
     useEffect(() => {
         if (!tree) return
-        if (tree.useOringinalUserLinks === true) {
+        if (tree.settings.useOringinalUserLinks === true) {
             getUserInfo(tree.originalUser).then(res => {
                 setUser(res)
                 setTreeLinks(res.links)
-                // console.info(res.links)
             })
         }
-        if (tree.useOringinalUserLinks !== true) {
+        if (tree.settings.useOringinalUserLinks !== true) {
             setTreeLinks(tree.links)
-            console.info(tree.links)
         }
     }, [tree])
 
@@ -57,10 +185,14 @@ export function TreeIndex() {
         claimTree(params.id, currentUser, setLoading, setReload)
     }
 
+    const handleDelete = (e) => {
+        e.preventDefault();
+        deleteTree(params.id, setReload)
+    }
+
     // useEffect(() => {
     //     if (!currentUser) return
     //     getUsersTrees(currentUser, setLoading).then(res => {
-    //         console.log(res)
     //     })
     // }, [currentUser])
 
@@ -75,7 +207,7 @@ export function TreeIndex() {
             {tree && <>
                 <Helmet>
                     <title>{tree.title + " | tree | " + application + " | " + network}</title>
-                    <meta name="description" content="{tree.title} | tree | A website for listing all of xcwalker's projects | {url}" />
+                    <meta name="description" content={tree.title + " | tree | A website for listing all of xcwalker's projects | " + url} />
                 </Helmet>
                 <section className="tree">
                     <div className="container">
@@ -92,17 +224,17 @@ export function TreeIndex() {
                                 {tree.description && <ReactMarkdown className="sidebar-item markdown">
                                     {tree.description}
                                 </ReactMarkdown>}
-                                {user && tree.showOriginalUser === true && <Link to={"/" + routeUser + "/" + tree.originalUser} className="sidebar-item user">
+                                {user && tree.settings.showOriginalUser === true && <Link to={"/" + routeUser + "/" + tree.originalUser} className="sidebar-item user">
                                     <span className="material-symbols-outlined open">open_in_new</span>
                                     <div className="avatar">
-                                        <img src={user.photoURL} alt="" />
+                                        <img src={user.images.photoURL} alt="" />
                                     </div>
                                     <div className="content">
-                                        <h2>{user.firstname} {user.lastname}</h2>
-                                        <span>{user.displayname}</span>
+                                        <h2>{user.about.firstname} {user.about.lastname}</h2>
+                                        <span>{user.about.displayname}</span>
                                     </div>
                                 </Link>}
-                                {tree.showAuthedUser && tree.useOringinalUserLinks !== true && <div className="sidebar-item">
+                                {tree.settings.showAuthedUser && tree.useOringinalUserLinks !== true && <div className="sidebar-item">
                                     <h3>Contributors</h3>
                                     <div className="authedUsers">
                                         {tree.authedUser.map((user, index) => {
@@ -110,11 +242,17 @@ export function TreeIndex() {
                                         })}
                                     </div>
                                 </div>}
+                                {currentUser && <>
+                                    {tree.authedUser.includes(currentUser.uid) && <div className="sidebar-item controls">
+                                        <Link to="./edit">Edit</Link>
+                                        {tree.originalUser === currentUser.uid && <button onClick={handleDelete}>Delete</button>}
+                                    </div>}
+                                </>}
                             </div>
                             <div className="mainbar">
                                 <div className="links">
                                     <ul>
-                                        {tree.useOringinalUserLinks === true && <>
+                                        {tree.settings.useOringinalUserLinks === true && <>
                                             {treeLinks && treeLinks.map((link, index) => {
                                                 if (link.includes("https://") || link.includes("http://")) {
                                                     return <a key={index} href={link}>
@@ -131,9 +269,8 @@ export function TreeIndex() {
                                                 return <></>
                                             })}
                                         </>}
-                                        {tree.useOringinalUserLinks !== true && <>
+                                        {tree.settings.useOringinalUserLinks !== true && <>
                                             {treeLinks && treeLinks.map((link, index) => {
-                                                console.log(link)
                                                 if (link.url.includes("https://") || link.url.includes("http://")) {
                                                     return <a key={index} href={link.url}>
                                                         {link.imageURL && <img className="favicon" src={link.imageURL} alt="" />}
@@ -146,9 +283,9 @@ export function TreeIndex() {
                                                 }
                                                 if (!link.url.includes("https://") && !link.url.includes("http://")) {
                                                     return <a key={index} href={"https://" + link.url}>
-                                                    {link.imageURL && <img className="favicon" src={link.imageURL} alt="" />}
-                                                    {!link.imageURL && <img className="favicon" src={"https://t3.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=" + link.url + "/post&size=50"} alt="" />}
-                                                    <div>
+                                                        {link.imageURL && <img className="favicon" src={link.imageURL} alt="" />}
+                                                        {!link.imageURL && <img className="favicon" src={"https://t3.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=" + link.url + "/post&size=50"} alt="" />}
+                                                        <div>
                                                             <span className="title">{link.title}</span>
                                                             <span className="url">{link.url}</span>
                                                         </div>
@@ -167,7 +304,7 @@ export function TreeIndex() {
             {!tree && <>
                 <Helmet>
                     <title>{params.id + "Unowned | tree | " + application + " | " + network}</title>
-                    <meta name="description" content="{params.id} | Unowned tree | A website for listing all of xcwalker's projects | {url}" />
+                    <meta name="description" content={params.id + " | Unowned tree | A website for listing all of xcwalker's projects | " + url} />
                 </Helmet>
                 <h1>unowned</h1>
                 <button onClick={claimTreeClick}>Claim</button>
@@ -192,7 +329,6 @@ export function TreeEdit() {
     const [showOriginalUser, setShowOriginalUser] = useState(true);
     const [showAuthedUser, setShowAuthedUser] = useState(true);
     const [showOringinalUserLinks, setShowOringinalUserLinks] = useState(true);
-    const [user, setUser] = useState();
     const [reload, setReload] = useState(0);
     const [loading, setLoading] = useState(true);
     const [canView, setCanView] = useState(false);
@@ -204,8 +340,8 @@ export function TreeEdit() {
                 setTitle(res.title)
                 setDescription(res.description)
                 setAuthedUser(res.authedUser)
-                setShowAuthedUser(res.showAuthedUser)
-                setShowOringinalUserLinks(res.useOringinalUserLinks)
+                setShowAuthedUser(res.settings.showAuthedUser)
+                setShowOringinalUserLinks(res.settings.useOringinalUserLinks)
                 if (!res.showOringinalUserLinks) { setTreeLinks(res.links) }
             }
             setLoading(false)
@@ -218,25 +354,17 @@ export function TreeEdit() {
         if (authedUser.includes(currentUser.uid)) { setCanView(true) }
     }, [currentUser, authedUser])
 
-    useEffect(() => {
-        if (!tree) return
-        if (tree.useOringinalUserLinks === true) {
-            getUserInfo(tree.originalUser).then(res => {
-                setUser(res)
-            })
-        }
-    }, [tree])
-
     function handleSubmit(e) {
         e.preventDefault()
         if (!tree || !currentUser) return
-        console.log(treeLinks)
         updateTree(params.id, currentUser, setLoading, setReload, tree.originalUser, {
             title: title,
             description: description,
-            useOringinalUserLinks: showOringinalUserLinks,
-            showOriginalUser: showOriginalUser,
-            showAuthedUser: showAuthedUser,
+            settings: {
+                useOringinalUserLinks: showOringinalUserLinks,
+                showOriginalUser: showOriginalUser,
+                showAuthedUser: showAuthedUser,
+            },
             authedUser: [],
             links: treeLinks
         })
@@ -266,7 +394,8 @@ export function TreeEdit() {
         e.preventDefault();
         const list = [...treeLinks];
         const obj = list[index]
-        list[index] = {url: e.target.value, title: obj.title, imageURL: obj.imageURL};
+        obj.url = e.target.value;
+        list[index] = obj;
         setTreeLinks(list);
     };
 
@@ -274,7 +403,8 @@ export function TreeEdit() {
         e.preventDefault();
         const list = [...treeLinks];
         const obj = list[index]
-        list[index] = {url: obj.url, title: e.target.value, imageURL: obj.imageURL};
+        obj.title = e.target.value;
+        list[index] = obj;
         setTreeLinks(list);
     };
 
@@ -282,7 +412,8 @@ export function TreeEdit() {
         e.preventDefault();
         const list = [...treeLinks];
         const obj = list[index]
-        list[index] = {url: obj.url, title: obj.title, imageURL: e.target.value};
+        obj.imageURL = e.target.value;
+        list[index] = obj;
         setTreeLinks(list);
     };
 
@@ -301,7 +432,8 @@ export function TreeEdit() {
         }
         if (showOringinalUserLinks) return
 
-        setTreeLinks([...treeLinks, { title: "", url: "", imageURL: "" }]);
+        if (!treeLinks) { setTreeLinks([""]) }
+        if (treeLinks) { setTreeLinks([...treeLinks, { title: "", url: "", imageURL: "" }]) };
     };
 
 
@@ -319,7 +451,7 @@ export function TreeEdit() {
                                 <div className="sidebar-item info">
                                     <input type="text" value={title} onChange={handleTitleChange}></input>
                                 </div>
-                                {tree.description && <textarea className="sidebar-item markdown" value={description} onChange={handleDescriptionChange} />}
+                                <textarea className="sidebar-item markdown" value={description} onChange={handleDescriptionChange} />
                                 <div className="sidebar-item">
                                     <label htmlFor="showAuthedUser">showAuthedUser</label>
                                     <input type="checkbox" name="showAuthedUser" id="showAuthedUser" checked={showAuthedUser} onChange={handleShowAuthedUserChange} />
@@ -338,20 +470,19 @@ export function TreeEdit() {
                                         {treeLinks && <>
                                             {treeLinks.map((link, index) => (
                                                 <li key={index}>
-                                                        {console.log(link)}
-                                                        <label htmlFor={"link-title" + index}>Title</label>
-                                                        <input type="text" name={"link-title" + index} id={"link-title" + index} value={link.title} onChange={(e) => handleLinkTitleChange(e, index)} required autoComplete="off" />
-                                                        <label htmlFor={"link" + index}>URL</label>
-                                                        <div className="content-2">
-                                                            <input type="url" name={"link" + index} id={"link" + index} value={link.url} onChange={(e) => handleLinkChange(e, index)} required autoComplete="off" />
-                                                            <button onClick={() => handleLinkRemove(index)}>Remove</button>
-                                                        </div>
-                                                        <label htmlFor={"link-imageURL" + index}>ImageURL</label>
-                                                        <input type="url" name={"link-imageURL" + index} id={"link-ImageURL" + index} value={link.imageURL} onChange={(e) => handleLinkImageUrlChange(e, index)} required autoComplete="off" />
+                                                    <label htmlFor={"link-title" + index}>Title</label>
+                                                    <input type="text" name={"link-title" + index} id={"link-title" + index} value={link.title} onChange={(e) => handleLinkTitleChange(e, index)} required autoComplete="off" />
+                                                    <label htmlFor={"link" + index}>URL</label>
+                                                    <div className="content-2">
+                                                        <input type="url" name={"link" + index} id={"link" + index} value={link.url} onChange={(e) => handleLinkChange(e, index)} required autoComplete="off" />
+                                                        <button onClick={() => handleLinkRemove(index)}>Remove</button>
+                                                    </div>
+                                                    <label htmlFor={"link-imageURL" + index}>ImageURL</label>
+                                                    <input type="url" name={"link-imageURL" + index} id={"link-ImageURL" + index} value={link.imageURL} onChange={(e) => handleLinkImageUrlChange(e, index)} required autoComplete="off" />
                                                 </li>
                                             ))}
-                                            <button onClick={handleLinkAdd}>Add</button>
                                         </>}
+                                        <button onClick={handleLinkAdd}>Add</button>
                                     </ul>
                                 </div>
                             </div>
@@ -374,7 +505,6 @@ const AuthedUser = forwardRef(({ userID }, ref) => {
             if (res === undefined) return
             setUser(res)
             setLoading(false)
-            // console.info(res)
         })
     }, [userID])
 
@@ -382,11 +512,11 @@ const AuthedUser = forwardRef(({ userID }, ref) => {
         {!loading && <Link to={"/" + routeUser + "/" + userID}>
             <span className="material-symbols-outlined open">open_in_new</span>
             <div className="avatar">
-                <img src={user.photoURL} alt="" />
+                <img src={user.images.photoURL} alt="" />
             </div>
             <div className="content">
-                <span className="type-1">{user.firstname}</span>
-                <span className="type-2">{user.displayname}</span>
+                <span className="type-1">{user.about.firstname}</span>
+                <span className="type-2">{user.about.displayname}</span>
             </div>
         </Link>}
     </>

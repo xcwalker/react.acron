@@ -43,14 +43,19 @@ section.user .container .main {
     /* sizing */
     padding: min(calc(var(--padding) * 4), max(4vw, var(--padding)));
 
-    /* grid */
-    display: grid;
-    grid-template-columns: min(350px, 100%) 1fr;
+    /* flex */
+    display: flex;
+    flex-wrap: wrap;
     gap: var(--gap);
 }
 
 /*** sidebar ***/
-section.user .container .main .sidebar {
+section.user .container .main .sidebar,
+section.user .container .main .sidebar > form {
+    /* sizing */
+    max-width: 350px;
+    width: 100%;
+
     /* flex */
     display: flex;
     flex-direction: column;
@@ -153,7 +158,79 @@ section.user .container .main .sidebar .sidebar-item.markdown *:not(ul) {
     padding: 0;
 }
 
-section.user .container .main .sidebar .sidebar-item:not(.markdown, .links) ul {
+section.user .container .main .sidebar .sidebar-item.roles {
+    /* transition */
+    transition: var(--default-transition-color), var(--default-transition-background_color);
+}
+
+section.user .container .main .sidebar .sidebar-item.roles h3 {
+    /* spacing */
+    padding: 0;
+    margin: 0;
+
+    /* transition */
+    transition: var(--default-transition-color), var(--default-transition-background_color);
+}
+
+section.user .container .main .sidebar .sidebar-item.roles ul {
+    /* variables */
+    --role-size: 5px;
+
+    /* list */
+    list-style: none;
+
+    /* spacing */
+    padding: 0;
+    margin: 0;
+
+    /* flex */
+    display: flex;
+    gap: var(--role-size);
+}
+
+section.user .container .main .sidebar .sidebar-item.roles ul a {
+    /* sizing */
+    padding: var(--role-size);
+    width: fit-content;
+
+    /* styling */
+    background: var(--background-color-300);
+    border-radius: var(--role-size);
+    color: var(--foreground-color-300);
+
+    /* text */
+    text-transform: capitalize;
+    font-weight: 600;
+    font-size: 16px;
+    text-decoration: none;
+
+    /* transition */
+    transition: var(--default-transition-color), var(--default-transition-background_color);
+}
+
+section.user .container .main .sidebar .sidebar-item.roles ul a:hover {
+    /* text */
+    text-decoration: underline;
+}
+
+section.user .container .main .sidebar .sidebar-item.roles ul a:focus,
+section.user .container .main .sidebar .sidebar-item.roles ul a:focus-visible {
+    /* outline */
+    outline-offset: 2px;
+    outline: 2px solid currentColor;
+}
+
+section.user .container .main .sidebar .sidebar-item.roles ul a:active {
+    /* text */
+    text-decoration: none;
+
+    /* styling */
+    outline: none !important;
+    background: var(--background-color-200);
+    color: var(--foreground-color-200);
+}
+
+section.user .container .main .sidebar .sidebar-item:not(.markdown, .links, .roles) ul {
     /* spacing */
     margin: 0;
     padding: 0;
@@ -167,7 +244,7 @@ section.user .container .main .sidebar .sidebar-item:not(.markdown, .links) ul {
     gap: var(--gap);
 }
 
-section.user .container .main .sidebar .sidebar-item:not(.markdown, .links) ul li {
+section.user .container .main .sidebar .sidebar-item:not(.markdown, .links, .roles) ul li {
     /* position */
     position: relative;
 
@@ -241,7 +318,6 @@ section.user .container .main .sidebar .sidebar-item ul li:hover span:not(.mater
     scale: 1 0;
 }
 
-
 section.user .container .main .sidebar .sidebar-item.links ul {
     /* sizing */
     --size: 36.25px;
@@ -309,6 +385,27 @@ section.user .container .main .sidebar .sidebar-item.links ul li a:active {
     color: var(--form-color-selector);
 }
 
+section.user .container .main .sidebar .sidebar-item.trees {
+    /* flex */
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--gap) / 2);
+}
+
+section.user .container .main .sidebar .sidebar-item.trees a {
+    /* text */
+    text-decoration: none;
+    font-weight: 600;
+
+    /* styling */
+    color: currentColor;
+}
+
+section.user .container .main .sidebar .sidebar-item.trees a:hover {
+    /* text */
+    text-decoration: underline;
+}
+
 section.user .container .main .sidebar .sidebar-item .avatarPreview {
     /* sizing */
     width: 100%;
@@ -325,7 +422,7 @@ section.user .container .main .sidebar .sidebar-item.controls {
 
     /* grid */
     display: grid;
-    grid-template-columns: min(calc((var(--column-width) - var(--gap)) / 2), 100%) min(calc((var(--column-width) - 10px) / 2), 100%);
+    grid-template-columns: 1fr 1fr;
     gap: 10px;
 }
 
@@ -444,4 +541,18 @@ section.user .container .main .sidebar .sidebar-item form.type-2 button {
 }
 
 /*** mainbar ***/
-section.user .container .main .mainbar {}
+section.user .container .main .mainbar {
+    /* sizing */
+    width: 100%;
+    max-width: calc(100% - 350px - var(--gap));
+    min-width: min(500px, 100%);
+}
+
+/*** smaller screens ***/
+@media (max-width: 771px) {    
+    section.user .container .main .mainbar,
+    section.user .container .main .sidebar {
+        width: 100%;
+        max-width: 100%;
+    }
+}

@@ -2,8 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import { Helmet } from "react-helmet";
 import { Link, Navigate, useParams } from "react-router-dom";
 import ReactMarkdown from 'react-markdown'
-import { application, network, routeAccount, routeUser } from "../App";
-import { getUserInfo, logout, profileInitial, updateDisplayName, updateFirstName, updateGender, updateLastName, updateLinks, updateLocation, updatePronouns, updateStatement, uploadProfileBackgroundPicture, uploadProfilePicture, useAuth } from "../Firebase";
+import { application, network, routeAccount, routeUser, routeDev, routeTree, url } from "../App";
+import { getUserInfo, logout, profileInitial, updateUserInfo, uploadProfileBackgroundPicture, uploadProfilePicture, useAuth } from "../Firebase";
 
 import "../style/UserPages.css"
 import { Error403, Error404 } from "./ErrorPages";
@@ -13,8 +13,8 @@ export function UserIndex() {
     const [loggedIn, setLoggedIn] = useState()
 
     useEffect(() => {
-        if (currentUser && currentUser !== null) {setLoggedIn(1)}
-        if (currentUser === null) {setLoggedIn(0)}
+        if (currentUser && currentUser !== null) { setLoggedIn(1) }
+        if (currentUser === null) { setLoggedIn(0) }
     }, [currentUser])
 
     return <>
@@ -27,14 +27,14 @@ export function UserIndex() {
     </>
 }
 
-export function UserIndexProfile() {    
+export function UserIndexProfile() {
     const currentUser = useAuth(null);
     const [loggedIn, setLoggedIn] = useState()
 
     useEffect(() => {
         console.log(currentUser)
-        if (currentUser && currentUser !== null) {setLoggedIn(1)}
-        if (currentUser === null) {setLoggedIn(0)}
+        if (currentUser && currentUser !== null) { setLoggedIn(1) }
+        if (currentUser === null) { setLoggedIn(0) }
     }, [currentUser])
 
     return <>
@@ -51,6 +51,7 @@ export function UserProfile() {
     const params = useParams();
     const currentUser = useAuth();
     const [user, setUser] = useState();
+    const [currentUserDetails, setCurrentUserDetails] = useState({});
     const [reload, setReload] = useState(0);
     const [date, setDate] = useState();
     const [error, setError] = useState();
@@ -59,7 +60,7 @@ export function UserProfile() {
         getUserInfo(params.id).then(res => {
             if (res !== undefined) {
                 setUser(res);
-                setDate(new Date(Number(res.joinedat)))
+                setDate(new Date(Number(res.info.joinedat)))
             }
             if (res === undefined) {
                 setReload(1)
@@ -78,6 +79,13 @@ export function UserProfile() {
         }
     }, [currentUser, params.id, reload])
 
+    useEffect(() => {
+        if (!currentUser) return
+        getUserInfo(currentUser.uid).then(res => {
+            setCurrentUserDetails(res)
+        })
+    }, [currentUser])
+
     async function handleSignout() {
         try {
             await logout();
@@ -89,55 +97,65 @@ export function UserProfile() {
     return <>
         {user && <>
             <Helmet>
-                <title>{user.displayname + " | user | " + application + " | " + network}</title>
-                <meta name="description" content="A website for listing all of xcwalker's projects | {url}" />
+                <title>{user.about.displayname + " | user | " + application + " | " + network}</title>
+                <meta name="description" content={user.about.displayname + " on " + application + " | A website for listing all of xcwalker's projects | " + url} />
             </Helmet>
             <section className="user">
                 <div className="container">
                     <div className="header">
-                        <img className="background" src={user.photoBackgroundURL} alt=""></img>
+                        {user.images.photoBackgroundURL.split(".").pop().split("?")[0] === "webm" && <video className="background" src={user.images.photoBackgroundURL} alt="" autoPlay muted loop ></video>}
+                        {user.images.photoBackgroundURL.split(".").pop().split("?")[0] !== "webm" && <img className="background" src={user.images.photoBackgroundURL} alt=""></img>}
 
-                        <div className="socials"></div>
                     </div>
                     <div className="main">
                         <div className="sidebar">
                             <div className="sidebar-item user">
                                 <div className="avatar">
-                                    <img src={user.photoURL} alt="" />
+                                    <img src={user.images.photoURL} alt="" />
                                 </div>
                                 <div className="content">
-                                    <h2>{user.firstname} {user.lastname}</h2>
-                                    <span>{user.displayname}</span>
+                                    <h2>{user.about.firstname} {user.about.lastname}</h2>
+                                    <span>{user.about.displayname}</span>
                                 </div>
                             </div>
-                            {user.statement && <ReactMarkdown className="sidebar-item markdown">
-                                {user.statement}
+                            {(user.organisation?.name === currentUserDetails.organisation?.name || user.settings?.showOrganisation) && user.organisation?.name && user.organisation?.roles && <div className="sidebar-item roles">
+                                <h3>{user.organisation.name}</h3>
+                                <ul>
+                                    {user.organisation.roles.map((role, index) => {
+                                        return <Link to={"/" + routeDev + "/" + params.id} key={index} >
+                                            {role}
+                                        </Link>
+                                    })}
+                                </ul>
+                            </div>}
+                            {user.about.statement && <ReactMarkdown className="sidebar-item markdown">
+                                {user.about.statement}
                             </ReactMarkdown>}
                             <div className="sidebar-item">
                                 <ul>
-                                    {user.gender && <li>
-                                        {user.gender && (user.gender !== "male" && user.gender !== "female" && user.gender !== "transgender") && <>
+                                    {user.info.gender && <li>
+                                        {user.info.gender && (user.info.gender !== "male" && user.info.gender !== "female" && user.info.gender !== "transgender") && <>
                                             <span className="material-symbols-outlined">wc</span>
-                                            <span>{user.gender}</span>
+                                            <span>{user.info.gender}</span>
                                         </>}
-                                        {(user.gender === "male" || user.gender === "female" || user.gender === "transgender") && <>
-                                            <span className="material-symbols-outlined">{user.gender}</span>
-                                            <span>{user.gender}</span>
+                                        {(user.info.gender === "male" || user.info.gender === "female" || user.info.gender === "transgender") && <>
+                                            <span className="material-symbols-outlined">{user.info.gender}</span>
+                                            <span>{user.info.gender}</span>
                                         </>}
                                         <span className="identifier">Gender</span>
                                     </li>}
-                                    {user.pronouns && <li>
+                                    {user.info.pronouns && <li>
                                         <svg width="24" height="24" viewBox="0 0 40 39" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <circle cx="12" cy="26.2803" r="10" stroke="currentColor" strokeWidth="4" />
                                             <circle cx="28" cy="26.2803" r="10" stroke="currentColor" strokeWidth="4" />
                                             <circle cx="20" cy="12.2002" r="10" stroke="currentColor" strokeWidth="4" />
                                         </svg>
-                                        <span>{user.pronouns}</span>
+                                        <span>{user.info.pronouns}</span>
                                         <span className="identifier">Pronouns</span>
                                     </li>}
-                                    {user.location && <li>
+                                    {user.info.location && <li>
                                         <span className="material-symbols-outlined">map</span>
-                                        <span>{user.location}</span>
+                                        <span>{user.info.location}</span>
                                         <span className="identifier">Location</span>
                                     </li>}
                                     <li>
@@ -148,7 +166,7 @@ export function UserProfile() {
                                     </li>
                                 </ul>
                             </div>
-                            {user.links && <div className="sidebar-item links">
+                            {user.links && (currentUser?.uid === params.id || user.settings.showUserLinks) && <div className="sidebar-item links">
                                 <ul>
                                     {user.links.map((link, index) => {
                                         if (link.includes("https://") || link.includes("http://")) {
@@ -168,6 +186,11 @@ export function UserProfile() {
                                         return <></>
                                     })}
                                 </ul>
+                            </div>}
+                            {user.trees && user.settings.showUserTrees === true && <div className="sidebar-item trees">
+                                {user.trees.map((tree, index) => {
+                                    return <Link key={index} to={"/" + routeTree + "/" + tree}>/{tree}</Link>
+                                })}
                             </div>}
                             {currentUser && <>
                                 {currentUser.uid === params.id && <div className="sidebar-item controls">
@@ -190,12 +213,15 @@ export function UserProfileEdit() {
     const currentUser = useAuth();
     const [user, setUser] = useState({});
     const [loading, setLoading] = useState();
-    const [linkList, setLinkList] = useState([""]);
+    const [linkList, setLinkList] = useState([]);
 
     const [firstname, setFirstname] = useState("");
     const [lastname, setLastname] = useState("");
     const [displayname, setDisplayname] = useState("");
     const [statement, setStatement] = useState("");
+    const [gender, setGender] = useState("");
+    const [pronouns, setPronouns] = useState("");
+    const [location, setLocation] = useState("");
     const [profilePicture, setProfilePicture] = useState();
     const [profilePictureFile, setProfilePictureFile] = useState();
     const [backgroundPicture, setBackgroundPicture] = useState();
@@ -204,9 +230,6 @@ export function UserProfileEdit() {
     const displayNameRef = useRef();
     const firstNameRef = useRef();
     const lastNameRef = useRef();
-    const genderRef = useRef();
-    const pronounsRef = useRef();
-    const locationRef = useRef();
     const statementRef = useRef();
 
     useEffect(() => {
@@ -214,71 +237,54 @@ export function UserProfileEdit() {
             if (res !== undefined) {
                 setUser(res);
 
-                setFirstname(res.firstname)
-                setLastname(res.lastname)
-                setDisplayname(res.displayname)
-                setStatement(res.statement)
+                setFirstname(res.about.firstname)
+                setLastname(res.about.lastname)
+                setDisplayname(res.about.displayname)
+                setStatement(res.about.statement)
+                setGender(res.info.gender)
+                setPronouns(res.info.pronouns)
+                setLocation(res.info.location)
                 setLinkList(res.links)
-                setProfilePicture(res.photoURL)
-                setBackgroundPicture(res.photoBackgroundURL)
+                setProfilePicture(res.images.photoURL)
+                setBackgroundPicture(res.images.photoBackgroundURL)
             }
         })
     }, [params.id])
-
-    function handleFirstNClick(e) {
-        e.preventDefault();
-        updateFirstName(firstname, currentUser, setLoading)
-    }
 
     const handleFirstNChange = (e) => {
         e.preventDefault();
         setFirstname(firstNameRef.current.value);
     };
 
-    function handleLastNClick(e) {
-        e.preventDefault();
-        updateLastName(lastname, currentUser, setLoading)
-    }
-
     const handleLastNChange = (e) => {
         e.preventDefault();
         setLastname(lastNameRef.current.value);
     };
-
-    function handleDisplayNClick(e) {
-        e.preventDefault();
-        updateDisplayName(displayname, currentUser, setLoading)
-    }
 
     const handleDisplayNChange = (e) => {
         e.preventDefault();
         setDisplayname(displayNameRef.current.value);
     };
 
-    function handleGenClick(e) {
-        e.preventDefault();
-        updateGender(genderRef.current.value, currentUser, setLoading)
-    }
-
-    function handleProClick(e) {
-        e.preventDefault();
-        updatePronouns(pronounsRef.current.value, currentUser, setLoading)
-    }
-
-    function handleLocClick(e) {
-        e.preventDefault();
-        updateLocation(locationRef.current.value, currentUser, setLoading)
-    }
-
     const handleStectmentChange = (e) => {
         e.preventDefault();
         setStatement(statementRef.current.value);
     };
 
-    function handleStatementClick(e) {
+    const handleGenderChange = (e) => {
         e.preventDefault();
-        updateStatement(statement, currentUser, setLoading)
-    }
+        setGender(e.target.value);
+    };
+
+    const handlePronounsChange = (e) => {
+        e.preventDefault();
+        setPronouns(e.target.value);
+    };
+
+    const handleLocationChange = (e) => {
+        e.preventDefault();
+        setLocation(e.target.value);
+    };
 
     const handleLinkChange = (e, index) => {
         e.preventDefault();
@@ -296,13 +302,9 @@ export function UserProfileEdit() {
 
     const handleLinkAdd = (e) => {
         e.preventDefault();
-        setLinkList([...linkList, ""]);
+        if (!linkList) { setLinkList([""]) };
+        if (linkList) { setLinkList([...linkList, ""]) };
     };
-
-    function handleLinksClick(e) {
-        e.preventDefault();
-        updateLinks(linkList, currentUser, setLoading)
-    }
 
     const handleProfilePictureChange = (e) => {
         e.preventDefault();
@@ -346,18 +348,36 @@ export function UserProfileEdit() {
         return () => URL.revokeObjectURL(objectUrl)
     }, [backgroundPictureFile])
 
+    function handleSubmit(e) {
+        e.preventDefault();
+        updateUserInfo({
+            firstname: firstname,
+            lastname: lastname,
+            displayname: displayname,
+            statement: statement,
+            info: {
+                gender: gender,
+                pronouns: pronouns,
+                location: location,
+                joinedat: user.info.joinedat,
+            },
+            links: linkList
+        }, currentUser, setLoading)
+    }
+
     return <>
         {currentUser && <>
             {params.id !== currentUser.uid && <Error403 />}
             {user && params.id === currentUser.uid && <>
                 <Helmet>
-                    <title>{user.displayname + " | user | " + application + " | " + network}</title>
-                    <meta name="description" content="A website for listing all of xcwalker's projects | {url}" />
+                    <title>{user.about?.displayname + " | user | " + application + " | " + network}</title>
+                    <meta name="description" content={"A website for listing all of xcwalker's projects | " + url} />
                 </Helmet>
                 <section className="user">
                     <div className="container">
                         <div className="header">
-                            <img className="background" src={backgroundPicture} alt=""></img>
+                            {backgroundPicture?.split(".").pop().split("?")[0] === "webm" && <video className="background" src={backgroundPicture} alt="" autoPlay muted loop ></video>}
+                            {backgroundPicture?.split(".").pop().split("?")[0] !== "webm" && <img className="background" src={backgroundPicture} alt=""></img>}
                         </div>
                         <div className="main">
                             <div className="sidebar">
@@ -376,84 +396,81 @@ export function UserProfileEdit() {
                                         <button type="submit" disabled={!backgroundPictureFile || loading}>Update</button>
                                     </form>
                                 </div>
-                                <div className="sidebar-item">
-                                    <label htmlFor="firstname">Firstname</label>
-                                    <form action="" onSubmit={handleFirstNClick}>
-                                        <input type="text" name="firstname" ref={firstNameRef} id="firstname" value={firstname} onChange={handleFirstNChange} autoComplete="off" />
-                                        <button type="submit" disabled={firstname.length === 0 || loading}>Update</button>
-                                    </form>
-                                    <label htmlFor="lastname">Lastname</label>
-                                    <form action="" onSubmit={handleLastNClick}>
-                                        <input type="text" name="lastname" ref={lastNameRef} id="lastname" value={lastname} onChange={handleLastNChange} autoComplete="off" />
-                                        <button type="submit" disabled={lastname.length === 0 || loading}>Update</button>
-                                    </form>
-                                    <label htmlFor="displayname">Displayname</label>
-                                    <form action="" onSubmit={handleDisplayNClick}>
-                                        <input type="text" name="displayname" ref={displayNameRef} id="displayname" value={displayname} onChange={handleDisplayNChange} autoComplete="off" />
-                                        <button type="submit" disabled={displayname.length === 0 || loading}>Update</button>
-                                    </form>
-                                </div>
-                                <div className="sidebar-item">
-                                    <form action="" className="type-2" onSubmit={handleStatementClick}>
-                                        <textarea name="statement" id="statement" ref={statementRef} cols="30" rows="10" value={statement} onChange={handleStectmentChange} autoComplete="off"></textarea>
-                                        <button type="submit" disabled={loading}>Update</button>
-                                    </form>
-                                </div>
-                                <div className="sidebar-item">
-                                    <ul>
-                                        <li>
-                                            <span className="material-symbols-outlined">wc</span>
-                                            <div className="content">
-                                                <label htmlFor="gender">Gender</label>
-                                                <form action="" onSubmit={handleGenClick}>
-                                                    <input type="text" name="gender" ref={genderRef} id="gender" placeholder={user.gender} autoComplete="off" />
-                                                    <button type="submit">Update</button>
-                                                </form>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <svg width="24" height="24" viewBox="0 0 40 39" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <circle cx="12" cy="26.2803" r="10" stroke="currentColor" strokeWidth="4" />
-                                                <circle cx="28" cy="26.2803" r="10" stroke="currentColor" strokeWidth="4" />
-                                                <circle cx="20" cy="12.2002" r="10" stroke="currentColor" strokeWidth="4" />
-                                            </svg>
-                                            <div className="content">
-                                                <label htmlFor="pronouns">Pronouns</label>
-                                                <form action="" onSubmit={handleProClick}>
-                                                    <input type="text" name="pronouns" ref={pronounsRef} id="pronouns" placeholder={user.pronouns} autoComplete="off" />
-                                                    <button type="submit">Update</button>
-                                                </form>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <span className="material-symbols-outlined">map</span>
-                                            <div className="content">
-                                                <label htmlFor="location">Location</label>
-                                                <form action="" onSubmit={handleLocClick}>
-                                                    <input type="text" name="location" ref={locationRef} id="location" placeholder={user.location} autoComplete="off" />
-                                                    <button type="submit">Update</button>
-                                                </form>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <form className="sidebar-item" onSubmit={handleLinksClick}>
-                                    <ul>
-                                        {linkList.map((link, index) => (
-                                            <li key={index}>
-
-                                                <label htmlFor={"link" + index}>Link</label>
-                                                <div className="content-2">
-                                                    <input type="url" name={"link" + index} id={"link" + index} value={link} onChange={(e) => handleLinkChange(e, index)} required autoComplete="off" />
-                                                    <button onClick={() => handleLinkRemove(index)}>Remove</button>
+                                <form action="" onSubmit={handleSubmit}>
+                                    <div className="sidebar-item">
+                                        <label htmlFor="firstname">Firstname</label>
+                                        <div>
+                                            <input type="text" name="firstname" ref={firstNameRef} id="firstname" value={firstname} onChange={handleFirstNChange} autoComplete="off" required />
+                                        </div>
+                                        <label htmlFor="lastname">Lastname</label>
+                                        <div>
+                                            <input type="text" name="lastname" ref={lastNameRef} id="lastname" value={lastname} onChange={handleLastNChange} autoComplete="off" required />
+                                        </div>
+                                        <label htmlFor="displayname">Displayname</label>
+                                        <div>
+                                            <input type="text" name="displayname" ref={displayNameRef} id="displayname" value={displayname} onChange={handleDisplayNChange} autoComplete="off" required />
+                                        </div>
+                                    </div>
+                                    <div className="sidebar-item">
+                                        <div>
+                                            <textarea name="statement" id="statement" ref={statementRef} cols="30" rows="10" value={statement} onChange={handleStectmentChange} autoComplete="off"></textarea>
+                                        </div>
+                                    </div>
+                                    <div className="sidebar-item">
+                                        <ul>
+                                            <li>
+                                                <span className="material-symbols-outlined">wc</span>
+                                                <div className="content">
+                                                    <label htmlFor="gender">Gender</label>
+                                                    <div>
+                                                        <input type="text" name="gender" onChange={handleGenderChange} id="gender" value={gender} autoComplete="off" />
+                                                    </div>
                                                 </div>
                                             </li>
-                                        ))}
-                                        <div className="buttons">
-                                            <button onClick={handleLinkAdd}>Add</button>
-                                            <button type="submit">Submit</button>
-                                        </div>
-                                    </ul>
+                                            <li>
+                                                <svg width="24" height="24" viewBox="0 0 40 39" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <circle cx="12" cy="26.2803" r="10" stroke="currentColor" strokeWidth="4" />
+                                                    <circle cx="28" cy="26.2803" r="10" stroke="currentColor" strokeWidth="4" />
+                                                    <circle cx="20" cy="12.2002" r="10" stroke="currentColor" strokeWidth="4" />
+                                                </svg>
+                                                <div className="content">
+                                                    <label htmlFor="pronouns">Pronouns</label>
+                                                    <div>
+                                                        <input type="text" name="pronouns" onChange={handlePronounsChange} id="pronouns" value={pronouns} autoComplete="off" />
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <span className="material-symbols-outlined">map</span>
+                                                <div className="content">
+                                                    <label htmlFor="location">Location</label>
+                                                    <div>
+                                                        <input type="text" name="location" onChange={handleLocationChange} id="location" value={location} autoComplete="off" />
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div className="sidebar-item">
+                                        <ul>
+                                            {linkList && linkList.map((link, index) => (
+                                                <li key={index}>
+
+                                                    <label htmlFor={"link" + index}>Link</label>
+                                                    <div className="content-2">
+                                                        <input type="url" name={"link" + index} id={"link" + index} value={link} onChange={(e) => handleLinkChange(e, index)} required autoComplete="off" />
+                                                        <button onClick={() => handleLinkRemove(index)}>Remove</button>
+                                                    </div>
+                                                </li>
+                                            ))}
+                                            <div className="buttons">
+                                                <button onClick={handleLinkAdd}>Add</button>
+                                            </div>
+                                        </ul>
+                                    </div>
+                                    <div className="sidebar-item">
+                                        <button disabled={loading} type="submit">Submit</button>
+                                    </div>
                                 </form>
                             </div>
                             <div className="mainbar"></div>
