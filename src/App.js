@@ -20,7 +20,7 @@ import { Homepage } from './pages/Homepage';
 import { Error404 } from './pages/ErrorPages';
 import { AccountIndex, AccountForgot, AccountLogin, AccountRegister, AccountEdit } from "./pages/AccountPages";
 import { UserIndex, UserIndexProfile, UserProfile, UserProfileEdit } from "./pages/UserPages";
-import { TreeSearch, TreeIndex, TreeEdit, TreeDashboard } from "./pages/TreePages";
+import { TreeSearch, TreeIndex, TreeEdit, TreeDashboard, TreeForward } from "./pages/TreePages";
 import { Toaster } from "react-hot-toast";
 import { Feed, FeedNewPost, FeedViewPost, FeedViewPostComment } from "./pages/FeedPages";
 import { Sidebar } from "./components/Sidebar";
@@ -57,7 +57,7 @@ function App() {
           </Route>
           {/* Trees */}
           <Route path={routeTree}>
-            <Route index element={<TreeSearch />} />
+            <Route index element={<TreeForward />} />
             <Route path='dashboard' element={<TreeDashboard />} />
             <Route path=':id'>
               <Route index element={<TreeIndex />} />
@@ -81,6 +81,8 @@ function App() {
               <Route path=':commentID' element={<FeedViewPostComment />} />
             </Route>
           </Route>
+          {/* search */}
+          <Route path={routeSearch} />
           {/* 404 */}
           <Route path='*' element={<Error404 />} />
         </Routes>
@@ -119,6 +121,7 @@ export const routeDev = "developer"
 export const routeTree = "tree"
 export const routePost = "feed"
 export const routePostNew = "post"
+export const routeSearch = "search"
 
 export const toastStyle_default = {
   borderRadius: '5px',

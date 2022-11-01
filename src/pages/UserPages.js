@@ -3,7 +3,7 @@ import { Helmet } from "react-helmet";
 import { Link, Navigate, useParams } from "react-router-dom";
 import ReactMarkdown from 'react-markdown'
 import { application, network, routeAccount, routeUser, routeDev, routeTree, url } from "../App";
-import { getUserInfo, logout, profileInitial, updateUserInfo, uploadProfileBackgroundPicture, uploadProfilePicture, useAuth } from "../Firebase";
+import { getUserInfo, logout, profileInitial, updateUserInfo, uploadBackgroundPicture, uploadHeaderBackgroundPicture, uploadProfileBackgroundPicture, uploadProfilePicture, useAuth } from "../Firebase";
 
 import "../style/UserPages.css"
 import { Error403, Error404 } from "./ErrorPages";
@@ -103,9 +103,8 @@ export function UserProfile() {
             <section className="user">
                 <div className="container">
                     <div className="header">
-                        {user.images.photoBackgroundURL.split(".").pop().split("?")[0] === "webm" && <video className="background" src={user.images.photoBackgroundURL} alt="" autoPlay muted loop ></video>}
-                        {user.images.photoBackgroundURL.split(".").pop().split("?")[0] !== "webm" && <img className="background" src={user.images.photoBackgroundURL} alt=""></img>}
-
+                        {user.images.headerURL?.split(".").pop().split("?")[0] === "webm" && <video className="background" src={user.images.headerURL} alt="" autoPlay muted loop ></video>}
+                        {user.images.headerURL?.split(".").pop().split("?")[0] !== "webm" && <img className="background" src={user.images.headerURL} alt=""></img>}
                     </div>
                     <div className="main">
                         <div className="sidebar">
@@ -201,6 +200,8 @@ export function UserProfile() {
                         </div>
                         <div className="mainbar"></div>
                     </div>
+                    {user.images.backgroundURL?.split(".").pop().split("?")[0] === "webm" && <video className="background" src={user.images.backgroundURL} alt="" autoPlay muted loop ></video>}
+                    {user.images.backgroundURL?.split(".").pop().split("?")[0] !== "webm" && <img className="background" src={user.images.backgroundURL} alt=""></img>}
                 </div>
             </section>
         </>}
@@ -226,6 +227,8 @@ export function UserProfileEdit() {
     const [profilePictureFile, setProfilePictureFile] = useState();
     const [backgroundPicture, setBackgroundPicture] = useState();
     const [backgroundPictureFile, setBackgroundPictureFile] = useState();
+    const [headerPicture, setHeaderPicture] = useState();
+    const [headerPictureFile, setHeaderPictureFile] = useState();
 
     const displayNameRef = useRef();
     const firstNameRef = useRef();
@@ -246,7 +249,8 @@ export function UserProfileEdit() {
                 setLocation(res.info.location)
                 setLinkList(res.links)
                 setProfilePicture(res.images.photoURL)
-                setBackgroundPicture(res.images.photoBackgroundURL)
+                setHeaderPicture(res.images.headerURL)
+                setBackgroundPicture(res.images.backgroundURL)
             }
         })
     }, [params.id])
@@ -323,7 +327,17 @@ export function UserProfileEdit() {
 
     function handleBackgroundPictureClick(e) {
         e.preventDefault();
-        uploadProfileBackgroundPicture(backgroundPictureFile, currentUser, setLoading)
+        uploadBackgroundPicture(backgroundPictureFile, currentUser, setLoading)
+    }
+
+    const handleHeaderPictureChange = (e) => {
+        e.preventDefault();
+        setHeaderPictureFile(e.target.files[0])
+    }
+
+    function handleHeaderPictureClick(e) {
+        e.preventDefault();
+        uploadHeaderBackgroundPicture(headerPictureFile, currentUser, setLoading)
     }
 
     useEffect(() => {
@@ -347,6 +361,17 @@ export function UserProfileEdit() {
         // free memory when ever this component is unmounted
         return () => URL.revokeObjectURL(objectUrl)
     }, [backgroundPictureFile])
+
+    useEffect(() => {
+        if (!headerPictureFile) return
+
+        // create the preview
+        const objectUrl = URL.createObjectURL(headerPictureFile)
+        setHeaderPicture(objectUrl)
+
+        // free memory when ever this component is unmounted
+        return () => URL.revokeObjectURL(objectUrl)
+    }, [headerPictureFile])
 
     function handleSubmit(e) {
         e.preventDefault();
@@ -376,8 +401,8 @@ export function UserProfileEdit() {
                 <section className="user">
                     <div className="container">
                         <div className="header">
-                            {backgroundPicture?.split(".").pop().split("?")[0] === "webm" && <video className="background" src={backgroundPicture} alt="" autoPlay muted loop ></video>}
-                            {backgroundPicture?.split(".").pop().split("?")[0] !== "webm" && <img className="background" src={backgroundPicture} alt=""></img>}
+                            {headerPicture?.split(".").pop().split("?")[0] === "webm" && <video className="background" src={headerPicture} alt="" autoPlay muted loop ></video>}
+                            {headerPicture?.split(".").pop().split("?")[0] !== "webm" && <img className="background" src={headerPicture} alt=""></img>}
                         </div>
                         <div className="main">
                             <div className="sidebar">
@@ -389,6 +414,11 @@ export function UserProfileEdit() {
                                     <form action="" onSubmit={handleProfilePictureClick}>
                                         <input type="file" id="profilePicture" onChange={handleProfilePictureChange} accept=".jpg, .jpeg, .png, .apng, .webp, .webm, .gif" />
                                         <button type="submit" disabled={!profilePictureFile || loading}>Update</button>
+                                    </form>
+                                    <label htmlFor="headerPicture">Header Picture</label>
+                                    <form action="" onSubmit={handleHeaderPictureClick}>
+                                        <input type="file" id="headerPicture" onChange={handleHeaderPictureChange} accept=".jpg, .jpeg, .png, .apng, .webp, .webm, .gif" />
+                                        <button type="submit" disabled={!headerPictureFile || loading}>Update</button>
                                     </form>
                                     <label htmlFor="backgroundPicture">Background Picture</label>
                                     <form action="" onSubmit={handleBackgroundPictureClick}>
@@ -475,6 +505,8 @@ export function UserProfileEdit() {
                             </div>
                             <div className="mainbar"></div>
                         </div>
+                        {backgroundPicture?.split(".").pop().split("?")[0] === "webm" && <video className="background" src={backgroundPicture} alt="" autoPlay muted loop ></video>}
+                        {backgroundPicture?.split(".").pop().split("?")[0] !== "webm" && <img className="background" src={backgroundPicture} alt=""></img>}
                     </div>
                 </section>
             </>}

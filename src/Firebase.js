@@ -197,7 +197,7 @@ export async function uploadProfilePicture(file, currentUser, setLoading) {
     });
 }
 
-export async function uploadProfileBackgroundPicture(file, currentUser, setLoading) {
+export async function uploadHeaderBackgroundPicture(file, currentUser, setLoading) {
     const fileEXT = file.name.split(".").pop();
     if (fileEXT !== "jpg" && fileEXT !== "jpeg" && fileEXT !== "png" && fileEXT !== "apng" && fileEXT !== "webp" && fileEXT !== "webm" && fileEXT !== "gif") {
         console.error("Unsupported Format");
@@ -213,7 +213,42 @@ export async function uploadProfileBackgroundPicture(file, currentUser, setLoadi
 
     try {
         await updateDoc(doc(db, "users", currentUser.uid), {
-            "images.photoBackgroundURL": photoURL
+            "images.headerURL": photoURL
+        })
+    } catch (e) {
+        console.error("Error adding document (pBU): ", e);
+        toast('Error Updating User Background!', {
+            icon: 'error',
+            style: toastStyle_error,
+        });
+        if (setLoading) setLoading(false);
+        return
+    }
+
+    if (setLoading) setLoading(false);
+    toast('Updated User Background!', {
+        icon: 'check_circle',
+        style: toastStyle_success,
+    });
+}
+
+export async function uploadBackgroundPicture(file, currentUser, setLoading) {
+    const fileEXT = file.name.split(".").pop();
+    if (fileEXT !== "jpg" && fileEXT !== "jpeg" && fileEXT !== "png" && fileEXT !== "apng" && fileEXT !== "webp" && fileEXT !== "webm" && fileEXT !== "gif") {
+        console.error("Unsupported Format");
+        alert("Unsupported Format")
+        return
+    }
+    const fileRef = ref(storage, "images/profile/" + currentUser.uid + '-background.' + fileEXT);
+
+    if (setLoading) setLoading(true);
+
+    await uploadBytes(fileRef, file);
+    const photoURL = await getDownloadURL(fileRef);
+
+    try {
+        await updateDoc(doc(db, "users", currentUser.uid), {
+            "images.backgroundURL": photoURL
         })
     } catch (e) {
         console.error("Error adding document (pBU): ", e);

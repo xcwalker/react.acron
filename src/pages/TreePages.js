@@ -11,15 +11,12 @@ import { Error403 } from "./ErrorPages";
 export function TreeSearch() {
     const currentUser = useAuth();
 
-    const [loading, setLoading] = useState(false);
     const [searchLoading, setSearchLoading] = useState(false);
     const [searchResults, setSearchResults] = useState();
     const [searchParams, setSearchParams] = useSearchParams();
     const [searchQuery, setSearchQuery] = useState(searchParams.get("q"))
     const [canClaim, setCanClaim] = useState(false)
     const [claimed, setClaimed] = useState(false)
-    const [userTrees, setUserTrees] = useState()
-    const [userOwnTrees, setUserOwnTrees] = useState()
 
     useEffect(() => {
         if (!searchParams.get("q")) return
@@ -31,17 +28,6 @@ export function TreeSearch() {
                 setCanClaim(true)
             })
     }, [searchParams])
-
-    useEffect(() => {
-        getUsersTrees(currentUser, setLoading)
-            .then(res => {
-                setUserTrees(res)
-            })
-        getUsersOwnTrees(currentUser, setLoading)
-            .then(res => {
-                setUserOwnTrees(res)
-            })
-    }, [currentUser])
 
     // Search Existing Trees
     // Using:
@@ -110,35 +96,11 @@ export function TreeSearch() {
                 </div>
             </div>
         </section>
-        {!loading && currentUser && <section className="treeUser">
-            <div className="container">
-                <div className="owner">
-                    <h2>Owner</h2>
-                    {userOwnTrees && <ul>
-                        {userOwnTrees.map((tree, index) => {
-                            return <Link to={"./" + tree.id} key={index} className="search-item">
-                                <h3>{tree.data.title}</h3>
-                                <span>/{tree.id}</span>
-                                <TreeSearchItemBackground />
-                            </Link>
-                        })}
-                    </ul>}
-                </div>
-                {userTrees && <div className="contributor">
-                    <h2>Contributor</h2>
-                    <ul>
-                        {userTrees.map((tree, index) => {
-                            return <Link to={"./" + tree.id} key={index} className="search-item">
-                                <h3>{tree.data.title}</h3>
-                                <span>/{tree.id}</span>
-                                <TreeSearchItemBackground />
-                            </Link>
-                        })}
-                    </ul>
-                </div>}
-            </div>
-        </section>}
     </>
+}
+
+export function TreeForward() {
+    return <Navigate to="./dashboard" />
 }
 
 function TreeSearchItemBackground() {
@@ -315,7 +277,53 @@ export function TreeIndex() {
 }
 
 export function TreeDashboard() {
-    // Lists your trees
+    const currentUser = useAuth();
+    const [loading, setLoading] = useState();
+    const [userTrees, setUserTrees] = useState();
+    const [userOwnTrees, setUserOwnTrees] = useState();
+
+    useEffect(() => {
+        if (!currentUser) return
+        getUsersTrees(currentUser, setLoading)
+            .then(res => {
+                setUserTrees(res)
+            })
+        getUsersOwnTrees(currentUser, setLoading)
+            .then(res => {
+                setUserOwnTrees(res)
+            })
+    }, [currentUser])
+
+    return <>
+        {!loading && currentUser && <section className="treeUser">
+            <div className="container">
+                {userOwnTrees &&
+                    <div className="owner">
+                        <h2>Owner</h2> <ul>
+                            {userOwnTrees.map((tree, index) => {
+                                return <Link to={"./" + tree.id} key={index} className="search-item">
+                                    <h3>{tree.data.title}</h3>
+                                    <span>/{tree.id}</span>
+                                    <TreeSearchItemBackground />
+                                </Link>
+                            })}
+                        </ul>
+                    </div>}
+                {userTrees && <div className="contributor">
+                    <h2>Contributor</h2>
+                    <ul>
+                        {userTrees.map((tree, index) => {
+                            return <Link to={"./" + tree.id} key={index} className="search-item">
+                                <h3>{tree.data.title}</h3>
+                                <span>/{tree.id}</span>
+                                <TreeSearchItemBackground />
+                            </Link>
+                        })}
+                    </ul>
+                </div>}
+            </div>
+        </section>}
+    </>
 }
 
 export function TreeEdit() {

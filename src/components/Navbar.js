@@ -1,34 +1,27 @@
 // react
 import { Link } from "react-router-dom";
 import { useAuth } from "../Firebase";
-import { useEffect, useState } from "react";
 
 // custom
 import { LogoXCWalker } from "./Logo";
-import { routeAccount, routePost, routePostNew, routeUser, toastStyle_success } from "../App";
+import { routeAccount } from "../App";
 
 // css
 import "../style/navbar.css"
 
 export function Navbar() {
     const currentUser = useAuth();
-    const [photoURL, setPhotoURL] = useState("https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png");
-
-    useEffect(() => {
-        if (!currentUser) return
-        if (!currentUser.photoURL) {setPhotoURL("https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png")}
-        if (currentUser.photoURL) {setPhotoURL(currentUser.photoURL)}
-    }, [currentUser])
 
     let navScrollLastKnown = 0;
     const navScroll = () => {
         document.addEventListener("scroll", e => {
             if (window.scrollY > navScrollLastKnown) {
                 document.body.classList.remove("scrolledUp")
+                navScrollLastKnown = window.scrollY;
             } else if (window.scrollY < navScrollLastKnown) {
                 document.body.classList.add("scrolledUp")
+                navScrollLastKnown = window.scrollY;
             }
-            navScrollLastKnown = window.scrollY;
 
             if (document.body.getBoundingClientRect().top >= 0) {
                 document.body.classList.remove("scrolled")
@@ -39,49 +32,22 @@ export function Navbar() {
         })
     }
 
-    // showNav
-    const showMenu = (vis) => {
-        var menu = document.querySelector("section.menu");
-
-        console.log("showMenu Click")
-
-        if (menu != null) {
-            if (menu.classList.contains("visible")) {
-                menu.classList.remove("visible")
-            } else if (!menu.classList.contains("visible")) {
-                menu.classList.add("visible")
-            }
-
-            if (vis === false) {
-                menu.classList.remove("visible")
-            }
-        } else {
-            console.error("Menu == Null")
-        }
-    }
-
-    return <header onLoad={navScroll()}>
-        <div className="container">
-            <LogoXCWalker />
-            <div className="nav">
-                <nav>
-                    <ul>
-                        <Link to="/">Home</Link>
-                        {!currentUser && <>
+    return <>
+        {!currentUser && <header onLoad={navScroll()}>
+            <div className="container">
+                <LogoXCWalker />
+                <div className="nav">
+                    <nav>
+                        <ul>
+                            <Link to="/">Home</Link>
                             <Link to={routeAccount + "/register"}>Register</Link>
                             <Link className="alt" to={routeAccount + "/login"}>Login</Link>
-                        </>}
-                        {currentUser && <>
-                            <Link to={routePost + "/" + routePostNew}>Post</Link>
-                        </>}
-                    </ul>
-                </nav>
-                {currentUser && <Link to={routeUser + "/" + currentUser.uid} className="avatar" >
-                    <img src={photoURL} alt="Avatar" className="avatar" />
-                </Link>}
+                        </ul>
+                    </nav>
+                </div>
             </div>
-        </div>
-    </header>
+        </header>}
+    </>
 }
 
 export function Menu() {

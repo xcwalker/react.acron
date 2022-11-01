@@ -7,7 +7,7 @@ menu {
 
     /* sizing */
     height: 100vh;
-    width: 52px;
+    width: 10px;
 
     /* spacing */
     padding: 0;
@@ -17,14 +17,20 @@ menu {
     --padding: 10px;
     --gap: 10px;
     --foreground-color: var(--foreground-color-200);
+    --foreground-alt-color: var(--foreground-color-100);
     --background-color: var(--background-color-200);
-    --selector-color: var(--selector-color);
+    --background-alt-color: var(--background-color-100);
+    --selector-color: var(--form-color-selector);
 }
 
 menu .container {
+    /* position */
+    position: absolute;
+    inset: 0;
+    left: auto;
     /* sizing */
     height: 100%;
-    width: 100%;
+    width: 52px;
     padding: 10px;
 
     /* flex */
@@ -34,19 +40,26 @@ menu .container {
     justify-content: space-between;
     gap: 10px;
 
+    /* styling */
+    background-color: var(--background-color);
+
+    /* scroll */
+    scrollbar-width: none;
+    overflow-y: auto;
+    overflow-x: visible;
+
     /* transition */
     transition: var(--quick-transition-color), var(--quick-transition-background_color), var(--quick-transition-translate);
 }
 
 .scrolled menu .container {
-    /* styling */
-    background-color: var(--background-color);
-
     /* translate */
     translate: 100% 0;
 }
 
-.scrolled.scrolledUp menu .container {
+.scrolled.scrolledUp menu .container,
+menu:hover .container,
+menu .container:hover {
     /* translate */
     translate: 0 0;
 }
@@ -67,22 +80,64 @@ menu .container ul {
 menu .container ul.upper {
     /* flex */
     justify-content: flex-start;
-
-    /* scroll */
-    scrollbar-width: none;
-    overflow-y: auto;
-    overflow-x: clip;
 }
 
 menu .container ul a.link {
+    /* position */
+    position: relative;
+
     /* text */
     font-size: 32px;
     text-decoration: none;
 
     /* styling */
+    border-radius: 4px;
     color: var(--foreground-color);
+    outline: 2px solid transparent;
+
+    transition: var(--quick-transition-scale), var(--quick-transition-color), var(--quick-transition-rotate);
 }
 
+menu .container ul a.link:hover {
+    /* styling */
+    color: var(--foreground-alt-color);
+    scale: 1.1;
+}
+
+menu .container ul a.link:focus {
+    /* styling */
+    color: var(--foreground-alt-color);
+    outline-color: currentColor;
+    outline-offset: 4px;
+}
+
+menu .container ul a.link:active {
+    color: var(--selector-color);
+    outline: 2px solid transparent;
+    scale: 0.9;
+}
+
+menu .container ul a.link.alt:hover {
+    /* styling */
+    rotate: 90deg;
+}
+
+menu .container ul a.link .hover {
+    /* position */
+    position: absolute;
+    top: 0;
+    right: -32px;
+    z-index: 2;
+
+    /* sizing */
+    height: 32px;
+    width: fit-content;
+}
+
+menu .container ul a.link:hover .hover {
+    opacity: 1;
+    translate: 0 0;
+}
 
 /*** avatar ***/
 menu .container ul a.avatar {
@@ -133,4 +188,19 @@ menu .container ul a.avatar:hover .avatar,
 menu .container ul a.avatar:focus .avatar,
 menu .container ul a.avatar:focus-visible .avatar {
     scale: 0.8;
+}
+
+/* scroll */
+main {
+    /* sizing */
+    width: 100%;
+
+    /* transition */
+    transition: width 0.25s ease-in-out;
+}
+
+body.signedIn:not(.scrolled) main,
+body.signedIn.scrolledUp main {
+    /* sizing */
+    width: calc(100% - 52px);
 }
