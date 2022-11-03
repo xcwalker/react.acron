@@ -329,9 +329,6 @@ export async function claimTree(treeID, currentUser, setLoading, setReload) {
             showAuthedUser: true,
         }
     }).then(() => {
-        updateDoc(doc(db, "users", currentUser.uid), {
-            trees: arrayUnion(treeID)
-        })
     }).catch(err => {
         console.error("Error claiming tree (tE): ", err);
         toast('Error Claiming Tree!', {
@@ -391,6 +388,7 @@ export async function updateTree(treeID, currentUser, setLoading, setReload, ori
     if (treeArr.authedUser === []) { treeArr.authedUser = [originalUserID] }
     if (!treeArr.authedUser.includes(originalUserID)) { treeArr.authedUser.push(originalUserID) }
     if (treeArr.links === undefined) { treeArr.links = [] }
+    if (treeArr.description === undefined) { treeArr.description = "" }
 
     try {
         await updateDoc(doc(db, "trees", treeID), {

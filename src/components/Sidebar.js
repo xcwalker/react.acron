@@ -39,7 +39,8 @@ export function Sidebar() {
                         <Link to="/" className="link material-symbols-outlined" data-hover-text="Home" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>home</Link>
                         <Link to={routeSearch} className="link material-symbols-outlined" data-hover-text="Search" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>search</Link>
                         <Link to={routePost} className="link material-symbols-outlined" data-hover-text="Feed" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>dynamic_feed</Link>
-                        <Link to={routePost + "/" + routePostNew} className="link material-symbols-outlined" data-hover-text="New Post" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>post_add</Link>
+                        <Link to={routePost + "/" + routePostNew} className="link material-symbols-outlined" data-hover-text="New Post" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>add</Link>
+                        <div className="seperator" />
                         <Link to={routeTree + "/dashboard"} className="link material-symbols-outlined" data-hover-text="TreeDash™" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>account_tree</Link>
                         <Link to={routeDev + "/dashboard"} className="link material-symbols-outlined" data-hover-text="DevDash™" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>dashboard</Link>
                     </ul>

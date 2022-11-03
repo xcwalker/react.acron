@@ -214,8 +214,9 @@ export function TreeIndex() {
                             <div className="mainbar">
                                 <div className="links">
                                     <ul>
-                                        {tree.settings.useOringinalUserLinks === true && <>
-                                            {treeLinks && treeLinks.map((link, index) => {
+                                        {tree.settings.useOringinalUserLinks === true && treeLinks && <>
+                                            {treeLinks && <span>User Has No Links</span>}
+                                            {treeLinks[0] && treeLinks.map((link, index) => {
                                                 if (link.includes("https://") || link.includes("http://")) {
                                                     return <a key={index} href={link}>
                                                         <img className="favicon" src={"https://t3.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=" + link + "/post&size=50"} alt="" />
@@ -301,10 +302,11 @@ export function TreeDashboard() {
                     <div className="owner">
                         <h2>Owner</h2> <ul>
                             {userOwnTrees.map((tree, index) => {
-                                return <Link to={"./" + tree.id} key={index} className="search-item">
+                                return <Link to={"../" + tree.id} key={index} className="search-item">
                                     <h3>{tree.data.title}</h3>
                                     <span>/{tree.id}</span>
-                                    <TreeSearchItemBackground />
+                                    {!tree.data.images?.backgroundURL && <TreeSearchItemBackground />}
+                                    {tree.data.images?.backgroundURL && <img src={tree.data.images.backgroundURL} alt="" />}
                                 </Link>
                             })}
                         </ul>
@@ -313,10 +315,11 @@ export function TreeDashboard() {
                     <h2>Contributor</h2>
                     <ul>
                         {userTrees.map((tree, index) => {
-                            return <Link to={"./" + tree.id} key={index} className="search-item">
+                            return <Link to={"../" + tree.id} key={index} className="search-item">
                                 <h3>{tree.data.title}</h3>
                                 <span>/{tree.id}</span>
-                                <TreeSearchItemBackground />
+                                {!tree.data.images?.backgroundURL && <TreeSearchItemBackground />}
+                                {tree.data.images?.backgroundURL && <img src={tree.data.images.backgroundURL} alt="" />}
                             </Link>
                         })}
                     </ul>
