@@ -319,6 +319,27 @@ export async function getUserInfo(userID) {
 
 export async function claimTree(treeID, currentUser, setLoading, setReload) {
     if (setLoading) { setLoading(true) }
+
+    if (treeID.endsWith("%20") || treeID.endsWith(" ")) {
+        console.error("Error claiming tree (tE): ", "Can't claim trees ending in space")
+        toast('Error Claiming Tree!', {
+            icon: 'error',
+            style: toastStyle_error,
+        });
+        if (setLoading) { setLoading(false) }
+        return
+    }
+
+    if (treeID.includes("%20%20") || treeID.includes("  ")) {
+        console.error("Error claiming tree (tE): ", "Can't claim trees containing consecutive spaces")
+        toast('Error Claiming Tree!', {
+            icon: 'error',
+            style: toastStyle_error,
+        });
+        if (setLoading) { setLoading(false) }
+        return
+    }
+
     setDoc(doc(db, "trees", treeID), {
         title: treeID,
         originalUser: currentUser.uid,
@@ -362,23 +383,23 @@ export async function getTreeInfo(treeID) {
 }
 
 export async function deleteTree(treeID, setReload) {
-    
-    await deleteDoc(doc(db, "trees", treeID))
-    .then(() => {
-        toast('Tree Deleted!', {
-            icon: 'check_circle',
-            style: toastStyle_success,
-        });
-    })
-    .catch(err => {
-        console.error("Error Deleting Tree", err)
-        toast('Error Deleting Tree!', {
-            icon: 'error',
-            style: toastStyle_error,
-        });
-    })
 
-    if (setReload) {setReload(3)}
+    await deleteDoc(doc(db, "trees", treeID))
+        .then(() => {
+            toast('Tree Deleted!', {
+                icon: 'check_circle',
+                style: toastStyle_success,
+            });
+        })
+        .catch(err => {
+            console.error("Error Deleting Tree", err)
+            toast('Error Deleting Tree!', {
+                icon: 'error',
+                style: toastStyle_error,
+            });
+        })
+
+    if (setReload) { setReload(3) }
 }
 
 export async function updateTree(treeID, currentUser, setLoading, setReload, originalUserID, treeArr) {

@@ -180,6 +180,11 @@ section.user .container .main .sidebar .sidebar-item.markdown img {
     border-radius: 10px;
 }
 
+section.user .container .main .sidebar .sidebar-item.markdown img[alt*="logo"] {
+    /* styling */
+    border-radius: unset;
+}
+
 section.user .container .main .sidebar .sidebar-item.markdown p:has(img):first-child {
     /* sizing */
     margin-top: 0 !important;

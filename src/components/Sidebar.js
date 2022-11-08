@@ -54,13 +54,13 @@ export function Sidebar() {
                     </ul>
                 </div>
             </menu>
-            <tooltip>
+            <section className="sidebar-tooltip">
                 <div className="container">
                     {toolTip && <>
                     <span style={{top: toolTip.top, right: document.body.clientWidth - toolTip.left + 10}} className="tooltip">{toolTip.text}</span>
                     </>}
                 </div>
-            </tooltip>
+            </section>
         </>}
     </>
 }

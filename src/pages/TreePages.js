@@ -1,103 +1,12 @@
 import { forwardRef, useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import ReactMarkdown from "react-markdown";
-import { Link, Navigate, useParams, useSearchParams } from "react-router-dom";
+import { Link, Navigate, useParams } from "react-router-dom";
 import { application, network, routeUser, url } from "../App";
 import { claimTree, deleteTree, getTreeInfo, getUserInfo, getUsersOwnTrees, getUsersTrees, searchTrees, updateTree, useAuth } from "../Firebase";
 
 import "../style/TreePages.css"
 import { Error403 } from "./ErrorPages";
-
-export function TreeSearch() {
-    const currentUser = useAuth();
-
-    const [searchLoading, setSearchLoading] = useState(false);
-    const [searchResults, setSearchResults] = useState();
-    const [searchParams, setSearchParams] = useSearchParams();
-    const [searchQuery, setSearchQuery] = useState(searchParams.get("q"))
-    const [canClaim, setCanClaim] = useState(false)
-    const [claimed, setClaimed] = useState(false)
-
-    useEffect(() => {
-        if (!searchParams.get("q")) return
-        searchTrees(searchParams.get("q"), setSearchLoading)
-            .then(res => {
-                console.info(res)
-                setSearchResults(res)
-                if (res.some(e => e.id === searchParams.get("q"))) return
-                setCanClaim(true)
-            })
-    }, [searchParams])
-
-    // Search Existing Trees
-    // Using:
-    // User Displayname && Firstname && Lastname
-    // Tree Id
-    // Tree Title
-    // Tree Statement
-    // Tree Links
-    // Show if TreeID is unclimaed
-
-    const handleSearch = (e) => {
-        e.preventDefault();
-
-        let updatedSearchParams = new URLSearchParams(searchParams.toString());
-        updatedSearchParams.set('q', searchQuery);
-        setSearchParams(updatedSearchParams.toString());
-    }
-
-    const handleSearchUpdate = (e) => {
-        setSearchQuery(e.target.value)
-    }
-
-    const handleTreeClaim = (e) => {
-        claimTree(searchParams.get("q"), currentUser)
-            .then(() => {
-                setClaimed(true)
-            })
-    }
-
-    return <>
-        <section className="treeSearch">
-            <div className="container">
-                <form className="header" onSubmit={handleSearch}>
-                    <div className="search-box">
-                        <input type="search" name="" id="" value={searchQuery} onChange={handleSearchUpdate} />
-                        <button type="submit" disabled={searchLoading || !searchQuery}>Search</button>
-                    </div>
-                </form>
-                <div className="results">
-                    {!searchResults && !canClaim && <>
-                        <span className="no-results">Let's Search For Something...</span>
-                    </>}
-                    {searchResults && <ul>
-                        {canClaim && <button className="search-item" onClick={handleTreeClaim}>
-                            <h3>Claim?</h3>
-                            <span>/{searchParams.get("q")}</span>
-                            <TreeSearchItemBackground />
-                            {claimed && <Navigate to={"./" + searchParams.get("q")} />}
-                        </button>}
-                        {searchResults.map((result, index) => {
-                            return <Link to={"./" + result.id} key={index} className="search-item">
-                                {result.data.originalUser === currentUser.uid && <>
-                                    <span className="material-symbols-outlined">person</span>
-                                    <span className="hover">Owner</span>
-                                </>}
-                                {result.data.originalUser !== currentUser.uid && result.data.authedUser.includes(currentUser.uid) && <>
-                                    <span className="material-symbols-outlined">group</span>
-                                    <span className="hover">Contributor</span>
-                                </>}
-                                <h3>{result.data.title}</h3>
-                                <span>/{result.id}</span>
-                                <TreeSearchItemBackground />
-                            </Link>
-                        })}
-                    </ul>}
-                </div>
-            </div>
-        </section>
-    </>
-}
 
 export function TreeForward() {
     return <Navigate to="./dashboard" />
