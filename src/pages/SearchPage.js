@@ -55,7 +55,7 @@ export function SearchPage() {
             setTimeout(function () {
                 if (placeholderStr === "") {
                     placeholderState = "adding"
-                    placeholderCompleteStr = placeholders[Math.floor(Math.random() * (placeholders.length + 1))] + "...";
+                    placeholderCompleteStr = placeholders[Math.floor(Math.random() * placeholders.length) - 1] + "...";
                     placeholderStr = placeholderCompleteStr.substring(0, 1)
                 }
 
