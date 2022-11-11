@@ -18,7 +18,7 @@ export function Navbar() {
             if (window.scrollY > navScrollLastKnown) {
                 document.body.classList.remove("scrolledUp")
                 navScrollLastKnown = window.scrollY;
-            } else if (window.scrollY < navScrollLastKnown) {
+            } else if (window.scrollY < navScrollLastKnown - 25) {
                 document.body.classList.add("scrolledUp")
                 navScrollLastKnown = window.scrollY;
             }

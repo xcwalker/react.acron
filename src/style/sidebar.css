@@ -6,7 +6,7 @@ menu {
     z-index: 998;
 
     /* sizing */
-    height: 100vh;
+    height: 100%;
     width: 10px;
 
     /* spacing */
@@ -202,5 +202,5 @@ main {
 body.signedIn:not(.scrolled) main,
 body.signedIn.scrolledUp main {
     /* sizing */
-    width: calc(100% - 52px);
+    /* width: calc(100% - 52px); */
 }

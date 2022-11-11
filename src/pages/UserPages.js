@@ -165,7 +165,7 @@ export function UserProfile() {
                                     </li>
                                 </ul>
                             </div>
-                            {user.links && (currentUser?.uid === params.id || user.settings.showUserLinks) && <div className="sidebar-item links">
+                            {user?.links[0] && (currentUser?.uid === params.id || user.settings.showUserLinks) && <div className="sidebar-item links">
                                 <ul>
                                     {user.links.map((link, index) => {
                                         if (link.includes("https://") || link.includes("http://")) {

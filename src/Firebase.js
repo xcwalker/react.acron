@@ -273,6 +273,7 @@ export async function updateUserInfo(arg, currentUser, setLoading) {
     if (arg.info.gender === undefined) { arg.info.gender = "" }
     if (arg.info.pronouns === undefined) { arg.info.pronouns = "" }
     if (arg.info.location === undefined) { arg.info.location = "" }
+    if (arg.links === undefined) { arg.links = [] }
 
     updateProfile(currentUser, { displayName: arg.displayname });
     try {
