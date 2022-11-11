@@ -24,6 +24,7 @@ import { TreeSearch, TreeIndex, TreeEdit, TreeDashboard, TreeForward } from "./p
 import { Toaster } from "react-hot-toast";
 import { Feed, FeedNewPost, FeedViewPost, FeedViewPostComment } from "./pages/FeedPages";
 import { Sidebar } from "./components/Sidebar";
+import { SearchPage } from "./pages/SearchPage";
 
 function App() {
   return (<>
@@ -82,7 +83,7 @@ function App() {
             </Route>
           </Route>
           {/* search */}
-          <Route path={routeSearch} />
+          <Route path={routeSearch} element={<SearchPage />} />
           {/* 404 */}
           <Route path='*' element={<Error404 />} />
         </Routes>

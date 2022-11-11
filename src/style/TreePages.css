@@ -98,6 +98,9 @@ section.tree .container .main .sidebar .sidebar-item {
 }
 
 section.tree .container .main .sidebar .sidebar-item h3 {
+    /* sizing */
+    flex-shrink: 1;
+
     /* spacing */
     margin: 0;
     padding: 0;
@@ -106,6 +109,9 @@ section.tree .container .main .sidebar .sidebar-item h3 {
     /* text */
     font-weight: 700;
     font-size: 16px;
+
+    /* oveflow */
+    overflow: hidden;
 
     /* transition */
     transition: var(--default-transition-color), var(--default-transition-background_color);
@@ -925,8 +931,8 @@ section.treeUser .container ul .search-item {
     /* flex */
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    justify-content: flex-start;
+    align-items: flex-start;
 
     /* styling */
     border: none;
@@ -954,17 +960,12 @@ section.treeUser .container ul .search-item h3 {
     /* text */
     font-size: 22px;
     font-weight: 700;
-
-    /* styling */
-    text-shadow: 2px 2px 0 var(--background-color-200);
 }
 
 section.treeSearch .container .results ul .search-item span,
 section.treeUser .container ul .search-item span {
     /* position */
-    position: absolute;
-    inset: 10px;
-    top: auto;
+    position: relative;
     z-index: 1;
 
     /* spacing */
@@ -978,7 +979,6 @@ section.treeUser .container ul .search-item span {
 
     /* styling */
     color: var(--foreground-color-300);
-    text-shadow: 1px 1px 0 var(--background-color-200);
 }
 
 section.treeSearch .container .results ul .search-item span.material-symbols-outlined {
@@ -1006,7 +1006,6 @@ section.treeSearch .container .results ul .search-item span.material-symbols-out
     border-radius: 50%;
     background-color: var(--background-color-300);
     color: var(--foreground-color-300);
-    text-shadow: none !important;
 }
 
 section.treeSearch .container .results ul .search-item span.hover {
@@ -1060,6 +1059,47 @@ section.treeUser .container ul .search-item .background {
     transition: translate 0.125s ease-in-out;
 }
 
+section.treeSearch .container .results ul .search-item img,
+section.treeUser .container ul .search-item img {
+    /* position */
+    position: absolute;
+    inset: 0;
+    bottom: auto;
+    z-index: 0;
+
+    /* sizing */
+    width: 100%;
+    height: calc(100% + var(--offset));
+
+    /* darken */
+    opacity: 0.4;
+
+    /* image */
+    object-fit: cover;
+
+    /* variables */
+    --offset: 10px;
+    --duration: 0.25s;
+    --method: ease-in-out;
+
+    /* transition */
+    transition: opacity var(--duration) var(--method), translate var(--duration) var(--method), scale var(--duration) var(--method);
+}
+
+section.treeSearch .container .results ul .search-item:hover img,
+section.treeSearch .container .results ul .search-item:focus img,
+section.treeSearch .container .results ul .search-item:focus-within img,
+section.treeUser .container ul .search-item:hover img,
+section.treeUser .container ul .search-item:focus img,
+section.treeUser .container ul .search-item:focus-within img {
+    /* lighten */
+    opacity: 0.7;
+
+    /* transform */
+    translate: 0 calc(-1 * var(--offset));
+    scale: 1.01;
+}
+
 section.treeSearch .container .results ul .search-item:hover .background,
 section.treeSearch .container .results ul .search-item:focus .background,
 section.treeSearch .container .results ul .search-item:focus-visible .background,
@@ -1067,7 +1107,7 @@ section.treeUser .container ul .search-item:hover .background,
 section.treeUser .container ul .search-item:focus .background,
 section.treeUser .container ul .search-item:focus-visible .background {
     /* transform */
-    translate: 5% 5%;
+    translate: -5% -5%;
 }
 
 section.treeSearch .container .results ul .search-item:focus,
@@ -1082,7 +1122,7 @@ section.treeSearch .container .results ul .search-item .background .item,
 section.treeUser .container ul .search-item .background .item {
     /* position */
     position: absolute;
-    left: -5%;
+    left: 75%;
     bottom: -30%;
 
     /* sizing */
@@ -1090,20 +1130,20 @@ section.treeUser .container ul .search-item .background .item {
     height: 100%;
 
     /* styling */
-    border-radius: 35px;
     border: 10px solid currentColor;
     color: var(--form-color-invalid-hold);
+    border-left: none;
     border-right: none;
+    border-bottom: none;
 
     /* transform */
-    rotate: 45deg;
+    rotate: -45deg;
 }
 
 section.treeSearch .container .results ul .search-item .background .item:nth-child(1),
 section.treeUser .container ul .search-item .background .item:nth-child(1) {
     /* position */
-    left: 25%;
-    bottom: -85%;
+    left: 65%;
 
     /* styling */
     color: var(--form-color-valid-hold);
@@ -1112,8 +1152,7 @@ section.treeUser .container ul .search-item .background .item:nth-child(1) {
 section.treeSearch .container .results ul .search-item .background .item:nth-child(2),
 section.treeUser .container ul .search-item .background .item:nth-child(2) {
     /* position */
-    left: -45%;
-    bottom: -95%;
+    left: 55%;
 
     /* styling */
     color: var(--form-color-selector);
@@ -1122,8 +1161,7 @@ section.treeUser .container ul .search-item .background .item:nth-child(2) {
 section.treeSearch .container .results ul .search-item .background .item:nth-child(3),
 section.treeUser .container ul .search-item .background .item:nth-child(3) {
     /* position */
-    left: 40%;
-    bottom: -65%;
+    left: 45%;
 
     /* styling */
     color: var(--form-color-invalid);

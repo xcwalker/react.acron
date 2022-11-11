@@ -26,9 +26,22 @@ section.user .container .background {
 
     /* sizing */
     width: 100%;
-    height: fit-content;
+    height: 100%;
 }
 
+section.user .container .background img,
+section.user .container .background video {
+    /* position */
+    position: sticky;
+    inset: 0;
+
+    /* sizing */
+    width: 100%;
+    height: 100vh;
+
+    /* image */
+    object-fit: cover;
+}
 
 /*** header ***/
 section.user .container .header {
@@ -135,9 +148,15 @@ section.user .container .main .sidebar .sidebar-item.markdown {
     flex-direction: column;
 }
 
+section.user .container .main .sidebar .sidebar-item.markdown p {
+    /* flex */
+    display: flex;
+}
+
 section.user .container .main .sidebar .sidebar-item.markdown ul {
     /* spacing */
     margin: 0;
+    padding-left: 20px;
 
     /* whitespace */
     white-space: initial;
@@ -146,6 +165,40 @@ section.user .container .main .sidebar .sidebar-item.markdown ul {
 section.user .container .main .sidebar .sidebar-item.markdown ul li {
     /* whitespace */
     white-space: pre-line;
+}
+
+section.user .container .main .sidebar .sidebar-item.markdown p:has(img) {
+    /* sizing */
+    margin: 5px 0 !important;
+}
+
+section.user .container .main .sidebar .sidebar-item.markdown img {
+    /* sizing */
+    width: 100%;
+
+    /* styling */
+    border-radius: 10px;
+}
+
+section.user .container .main .sidebar .sidebar-item.markdown img[alt*="logo"] {
+    /* styling */
+    border-radius: unset;
+}
+
+section.user .container .main .sidebar .sidebar-item.markdown p:has(img):first-child {
+    /* sizing */
+    margin-top: 0 !important;
+}
+
+section.user .container .main .sidebar .sidebar-item.markdown p:has(img):last-child {
+    /* sizing */
+    margin-bottom: 0 !important;
+}
+
+
+section.user .container .main .sidebar .sidebar-item.markdown a {
+    /* styling */
+    color: inherit;
 }
 
 section.user .container .main .sidebar .sidebar-item.user {

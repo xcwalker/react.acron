@@ -3,7 +3,7 @@ import { Helmet } from "react-helmet";
 import { Link, Navigate, useParams } from "react-router-dom";
 import ReactMarkdown from 'react-markdown'
 import { application, network, routeAccount, routeUser, routeDev, routeTree, url } from "../App";
-import { getUserInfo, logout, profileInitial, updateUserInfo, uploadBackgroundPicture, uploadHeaderBackgroundPicture, uploadProfileBackgroundPicture, uploadProfilePicture, useAuth } from "../Firebase";
+import { getUserInfo, getUsersOwnTrees, logout, profileInitial, updateUserInfo, uploadBackgroundPicture, uploadHeaderBackgroundPicture, uploadProfileBackgroundPicture, uploadProfilePicture, useAuth } from "../Firebase";
 
 import "../style/UserPages.css"
 import { Error403, Error404 } from "./ErrorPages";
@@ -52,8 +52,10 @@ export function UserProfile() {
     const currentUser = useAuth();
     const [user, setUser] = useState();
     const [currentUserDetails, setCurrentUserDetails] = useState({});
+    const [treeLoading, setTreeLoading] = useState();
     const [reload, setReload] = useState(0);
     const [date, setDate] = useState();
+    const [trees, setTrees] = useState();
     const [error, setError] = useState();
 
     useEffect(() => {
@@ -81,9 +83,14 @@ export function UserProfile() {
 
     useEffect(() => {
         if (!currentUser) return
-        getUserInfo(currentUser.uid).then(res => {
-            setCurrentUserDetails(res)
-        })
+        getUserInfo(currentUser.uid)
+            .then(res => {
+                setCurrentUserDetails(res)
+            })
+        getUsersOwnTrees(currentUser, setTreeLoading)
+            .then(res => {
+                setTrees(res)
+            })
     }, [currentUser])
 
     async function handleSignout() {
@@ -186,9 +193,9 @@ export function UserProfile() {
                                     })}
                                 </ul>
                             </div>}
-                            {user.trees && user.settings.showUserTrees === true && <div className="sidebar-item trees">
-                                {user.trees.map((tree, index) => {
-                                    return <Link key={index} to={"/" + routeTree + "/" + tree}>/{tree}</Link>
+                            {trees && user.settings.showUserTrees === true && <div className="sidebar-item trees">
+                                {trees.map((tree, index) => {
+                                    return <Link key={index} to={"/" + routeTree + "/" + tree.id}>/{tree.id}</Link>
                                 })}
                             </div>}
                             {currentUser && <>
@@ -200,8 +207,10 @@ export function UserProfile() {
                         </div>
                         <div className="mainbar"></div>
                     </div>
-                    {user.images.backgroundURL?.split(".").pop().split("?")[0] === "webm" && <video className="background" src={user.images.backgroundURL} alt="" autoPlay muted loop ></video>}
-                    {user.images.backgroundURL?.split(".").pop().split("?")[0] !== "webm" && <img className="background" src={user.images.backgroundURL} alt=""></img>}
+                    <div className="background">
+                        {user.images.backgroundURL?.split(".").pop().split("?")[0] === "webm" && <video src={user.images.backgroundURL} alt="" autoPlay muted loop ></video>}
+                        {user.images.backgroundURL?.split(".").pop().split("?")[0] !== "webm" && <img src={user.images.backgroundURL} alt=""></img>}
+                    </div>
                 </div>
             </section>
         </>}
