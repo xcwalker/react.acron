@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Helmet } from "react-helmet";
 import { Link, Navigate, useParams } from "react-router-dom";
 import ReactMarkdown from 'react-markdown'
-import { application, network, routeAccount, routeUser, routeDev, routeTree, url } from "../App";
+import { application, network, routeAccount, routeUser, routeDev, routeTree, url, separator } from "../App";
 import { getUserInfo, getUsersOwnTrees, logout, profileInitial, updateUserInfo, uploadHeaderBackgroundPicture, uploadProfilePicture, useAuth } from "../Firebase";
 
 import "../style/UserPages.css"
@@ -110,8 +110,8 @@ export function UserProfile() {
     return <>
         {user && <>
             <Helmet>
-                <title>{user.about.displayname + " | user | " + application + " | " + network}</title>
-                <meta name="description" content={user.about.displayname + " on " + application + " | A website for listing all of xcwalker's projects | " + url} />
+                <title>{user.about.displayname + " on " + application + " " + separator + " " + network}</title>
+                <meta name="description" content={user.about.displayname + " on " + application + " " + separator + " A website for listing all of xcwalker's projects " + separator + " " + url} />
             </Helmet>
             <section className="user">
                 <div className="container">
@@ -382,8 +382,8 @@ export function UserProfileEdit() {
             {params.id !== currentUser.uid && <Error403 />}
             {user && params.id === currentUser.uid && <>
                 <Helmet>
-                    <title>{user.about?.displayname + " | user | " + application + " | " + network}</title>
-                    <meta name="description" content={"A website for listing all of xcwalker's projects | " + url} />
+                    <title>{user.about?.displayname + " on " + application + " " + separator + " " + network}</title>
+                    <meta name="description" content={user.about?.firstname + " " + user.about?.lastname + " " + separator + " A website for listing all of xcwalker's projects " + separator + " " + url} />
                 </Helmet>
                 <section className="user">
                     <div className="container">

@@ -1,70 +1,36 @@
-# Getting Started with Create React App
+# Console
+### Formerly '**code**'
+Created by [**xcwalker.dev**](https://xcwalker.dev) 
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Features
+| **Feature**                     | **Component**    | **Status**         | **Description**                                                      | **DevNotes™**                                                             |
+|---------------------------------|------------------|--------------------|----------------------------------------------------------------------|---------------------------------------------------------------------------|
+| **Login**                       | Accounts         | Complete           | Uses Firebase Auth to login in the system                            |                                                                           |
+| **Register**                    | Accounts         | Complete           | Uses Firebase Auth to create a user login using email & password     |                                                                           |
+| **Email Verification**          | Accounts         | Todo               | Will only allow access when user's email is verified                 |                                                                           |
+| **Delete Account**              | Accounts [/user] | Complete           | Deletes User's Account                                               |                                                                           |
+| **Delete Users Posts**          | User [/feed]     | Todo               | Will Delete A User's Posts                                           |                                                                           |
+| **Delete/Transfer Users Trees** | User [/tree]     | Todo               | Will Delete or Transfer A User's Trees upon account deletion         |                                                                           |
+| **Dashboard**                   | Tree             | Complete [Ongoing] | Allows the user to view the trees they can edit.                     |                                                                           |
+| **Claim a tree**                | Tree             | Complete           | Claim a tree from a url                                              |                                                                           |
+| **Edit a tree**                 | Tree             | Complete           | Edit a trees urls                                                    |                                                                           |
+| **Delete a tree**               | Tree             | Complete           | Delete a user's own tree                                             |                                                                           |
+| **Search trees**                | Tree             | Ongoing            | Uses JS array searching to find matching results                     | Replace with a server side function. To limit data sent to client device. |
+| **View Posts**                  | Feed             | Todo               | Will show a list of other users posts                                |                                                                           |
+| **Create a Post**               | Feed             | Todo               | Create a new post                                                    |                                                                           |
+| **View a Post**                 | Feed             | Todo               | View a post and be able to comment                                   |                                                                           |
+| **View a specific comment**     | Feed             | Todo               | With a comment and view the original message                         |                                                                           |
+| **DevReg™**                     | Developer        | Todo               | Will allow a user to apply to join an orgainisations developer pool. |                                                                           |
+| **DevDash™**                    | Developer        | Todo               | Will allow devs to access the organisations tools.                   |                                                                           |
+| **DevPro™**                     | Developer        | Todo               | The developers profile (seperate to the user profile or the same). |                                                                           |
+| **DevPost™**                    | Developer        | Todo               | Will allow developers to query each other with a system like "feed". |                                                                           |
+| **DevBoard™**                   | Developer        | Todo               | Shows the current unsolved questions.                                |                                                                           |
+| **DevCon™**                     | Developer        | Todo               | Allows the developers to contact others                              |                                                                           |
+| **DevApps™**                    | Developer        | Todo               | For the management to grant DevReg™ applicants to the organisation.  |                                                                           |
+| **Settings**                    | Accounts         | Todo               | Allows the user to view/edit settings.                               |                                                                           |
 
-## Available Scripts
 
-In the project directory, you can run:
 
-### `npm start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+##### Copyright © 2022 XCWALKER. | All rights reserved.
+![xcwalker logo](https://firebasestorage.googleapis.com/v0/b/xcw-code-dev.appspot.com/o/images%2FXCWalker%20-%20V.3%20(White).svg?alt=media&token=7c9d79b8-66fb-46df-9ee2-3d531b58f772)

@@ -39,7 +39,7 @@ export function Footer() {
                     <div className="divider" />
                     <h3>Copyright</h3>
                     <div className="content">
-                        <p>Copyright © 2022 <span>{network}</span>.
+                        <p>Copyright © 2022 <span className="network">{network}</span>.
                             <br />
                             All rights reserved.
                         </p>

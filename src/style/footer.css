@@ -56,11 +56,23 @@ footer .content {
     gap: calc(var(--gap) / 2);
 }
 
+footer .content p {
+    /* text */
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.1;
+}
+
+footer .content .network {
+    /* text */
+    text-transform: lowercase;
+}
+
 footer .divider {
     /* sizing */
     height: 2px;
     flex-shrink: 0;
-    
+
     /* styling */
     color: inherit;
     background-color: currentColor;
@@ -89,7 +101,7 @@ footer .application {
     border-radius: 5px;
 
     /* text */
-    /* text-transform: uppercase; */
+    text-transform: lowercase;
     font-weight: 600;
 
     /* transition*/
@@ -115,7 +127,7 @@ footer a {
     color: inherit !important;
 }
 
-footer a:hover{
+footer a:hover {
     /* text */
     font-weight: 600;
     text-decoration: underline;

@@ -2,7 +2,7 @@ import { forwardRef, useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import ReactMarkdown from "react-markdown";
 import { Link, Navigate, useParams } from "react-router-dom";
-import { application, network, routeUser, url } from "../App";
+import { application, network, routeUser, separator, url } from "../App";
 import { claimTree, deleteTree, getTreeInfo, getUserInfo, getUsersOwnTrees, getUsersTrees, updateTree, useAuth } from "../Firebase";
 
 import "../style/TreePages.css"
@@ -77,8 +77,8 @@ export function TreeIndex() {
         {!loading && <>
             {tree && <>
                 <Helmet>
-                    <title>{tree.title + " | tree | " + application + " | " + network}</title>
-                    <meta name="description" content={tree.title + " | tree | A website for listing all of xcwalker's projects | " + url} />
+                    <title>{tree.title + " " + separator + " tree " + separator + " " + application + " " + separator + " " + network}</title>
+                    <meta name="description" content={tree.title + " " + separator + " tree" + separator + "A website for listing all of xcwalker's projects" + separator + " " + url} />
                 </Helmet>
                 <section className="tree">
                     <div className="container">
@@ -175,8 +175,8 @@ export function TreeIndex() {
             </>}
             {!tree && <>
                 <Helmet>
-                    <title>{params.id + "Unowned | tree | " + application + " | " + network}</title>
-                    <meta name="description" content={params.id + " | Unowned tree | A website for listing all of xcwalker's projects | " + url} />
+                    <title>{params.id + "Unowned " + separator + " tree " + separator + " " + application + " " + separator + " " + network}</title>
+                    <meta name="description" content={params.id + " " + separator + " Unowned tree " + separator + " A website for listing all of xcwalker's projects " + separator + " " + url} />
                 </Helmet>
                 <h1>unowned</h1>
                 <button onClick={claimTreeClick}>Claim</button>

@@ -1,7 +1,7 @@
 // css
 import { Helmet } from 'react-helmet';
 import { Link } from 'react-router-dom';
-import { routeDev, routeAccount, url, application, network } from '../App';
+import { routeDev, routeAccount, url, application, network, separator } from '../App';
 import { useAuth } from '../Firebase';
 import '../style/ErrorPages.css';
 
@@ -13,8 +13,8 @@ export function Error403() {
 
   return <>
     <Helmet>
-      <title>{errorCode} | {errorMessage} | {application} | {network}</title>
-      <meta name="description" content={errorCode + " " + errorMessage + " | A website for listing all of xcwalker's projects | " + url} />
+      <title>{errorCode} {separator} {errorMessage} {separator} {application} {separator} {network}</title>
+      <meta name="description" content={errorCode + " " + errorMessage + " " + separator + " A website for listing all of xcwalker's projects " + separator + " " + url} />
     </Helmet>
     <section className='errorPage'>
       <div className='container'>
@@ -40,8 +40,8 @@ export function Error404() {
 
   return <>
     <Helmet>
-      <title>{errorCode} | {errorMessage} | {application} | {network}</title>
-      <meta name="description" content={errorCode + " " + errorMessage + " | A website for listing all of xcwalker's projects | " + url} />
+      <title>{errorCode} {separator} {errorMessage} {separator} {application} {separator} {network}</title>
+      <meta name="description" content={errorCode + " " + errorMessage + " " + separator + " A website for listing all of xcwalker's projects " + separator + " " + url} />
     </Helmet>
     <section className='errorPage'>
       <div className='container'>

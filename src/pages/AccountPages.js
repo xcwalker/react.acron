@@ -4,7 +4,7 @@ import { Link, Navigate, useSearchParams } from "react-router-dom";
 import { Helmet } from "react-helmet";
 
 import { error, forgot, getUserInfo, login, register, updateUserInfo, uploadHeaderBackgroundPicture, uploadProfilePicture, useAuth } from "../Firebase";
-import { application, network, release, routeUser, url } from "../App";
+import { application, network, release, routeUser, separator, url } from "../App";
 
 // css
 import "../style/AccountPages.css"
@@ -50,8 +50,8 @@ export function AccountLogin() {
 
     return <>
         <Helmet>
-            <title>{page} | {application} | {network}</title>
-            <meta name="description" content={page + " for an " + release + " " + application + " account. | A website for listing all of xcwalker's projects | " + url} />
+            <title>{page} {separator} {application} {separator} {network}</title>
+            <meta name="description" content={page + " for an " + release + " " + application + " account. " + separator + " A website for listing all of xcwalker's projects " + separator + " " + url} />
         </Helmet>
         <section className="accounts">
             <div className="container">
@@ -96,8 +96,8 @@ export function AccountRegister() {
 
     return <>
         <Helmet>
-            <title>{page} | {application} | {network}</title>
-            <meta name="description" content={page + " for an " + release + " " + application + " account. | A website for listing all of xcwalker's projects | " + url} />
+            <title>{page} {separator} {application} {separator} {network}</title>
+            <meta name="description" content={page + " for an " + release + " " + application + " account. " + separator + " A website for listing all of xcwalker's projects " + separator + " " + url} />
         </Helmet>
         <section className="accounts">
             <div className="container">
@@ -144,8 +144,8 @@ export function AccountForgot() {
 
     return <>
         <Helmet>
-            <title>{page} | {application} | {network}</title>
-            <meta name="description" content={page + " for an " + release + " " + application + " account. | A website for listing all of xcwalker's projects | " + url} />
+            <title>{page} {separator} {application} {separator} {network}</title>
+            <meta name="description" content={page + " for an " + release + " " + application + " account. " + separator + " A website for listing all of xcwalker's projects " + separator + " " + url} />
         </Helmet>
         <section className="accounts">
             <div className="container">

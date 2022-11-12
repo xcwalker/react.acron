@@ -29,8 +29,8 @@ import { SearchPage } from "./pages/SearchPage";
 function App() {
   return (<>
     <Helmet>
-      <title>{application} | {network}</title>
-      <meta name="description" content={"A website for listing all of xcwalker's projects | " + url} />
+      <title>{application} {separator} {network}</title>
+      <meta name="description" content={"A website for listing all of xcwalker's projects {separator} " + url} />
     </Helmet>
     <Router>
       <ScrollToTop />
@@ -107,8 +107,9 @@ function ScrollToTop() {
 
 export default App;
 
-export const application = "code"
-export const network = "xcwalker"
+export const separator = "•"
+export const application = "Console"
+export const network = "XCWALKER"
 export const release = "dev"
 export const url = application + "." + network + "." + release
 
