@@ -3,7 +3,7 @@ import { Helmet } from "react-helmet";
 import ReactMarkdown from "react-markdown";
 import { Link, Navigate, useParams } from "react-router-dom";
 import { application, network, routeUser, url } from "../App";
-import { claimTree, deleteTree, getTreeInfo, getUserInfo, getUsersOwnTrees, getUsersTrees, searchTrees, updateTree, useAuth } from "../Firebase";
+import { claimTree, deleteTree, getTreeInfo, getUserInfo, getUsersOwnTrees, getUsersTrees, updateTree, useAuth } from "../Firebase";
 
 import "../style/TreePages.css"
 import { Error403 } from "./ErrorPages";
@@ -41,13 +41,13 @@ export function TreeIndex() {
 
     useEffect(() => {
         if (!tree) return
-        if (tree.settings.useOringinalUserLinks === true) {
+        if (tree.settings.useOriginalUserLinks === true) {
             getUserInfo(tree.originalUser).then(res => {
                 setUser(res)
                 setTreeLinks(res.links)
             })
         }
-        if (tree.settings.useOringinalUserLinks !== true) {
+        if (tree.settings.useOriginalUserLinks !== true) {
             setTreeLinks(tree.links)
         }
     }, [tree])
@@ -67,10 +67,10 @@ export function TreeIndex() {
     //     })
     // }, [currentUser])
 
-    // if (!clamied)
+    // if (!claimed)
     // offer to claim tree
 
-    // if (clamied)
+    // if (claimed)
     // load tree
 
     return <>
@@ -105,7 +105,7 @@ export function TreeIndex() {
                                         <span>{user.about.displayname}</span>
                                     </div>
                                 </Link>}
-                                {tree.settings.showAuthedUser && tree.useOringinalUserLinks !== true && <div className="sidebar-item">
+                                {tree.settings.showAuthedUser && tree.useOriginalUserLinks !== true && <div className="sidebar-item">
                                     <h3>Contributors</h3>
                                     <div className="authedUsers">
                                         {tree.authedUser.map((user, index) => {
@@ -123,7 +123,7 @@ export function TreeIndex() {
                             <div className="mainbar">
                                 <div className="links">
                                     <ul>
-                                        {tree.settings.useOringinalUserLinks === true && treeLinks && <>
+                                        {tree.settings.useOriginalUserLinks === true && treeLinks && <>
                                             {treeLinks && <span>User Has No Links</span>}
                                             {treeLinks[0] && treeLinks.map((link, index) => {
                                                 if (link.includes("https://") || link.includes("http://")) {
@@ -141,7 +141,7 @@ export function TreeIndex() {
                                                 return <></>
                                             })}
                                         </>}
-                                        {tree.settings.useOringinalUserLinks !== true && <>
+                                        {tree.settings.useOriginalUserLinks !== true && <>
                                             {treeLinks && treeLinks.map((link, index) => {
                                                 if (link.url.includes("https://") || link.url.includes("http://")) {
                                                     return <a key={index} href={link.url}>
@@ -248,7 +248,7 @@ export function TreeEdit() {
     const [authedUser, setAuthedUser] = useState();
     const [showOriginalUser, setShowOriginalUser] = useState(true);
     const [showAuthedUser, setShowAuthedUser] = useState(true);
-    const [showOringinalUserLinks, setShowOringinalUserLinks] = useState(true);
+    const [showOriginalUserLinks, setShowOriginalUserLinks] = useState(true);
     const [reload, setReload] = useState(0);
     const [loading, setLoading] = useState(true);
     const [canView, setCanView] = useState(false);
@@ -261,8 +261,10 @@ export function TreeEdit() {
                 setDescription(res.description)
                 setAuthedUser(res.authedUser)
                 setShowAuthedUser(res.settings.showAuthedUser)
-                setShowOringinalUserLinks(res.settings.useOringinalUserLinks)
-                if (!res.showOringinalUserLinks) { setTreeLinks(res.links) }
+                if (res.settings.useOriginalUserLinks !== undefined) {
+                    setShowOriginalUserLinks(res.settings.useOriginalUserLinks)
+                }
+                if (!res.showOriginalUserLinks) { setTreeLinks(res.links) }
             }
             setLoading(false)
             setReload(0)
@@ -281,7 +283,7 @@ export function TreeEdit() {
             title: title,
             description: description,
             settings: {
-                useOringinalUserLinks: showOringinalUserLinks,
+                useOriginalUserLinks: showOriginalUserLinks,
                 showOriginalUser: showOriginalUser,
                 showAuthedUser: showAuthedUser,
             },
@@ -302,12 +304,12 @@ export function TreeEdit() {
         setShowAuthedUser(e.target.checked);
     };
 
-    const handleShowOringinalUserChange = (e) => {
+    const handleShowOriginalUserChange = (e) => {
         setShowOriginalUser(e.target.checked)
     };
 
-    const handleShowOringinalUserLinksChange = (e) => {
-        setShowOringinalUserLinks(e.target.checked)
+    const handleShowOriginalUserLinksChange = (e) => {
+        setShowOriginalUserLinks(e.target.checked)
     };
 
     const handleLinkChange = (e, index) => {
@@ -345,12 +347,12 @@ export function TreeEdit() {
 
     const handleLinkAdd = (e) => {
         e.preventDefault();
-        if (showOringinalUserLinks) {
+        if (showOriginalUserLinks) {
             console.error("Cannot add to links while showing current user links.")
             alert("Cannot add to links while showing current user links.")
             return
         }
-        if (showOringinalUserLinks) return
+        if (showOriginalUserLinks) return
 
         if (!treeLinks) { setTreeLinks([""]) }
         if (treeLinks) { setTreeLinks([...treeLinks, { title: "", url: "", imageURL: "" }]) };
@@ -376,9 +378,9 @@ export function TreeEdit() {
                                     <label htmlFor="showAuthedUser">showAuthedUser</label>
                                     <input type="checkbox" name="showAuthedUser" id="showAuthedUser" checked={showAuthedUser} onChange={handleShowAuthedUserChange} />
                                     <label htmlFor="showOriginalUser">showOriginalUser</label>
-                                    <input type="checkbox" name="showOriginalUser" id="showOriginalUser" checked={showOriginalUser} onChange={handleShowOringinalUserChange} />
-                                    <label htmlFor="showOringinalUserLinks">showOringinalUserLinks</label>
-                                    <input type="checkbox" name="showOringinalUserLinks" id="showOringinalUserLinks" checked={showOringinalUserLinks} onChange={handleShowOringinalUserLinksChange} />
+                                    <input type="checkbox" name="showOriginalUser" id="showOriginalUser" checked={showOriginalUser} onChange={handleShowOriginalUserChange} />
+                                    <label htmlFor="showOriginalUserLinks">showOriginalUserLinks</label>
+                                    <input type="checkbox" name="showOriginalUserLinks" id="showOriginalUserLinks" checked={showOriginalUserLinks} onChange={handleShowOriginalUserLinksChange} />
                                 </div>
                                 <div className="sidebar-item">
                                     <button type="submit">Submit</button>

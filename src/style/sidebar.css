@@ -52,9 +52,10 @@ menu .container {
     transition: var(--quick-transition-color), var(--quick-transition-background_color), var(--quick-transition-translate);
 }
 
-.scrolled menu .container {
+.scrolled menu .container,
+.navHidden menu .container {
     /* translate */
-    translate: 100% 0;
+    translate: 100% 0 !important;
 }
 
 .scrolled.scrolledUp menu .container,
@@ -77,7 +78,7 @@ menu .container ul {
     gap: 15px;
 }
 
-menu .container ul .seperator {
+menu .container ul .separator {
     /* sizing */
     width: calc(100% + 5px);
     height: 2px;

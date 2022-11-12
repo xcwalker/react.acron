@@ -18,9 +18,9 @@ import { Navbar } from './components/Navbar'
 import { Footer } from './components/Footer'
 import { Homepage } from './pages/Homepage';
 import { Error404 } from './pages/ErrorPages';
-import { AccountIndex, AccountForgot, AccountLogin, AccountRegister, AccountEdit } from "./pages/AccountPages";
+import { AccountIndex, AccountForgot, AccountLogin, AccountRegister, AccountEdit, AccountSetup } from "./pages/AccountPages";
 import { UserIndex, UserIndexProfile, UserProfile, UserProfileEdit } from "./pages/UserPages";
-import { TreeSearch, TreeIndex, TreeEdit, TreeDashboard, TreeForward } from "./pages/TreePages";
+import { TreeIndex, TreeEdit, TreeDashboard, TreeForward } from "./pages/TreePages";
 import { Toaster } from "react-hot-toast";
 import { Feed, FeedNewPost, FeedViewPost, FeedViewPostComment } from "./pages/FeedPages";
 import { Sidebar } from "./components/Sidebar";
@@ -40,7 +40,7 @@ function App() {
         position="top-left"
         reverseOrder={true}
         containerStyle={{
-          top: 62,
+          top: "min(40px, max(4vw, 10px))",
           left: "min(40px, max(4vw, 10px))"
         }}
       />
@@ -55,6 +55,7 @@ function App() {
             <Route path='register' element={<AccountRegister />} />
             <Route path='forgot' element={<AccountForgot />} />
             <Route path='edit' element={<AccountEdit />} />
+            <Route path='setup' element={<AccountSetup />} />
           </Route>
           {/* Trees */}
           <Route path={routeTree}>

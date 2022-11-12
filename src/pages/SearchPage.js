@@ -177,7 +177,7 @@ export function SearchPage() {
                                 {canClaim && <button className="search-item" onClick={handleTreeClaim}>
                                     <h3>Claim?</h3>
                                     <span>/{searchParams.get("q")}</span>
-                                    <ItemmBackground />
+                                    <ItemBackground />
                                     {claimed && <Navigate to={"../" + routeTree + "/" + searchParams.get("q")} />}
                                 </button>}
                                 {searchResults.map((result, index) => {
@@ -192,7 +192,7 @@ export function SearchPage() {
                                         </>}
                                         <h3>{result.data.title}</h3>
                                         <span>/{result.id}</span>
-                                        {!result.data.images?.backgroundURL && <ItemmBackground />}
+                                        {!result.data.images?.backgroundURL && <ItemBackground />}
                                         {result.data.images?.backgroundURL && <img src={result.data.images.backgroundURL} alt="" />}
                                     </Link>
                                 })}
@@ -202,7 +202,7 @@ export function SearchPage() {
                                     <div className="preview">
                                         <h3>Claim?</h3>
                                         <span>/{searchParams.get("q")}</span>
-                                        <ItemmBackground />
+                                        <ItemBackground />
                                     </div>
                                     <div className="info">
                                         <h3>{searchParams.get("q")} is Unclaimed.</h3>
@@ -224,7 +224,7 @@ export function SearchPage() {
                                             </>}
                                             <h3>{result.data.title}</h3>
                                             <span>/{result.id}</span>
-                                            {!result.data.images?.backgroundURL && <ItemmBackground />}
+                                            {!result.data.images?.backgroundURL && <ItemBackground />}
                                             {result.data.images?.backgroundURL && <img src={result.data.images.backgroundURL} alt="" />}
                                         </div>
                                         <div className="info">
@@ -243,7 +243,7 @@ export function SearchPage() {
     </>
 }
 
-function ItemmBackground() {
+function ItemBackground() {
     return <div className="background">
         <div className="item" />
         <div className="item" />

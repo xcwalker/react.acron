@@ -220,7 +220,7 @@ section.accounts form span {
     /* text */
     font-size: 14px;
     font-weight: 600;
-    color: var(--tertiary-text-color);
+    color: var(--foreground-color-300);
 
 }
 
@@ -319,4 +319,122 @@ section.accounts .background .item:nth-child(3) {
 
     /* styling */
     color: var(--form-color-invalid);
+}
+
+/*** Setup ***/
+section.accounts .container:has(form.last) {
+    /* sizing */
+    padding: 10px;
+}
+
+section.accounts form.last .header {
+    /* position */
+    position: relative;
+
+    /* sizing */
+    height: var(--height);
+    width: min(400px, 100%);
+    margin-bottom: var(--offset);
+
+    /* variables */
+    --height: 150px;
+    --offset: 25px;
+}
+
+section.accounts form.last .header .background {
+    /* position */
+    position: absolute;
+    inset: 0;
+
+    /* sizing */
+    width: 100%;
+    height: 100%;
+
+    /* image */
+    object-fit: cover;
+
+    /* styling */
+    overflow: hidden;
+    border-radius: var(--border-radius);
+}
+
+section.accounts form.last .header .profile {
+    /* position */
+    position: absolute;
+    top: var(--offset);
+    left: 50%;
+    translate: -50% 0;
+
+    /* sizing */
+    width: var(--height);
+    height: var(--height);
+
+    /* styling */
+    overflow: hidden;
+    border-radius: 50%;
+}
+
+section.accounts form.last .about {
+    /* flex */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+section.accounts form.last h2 {
+    /* spacing */
+    margin: 0;
+    padding: 0;
+
+    /* text */
+    font-size: 26px;
+    font-weight: 700;
+    line-height: 1;
+    opacity: 1;
+}
+
+section.accounts form.last h3 {
+    /* spacing */
+    margin: 0;
+    padding: 0;
+
+    /* text */
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1;
+    opacity: 0.8;
+}
+
+section.accounts form.last .info {
+    /* sizing */
+    width: min(400px, 100%);
+
+    /* grid */
+    display: grid;
+    grid-template-columns: 1fr 2px 1fr 2px 1fr;
+    gap: 5px;
+}
+
+section.accounts form.last .info span {
+    /* flex */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    /* text */
+    text-align: center;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 1;
+}
+
+section.accounts form.last .info .separator {
+    /* sizing */
+    height: calc(100% + 4px);
+    margin-top: -2px;
+    width: 2px;
+
+    /* styling */
+    background-color: var(--foreground-color-300);
 }

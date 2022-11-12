@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { initializeApp } from "firebase/app";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut, updateProfile, sendPasswordResetEmail } from "firebase/auth";
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
-import { arrayUnion, collection, deleteDoc, doc, getDoc, getDocs, getFirestore, query, setDoc, updateDoc, where } from "firebase/firestore";
+import { collection, deleteDoc, doc, getDoc, getDocs, getFirestore, query, setDoc, updateDoc, where } from "firebase/firestore";
 import toast from "react-hot-toast";
 import { toastStyle_error, toastStyle_success } from "./App";
 
@@ -51,13 +51,13 @@ export function profileInitial(currentUser) {
         settings: {
             showUserLinks: true,
             showUserTrees: true,
-            showOrganisation: false
+            showOrganization: false
         },
         info: {
-            joinedat: currentUser.metadata.createdAt,
+            joined: currentUser.metadata.createdAt,
         },
         images: {
-            photoBackgroundURL: "https://www.tpctax.com/wp-content/uploads/2017/05/services-background-placeholder.jpg",
+            headerURL: "https://images.unsplash.com/photo-1646974708582-3dced57e0a25?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8",
             photoURL: "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png",
         }
     }).then(() => {
@@ -232,41 +232,6 @@ export async function uploadHeaderBackgroundPicture(file, currentUser, setLoadin
     });
 }
 
-export async function uploadBackgroundPicture(file, currentUser, setLoading) {
-    const fileEXT = file.name.split(".").pop();
-    if (fileEXT !== "jpg" && fileEXT !== "jpeg" && fileEXT !== "png" && fileEXT !== "apng" && fileEXT !== "webp" && fileEXT !== "webm" && fileEXT !== "gif") {
-        console.error("Unsupported Format");
-        alert("Unsupported Format")
-        return
-    }
-    const fileRef = ref(storage, "images/profile/" + currentUser.uid + '-background.' + fileEXT);
-
-    if (setLoading) setLoading(true);
-
-    await uploadBytes(fileRef, file);
-    const photoURL = await getDownloadURL(fileRef);
-
-    try {
-        await updateDoc(doc(db, "users", currentUser.uid), {
-            "images.backgroundURL": photoURL
-        })
-    } catch (e) {
-        console.error("Error adding document (pBU): ", e);
-        toast('Error Updating User Background!', {
-            icon: 'error',
-            style: toastStyle_error,
-        });
-        if (setLoading) setLoading(false);
-        return
-    }
-
-    if (setLoading) setLoading(false);
-    toast('Updated User Background!', {
-        icon: 'check_circle',
-        style: toastStyle_success,
-    });
-}
-
 export async function updateUserInfo(arg, currentUser, setLoading) {
     if (setLoading) setLoading(true);
 
@@ -274,6 +239,10 @@ export async function updateUserInfo(arg, currentUser, setLoading) {
     if (arg.info.pronouns === undefined) { arg.info.pronouns = "" }
     if (arg.info.location === undefined) { arg.info.location = "" }
     if (arg.links === undefined) { arg.links = [] }
+
+    if (arg.settings.showUserLinks === undefined) { arg.settings.showUserLinks = true }
+    if (arg.settings.showUserTrees === undefined) { arg.settings.showUserTrees = true }
+    if (arg.settings.showOrganization === undefined) { arg.settings.showOrganization = false }
 
     updateProfile(currentUser, { displayName: arg.displayname });
     try {
@@ -288,7 +257,12 @@ export async function updateUserInfo(arg, currentUser, setLoading) {
                 gender: arg.info.gender,
                 pronouns: arg.info.pronouns,
                 location: arg.info.location,
-                joinedat: arg.info.joinedat,
+                joined: arg.info.joined,
+            },
+            settings: {
+                showUserLinks: arg.settings.showUserLinks,
+                showUserTrees: arg.settings.showUserTrees,
+                showOrganization: arg.settings.showOrganization
             },
             links: arg.links
         })
@@ -346,7 +320,7 @@ export async function claimTree(treeID, currentUser, setLoading, setReload) {
         originalUser: currentUser.uid,
         authedUser: [currentUser.uid],
         settings: {
-            useOringinalUserLinks: true,
+            useOriginalUserLinks: true,
             showOriginalUser: true,
             showAuthedUser: true,
         }

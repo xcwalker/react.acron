@@ -3,7 +3,7 @@ import { Helmet } from "react-helmet";
 import { Link, Navigate, useParams } from "react-router-dom";
 import ReactMarkdown from 'react-markdown'
 import { application, network, routeAccount, routeUser, routeDev, routeTree, url } from "../App";
-import { getUserInfo, getUsersOwnTrees, logout, profileInitial, updateUserInfo, uploadBackgroundPicture, uploadHeaderBackgroundPicture, uploadProfileBackgroundPicture, uploadProfilePicture, useAuth } from "../Firebase";
+import { getUserInfo, getUsersOwnTrees, logout, profileInitial, updateUserInfo, uploadHeaderBackgroundPicture, uploadProfilePicture, useAuth } from "../Firebase";
 
 import "../style/UserPages.css"
 import { Error403, Error404 } from "./ErrorPages";
@@ -58,11 +58,17 @@ export function UserProfile() {
     const [trees, setTrees] = useState();
     const [error, setError] = useState();
 
+
+
+    useEffect(() => {
+        document.body.classList.remove("navHidden")
+    }, [])
+
     useEffect(() => {
         getUserInfo(params.id).then(res => {
             if (res !== undefined) {
                 setUser(res);
-                setDate(new Date(Number(res.info.joinedat)))
+                setDate(new Date(Number(res.info.joined)))
             }
             if (res === undefined) {
                 setReload(1)
@@ -124,10 +130,10 @@ export function UserProfile() {
                                     <span>{user.about.displayname}</span>
                                 </div>
                             </div>
-                            {(user.organisation?.name === currentUserDetails?.organisation?.name || user.settings?.showOrganisation) && user.organisation?.name && user.organisation?.roles && <div className="sidebar-item roles">
-                                <h3>{user.organisation.name}</h3>
+                            {(user.organization?.name === currentUserDetails?.organization?.name || user.settings?.showOrganization) && user.organization?.name && user.organization?.roles && <div className="sidebar-item roles">
+                                <h3>{user.organization.name}</h3>
                                 <ul>
-                                    {user.organisation.roles.map((role, index) => {
+                                    {user.organization.roles.map((role, index) => {
                                         return <Link to={"/" + routeDev + "/" + params.id} key={index} >
                                             {role}
                                         </Link>
@@ -172,7 +178,7 @@ export function UserProfile() {
                                     </li>
                                 </ul>
                             </div>
-                            {user?.links[0] && (currentUser?.uid === params.id || user.settings.showUserLinks) && <div className="sidebar-item links">
+                            {!treeLoading && user.links && user?.links[0] && (currentUser?.uid === params.id || user.settings.showUserLinks) && <div className="sidebar-item links">
                                 <ul>
                                     {user.links.map((link, index) => {
                                         if (link.includes("https://") || link.includes("http://")) {
@@ -193,7 +199,7 @@ export function UserProfile() {
                                     })}
                                 </ul>
                             </div>}
-                            {trees && user.settings.showUserTrees === true && <div className="sidebar-item trees">
+                            {trees && trees[0] && user.settings.showUserTrees === true && <div className="sidebar-item trees">
                                 {trees.map((tree, index) => {
                                     return <Link key={index} to={"/" + routeTree + "/" + tree.id}>/{tree.id}</Link>
                                 })}
@@ -206,10 +212,6 @@ export function UserProfile() {
                             </>}
                         </div>
                         <div className="mainbar"></div>
-                    </div>
-                    <div className="background">
-                        {user.images.backgroundURL?.split(".").pop().split("?")[0] === "webm" && <video src={user.images.backgroundURL} alt="" autoPlay muted loop ></video>}
-                        {user.images.backgroundURL?.split(".").pop().split("?")[0] !== "webm" && <img src={user.images.backgroundURL} alt=""></img>}
                     </div>
                 </div>
             </section>
@@ -234,8 +236,6 @@ export function UserProfileEdit() {
     const [location, setLocation] = useState("");
     const [profilePicture, setProfilePicture] = useState();
     const [profilePictureFile, setProfilePictureFile] = useState();
-    const [backgroundPicture, setBackgroundPicture] = useState();
-    const [backgroundPictureFile, setBackgroundPictureFile] = useState();
     const [headerPicture, setHeaderPicture] = useState();
     const [headerPictureFile, setHeaderPictureFile] = useState();
 
@@ -259,7 +259,6 @@ export function UserProfileEdit() {
                 setLinkList(res.links)
                 setProfilePicture(res.images.photoURL)
                 setHeaderPicture(res.images.headerURL)
-                setBackgroundPicture(res.images.backgroundURL)
             }
         })
     }, [params.id])
@@ -279,7 +278,7 @@ export function UserProfileEdit() {
         setDisplayname(displayNameRef.current.value);
     };
 
-    const handleStectmentChange = (e) => {
+    const handleStatementChange = (e) => {
         e.preventDefault();
         setStatement(statementRef.current.value);
     };
@@ -329,16 +328,6 @@ export function UserProfileEdit() {
         uploadProfilePicture(profilePictureFile, currentUser, setLoading)
     }
 
-    const handleBackgroundPictureChange = (e) => {
-        e.preventDefault();
-        setBackgroundPictureFile(e.target.files[0])
-    }
-
-    function handleBackgroundPictureClick(e) {
-        e.preventDefault();
-        uploadBackgroundPicture(backgroundPictureFile, currentUser, setLoading)
-    }
-
     const handleHeaderPictureChange = (e) => {
         e.preventDefault();
         setHeaderPictureFile(e.target.files[0])
@@ -359,17 +348,6 @@ export function UserProfileEdit() {
         // free memory when ever this component is unmounted
         return () => URL.revokeObjectURL(objectUrl)
     }, [profilePictureFile])
-
-    useEffect(() => {
-        if (!backgroundPictureFile) return
-
-        // create the preview
-        const objectUrl = URL.createObjectURL(backgroundPictureFile)
-        setBackgroundPicture(objectUrl)
-
-        // free memory when ever this component is unmounted
-        return () => URL.revokeObjectURL(objectUrl)
-    }, [backgroundPictureFile])
 
     useEffect(() => {
         if (!headerPictureFile) return
@@ -393,7 +371,7 @@ export function UserProfileEdit() {
                 gender: gender,
                 pronouns: pronouns,
                 location: location,
-                joinedat: user.info.joinedat,
+                joined: user.info.joined,
             },
             links: linkList
         }, currentUser, setLoading)
@@ -429,11 +407,6 @@ export function UserProfileEdit() {
                                         <input type="file" id="headerPicture" onChange={handleHeaderPictureChange} accept=".jpg, .jpeg, .png, .apng, .webp, .webm, .gif" />
                                         <button type="submit" disabled={!headerPictureFile || loading}>Update</button>
                                     </form>
-                                    <label htmlFor="backgroundPicture">Background Picture</label>
-                                    <form action="" onSubmit={handleBackgroundPictureClick}>
-                                        <input type="file" id="backgroundPicture" onChange={handleBackgroundPictureChange} accept=".jpg, .jpeg, .png, .apng, .webp, .webm, .gif" />
-                                        <button type="submit" disabled={!backgroundPictureFile || loading}>Update</button>
-                                    </form>
                                 </div>
                                 <form action="" onSubmit={handleSubmit}>
                                     <div className="sidebar-item">
@@ -452,7 +425,7 @@ export function UserProfileEdit() {
                                     </div>
                                     <div className="sidebar-item">
                                         <div>
-                                            <textarea name="statement" id="statement" ref={statementRef} cols="30" rows="10" value={statement} onChange={handleStectmentChange} autoComplete="off"></textarea>
+                                            <textarea name="statement" id="statement" ref={statementRef} cols="30" rows="10" value={statement} onChange={handleStatementChange} autoComplete="off"></textarea>
                                         </div>
                                     </div>
                                     <div className="sidebar-item">
@@ -514,8 +487,6 @@ export function UserProfileEdit() {
                             </div>
                             <div className="mainbar"></div>
                         </div>
-                        {backgroundPicture?.split(".").pop().split("?")[0] === "webm" && <video className="background" src={backgroundPicture} alt="" autoPlay muted loop ></video>}
-                        {backgroundPicture?.split(".").pop().split("?")[0] !== "webm" && <img className="background" src={backgroundPicture} alt=""></img>}
                     </div>
                 </section>
             </>}
