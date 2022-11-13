@@ -3,7 +3,7 @@ import { Helmet } from "react-helmet";
 import ReactMarkdown from "react-markdown";
 import { Link, Navigate, useParams } from "react-router-dom";
 import { application, network, routeUser, separator, url } from "../App";
-import { claimTree, deleteTree, getTreeInfo, getUserInfo, getUsersOwnTrees, getUsersTrees, updateTree, useAuth } from "../Firebase";
+import { claimTree, deleteTree, getTreeInfo, getUserInfo, getUsersOwnTrees, getUsersTrees, updateTree, uploadTreeHeader, useAuth } from "../Firebase";
 
 import "../style/TreePages.css"
 import { Error403 } from "./ErrorPages";
@@ -82,10 +82,11 @@ export function TreeIndex() {
                 </Helmet>
                 <section className="tree">
                     <div className="container">
-                        {tree.headerImage && <div className="header">
-                            <img src="tree.headerImage" alt="" />
+                        {tree.images?.headerURL && <div className="header">
+                            {tree.images?.headerURL?.split(".").pop().split("?")[0] === "webm" && <video className="background" src={tree.images?.headerURL} alt="" autoPlay muted loop ></video>}
+                            {tree.images?.headerURL?.split(".").pop().split("?")[0] !== "webm" && <img className="background" src={tree.images?.headerURL} alt=""></img>}
                         </div>}
-                        {!tree.headerImage && <div className="spacer" />}
+                        {!tree.images?.headerURL && <div className="spacer" />}
                         <div className="main">
                             <div className="sidebar">
                                 <div className="sidebar-item info">
@@ -123,9 +124,9 @@ export function TreeIndex() {
                             <div className="mainbar">
                                 <div className="links">
                                     <ul>
-                                        {tree.settings.useOriginalUserLinks === true && treeLinks && <>
-                                            {treeLinks && <span>User Has No Links</span>}
-                                            {treeLinks[0] && treeLinks.map((link, index) => {
+                                        {tree.settings.useOriginalUserLinks === true && treeLinks !== undefined && <>
+                                            {treeLinks[0] === undefined && <span>User Has No Links</span>}
+                                            {treeLinks[0] !== undefined && treeLinks?.map((link, index) => {
                                                 if (link.includes("https://") || link.includes("http://")) {
                                                     return <a key={index} href={link}>
                                                         <img className="favicon" src={"https://t3.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=" + link + "/post&size=50"} alt="" />
@@ -214,8 +215,8 @@ export function TreeDashboard() {
                                 return <Link to={"../" + tree.id} key={index} className="search-item">
                                     <h3>{tree.data.title}</h3>
                                     <span>/{tree.id}</span>
-                                    {!tree.data.images?.backgroundURL && <TreeSearchItemBackground />}
-                                    {tree.data.images?.backgroundURL && <img src={tree.data.images.backgroundURL} alt="" />}
+                                    {!tree.data.images?.headerURL && <TreeSearchItemBackground />}
+                                    {tree.data.images?.headerURL && <img src={tree.data.images.headerURL} alt="" />}
                                 </Link>
                             })}
                         </ul>
@@ -227,8 +228,8 @@ export function TreeDashboard() {
                             return <Link to={"../" + tree.id} key={index} className="search-item">
                                 <h3>{tree.data.title}</h3>
                                 <span>/{tree.id}</span>
-                                {!tree.data.images?.backgroundURL && <TreeSearchItemBackground />}
-                                {tree.data.images?.backgroundURL && <img src={tree.data.images.backgroundURL} alt="" />}
+                                {!tree.data.images?.headerURL && <TreeSearchItemBackground />}
+                                {tree.data.images?.headerURL && <img src={tree.data.images.headerURL} alt="" />}
                             </Link>
                         })}
                     </ul>
@@ -245,6 +246,8 @@ export function TreeEdit() {
     const [treeLinks, setTreeLinks] = useState([]);
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
+    const [headerPictureFile, setHeaderPictureFile] = useState();
+    const [headerPictureURL, setHeaderPictureURL] = useState();
     const [authedUser, setAuthedUser] = useState();
     const [showOriginalUser, setShowOriginalUser] = useState(true);
     const [showAuthedUser, setShowAuthedUser] = useState(true);
@@ -265,6 +268,7 @@ export function TreeEdit() {
                     setShowOriginalUserLinks(res.settings.useOriginalUserLinks)
                 }
                 if (!res.showOriginalUserLinks) { setTreeLinks(res.links) }
+                if (res.images?.headerURL) { setHeaderPictureURL(res.images.headerURL) }
             }
             setLoading(false)
             setReload(0)
@@ -358,22 +362,51 @@ export function TreeEdit() {
         if (treeLinks) { setTreeLinks([...treeLinks, { title: "", url: "", imageURL: "" }]) };
     };
 
+    const handleHeaderChange = (e) => {
+        e.preventDefault();
+        setHeaderPictureFile(e.target.files[0])
+    }
+
+    const handleHeaderSave = (e) => {
+        e.preventDefault();
+        uploadTreeHeader(headerPictureFile, params.id, setLoading)
+    }
+
+    useEffect(() => {
+        if (!headerPictureFile) return
+
+        // create the preview
+        const objectUrl = URL.createObjectURL(headerPictureFile)
+        setHeaderPictureURL(objectUrl)
+
+        // free memory when ever this component is unmounted
+        return () => URL.revokeObjectURL(objectUrl)
+    }, [headerPictureFile])
 
     return <>
         {!loading && <>
             {canView && tree && <>
+                {console.log(tree.images?.headerURL)}
                 <section className="tree">
                     <form className="container" onSubmit={handleSubmit}>
-                        {tree.headerImage && <div className="header">
-                            <img src="tree.headerImage" alt="" />
+                        {headerPictureURL && <div className="header">
+                            {headerPictureURL?.split(".").pop().split("?")[0] === "webm" && <video className="background" src={headerPictureURL} alt="" autoPlay muted loop ></video>}
+                            {headerPictureURL?.split(".").pop().split("?")[0] !== "webm" && <img className="background" src={headerPictureURL} alt=""></img>}
                         </div>}
-                        {!tree.headerImage && <div className="spacer" />}
+                        {!headerPictureURL && <div className="spacer" />}
                         <div className="main">
                             <div className="sidebar">
                                 <div className="sidebar-item info">
                                     <input type="text" value={title} onChange={handleTitleChange}></input>
                                 </div>
                                 <textarea className="sidebar-item markdown" value={description} onChange={handleDescriptionChange} />
+                                <div className="sidebar-item">
+                                    <label htmlFor="profilePicture">Profile Picture</label>
+                                    <div >
+                                        <input type="file" id="profilePicture" onChange={handleHeaderChange} accept=".jpg, .jpeg, .png, .apng, .webp, .webm, .gif" />
+                                        <button onClick={handleHeaderSave} disabled={!headerPictureFile || loading}>Update</button>
+                                    </div>
+                                </div>
                                 <div className="sidebar-item">
                                     <label htmlFor="showAuthedUser">showAuthedUser</label>
                                     <input type="checkbox" name="showAuthedUser" id="showAuthedUser" checked={showAuthedUser} onChange={handleShowAuthedUserChange} />

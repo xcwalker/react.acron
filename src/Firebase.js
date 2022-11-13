@@ -413,6 +413,41 @@ export async function updateTree(treeID, currentUser, setLoading, setReload, ori
     });
 }
 
+export async function uploadTreeHeader(file, treeID, setLoading) {
+    const fileEXT = file.name.split(".").pop();
+    if (fileEXT !== "jpg" && fileEXT !== "jpeg" && fileEXT !== "png" && fileEXT !== "apng" && fileEXT !== "webp" && fileEXT !== "webm" && fileEXT !== "gif") {
+        console.error("Unsupported Format");
+        alert("Unsupported Format")
+        return
+    }
+    const fileRef = ref(storage, "images/tree/" + treeID + '-header.' + fileEXT);
+
+    if (setLoading) setLoading(true);
+
+    await uploadBytes(fileRef, file);
+    const photoURL = await getDownloadURL(fileRef);
+
+    try {
+        await updateDoc(doc(db, "trees", treeID), {
+            "images.headerURL": photoURL
+        })
+    } catch (e) {
+        console.error("Error adding document (tE): ", e);
+        toast('Error Updating Tree Header!', {
+            icon: 'error',
+            style: toastStyle_error,
+        });
+        if (setLoading) setLoading(false);
+        return
+    }
+
+    if (setLoading) setLoading(false);
+    toast('Updated Tree Header!', {
+        icon: 'check_circle',
+        style: toastStyle_success,
+    });
+}
+
 export async function getUsersOwnTrees(currentUser, setLoading) {
     setLoading(true)
 

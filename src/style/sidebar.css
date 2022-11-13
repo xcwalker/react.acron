@@ -52,7 +52,11 @@ menu .container {
     transition: var(--quick-transition-color), var(--quick-transition-background_color), var(--quick-transition-translate);
 }
 
-.scrolled menu .container,
+.scrolled menu .container {
+    /* translate */
+    translate: 100% 0;
+}
+
 .navHidden menu .container {
     /* translate */
     translate: 100% 0 !important;
