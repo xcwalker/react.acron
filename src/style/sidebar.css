@@ -213,7 +213,6 @@ main {
     transition: width 0.25s ease-in-out;
 }
 
-body.signedIn:not(.scrolled) main {
-    /* sizing */
-    /* width: calc(100% - 52px); */
-}
+/* body.signedIn:not(.scrolled) main {
+    width: calc(100% - 52px);
+} */
