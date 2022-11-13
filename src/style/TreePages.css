@@ -5,7 +5,7 @@ section.tree {
 }
 
 section.tree .container {
-    /* spacing */    
+    /* spacing */
     padding: min(calc(var(--padding) * 4), max(4vw, var(--padding)));
 
     /* flex */
@@ -1074,7 +1074,8 @@ section.treeUser .container ul .search-item .background {
 }
 
 section.treeSearch .container .results ul .search-item img,
-section.treeUser .container ul .search-item img {
+section.treeUser .container ul .search-item img,
+section.treeUser .container ul .search-item video {
     /* position */
     position: absolute;
     inset: 0;
@@ -1105,7 +1106,10 @@ section.treeSearch .container .results ul .search-item:focus img,
 section.treeSearch .container .results ul .search-item:focus-within img,
 section.treeUser .container ul .search-item:hover img,
 section.treeUser .container ul .search-item:focus img,
-section.treeUser .container ul .search-item:focus-within img {
+section.treeUser .container ul .search-item:focus-within img,
+section.treeUser .container ul .search-item:hover video,
+section.treeUser .container ul .search-item:focus video,
+section.treeUser .container ul .search-item:focus-within video {
     /* lighten */
     opacity: 0.7;
 

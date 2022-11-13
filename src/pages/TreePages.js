@@ -216,7 +216,10 @@ export function TreeDashboard() {
                                     <h3>{tree.data.title}</h3>
                                     <span>/{tree.id}</span>
                                     {!tree.data.images?.headerURL && <TreeSearchItemBackground />}
-                                    {tree.data.images?.headerURL && <img src={tree.data.images.headerURL} alt="" />}
+                                {tree.data.images?.headerURL && <>
+                                    {tree.data.images?.headerURL?.split(".").pop().split("?")[0] === "webm" && <video src={tree.data.images?.headerURL} alt="" autoPlay muted loop ></video>}
+                                    {tree.data.images?.headerURL?.split(".").pop().split("?")[0] !== "webm" && <img src={tree.data.images?.headerURL} alt=""></img>}
+                                </>}
                                 </Link>
                             })}
                         </ul>
@@ -229,7 +232,10 @@ export function TreeDashboard() {
                                 <h3>{tree.data.title}</h3>
                                 <span>/{tree.id}</span>
                                 {!tree.data.images?.headerURL && <TreeSearchItemBackground />}
-                                {tree.data.images?.headerURL && <img src={tree.data.images.headerURL} alt="" />}
+                                {tree.data.images?.headerURL && <>
+                                    {tree.data.images?.headerURL?.split(".").pop().split("?")[0] === "webm" && <video src={tree.data.images?.headerURL} alt="" autoPlay muted loop ></video>}
+                                    {tree.data.images?.headerURL?.split(".").pop().split("?")[0] !== "webm" && <img src={tree.data.images?.headerURL} alt=""></img>}
+                                </>}
                             </Link>
                         })}
                     </ul>
