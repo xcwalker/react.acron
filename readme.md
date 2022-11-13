@@ -20,13 +20,13 @@ Created by [**xcwalker.dev**](https://xcwalker.dev)
 | **Create a Post**               | Feed             | Todo               | Create a new post                                                    |                                                                           |
 | **View a Post**                 | Feed             | Todo               | View a post and be able to comment                                   |                                                                           |
 | **View a specific comment**     | Feed             | Todo               | With a comment and view the original message                         |                                                                           |
-| **DevReg™**                     | Developer        | Todo               | Will allow a user to apply to join an orgainisations developer pool. |                                                                           |
-| **DevDash™**                    | Developer        | Todo               | Will allow devs to access the organisations tools.                   |                                                                           |
-| **DevPro™**                     | Developer        | Todo               | The developers profile (seperate to the user profile or the same). |                                                                           |
+| **DevReg™**                     | Developer        | Todo               | Will allow a user to apply to join an organizations developer pool. |                                                                           |
+| **DevDash™**                    | Developer        | Todo               | Will allow the devs to access the organizations tools.                   |                                                                           |
+| **DevPro™**                     | Developer        | Todo               | The developers profile (separate to the user profile or the same). |                                                                           |
 | **DevPost™**                    | Developer        | Todo               | Will allow developers to query each other with a system like "feed". |                                                                           |
 | **DevBoard™**                   | Developer        | Todo               | Shows the current unsolved questions.                                |                                                                           |
 | **DevCon™**                     | Developer        | Todo               | Allows the developers to contact others                              |                                                                           |
-| **DevApps™**                    | Developer        | Todo               | For the management to grant DevReg™ applicants to the organisation.  |                                                                           |
+| **DevApps™**                    | Developer        | Todo               | For the management to grant DevReg™ applicants to the organization.  |                                                                           |
 | **Settings**                    | Accounts         | Todo               | Allows the user to view/edit settings.                               |                                                                           |
 
 

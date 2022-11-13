@@ -4,7 +4,15 @@ section.tree {
     --gap: 10px;
 }
 
-section.tree .container {}
+section.tree .container {
+    /* spacing */    
+    padding: min(calc(var(--padding) * 4), max(4vw, var(--padding)));
+
+    /* flex */
+    display: flex;
+    flex-direction: column;
+    gap: var(--padding);
+}
 
 /*** header ***/
 section.tree .container .spacer {
@@ -20,10 +28,6 @@ section.tree .container .header {
     /* sizing */
     width: 100%;
     height: 375px;
-
-    /* navbar spacing */
-    padding: min(calc(var(--padding) * 4), max(4vw, var(--padding)));
-    padding-bottom: 0;
 
     /* flex */
     display: flex;
@@ -44,9 +48,6 @@ section.tree .container .header .background {
 
 /**** main ****/
 section.tree .container .main {
-    /* sizing */
-    padding: min(calc(var(--padding) * 4), max(4vw, var(--padding)));
-    padding-top: var(--padding);
 
     /* flex */
     display: flex;
@@ -109,7 +110,7 @@ section.tree .container .main .sidebar .sidebar-item h3 {
     font-weight: 700;
     font-size: 16px;
 
-    /* oveflow */
+    /* overflow */
     overflow: hidden;
 
     /* transition */
@@ -541,7 +542,7 @@ section.tree .container .main .sidebar .sidebar-item .avatarPreview {
     width: 100%;
     aspect-ratio: 1/1;
 
-    /* stling */
+    /* styling */
     border-radius: 50%;
 }
 
