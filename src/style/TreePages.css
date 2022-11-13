@@ -672,7 +672,7 @@ section.tree .container .main .sidebar .sidebar-item form.type-2 button {
 }
 
 /*** mainbar ***/
-section.tree .container .main .mainbar {}
+/* section.tree .container .main .mainbar {} */
 
 section.tree .container .main .mainbar .links {
     /* spacing */
@@ -891,7 +891,7 @@ section.treeUser .container h2 {
 }
 
 /** results **/
-section.treeSearch .container .results {}
+/* section.treeSearch .container .results {} */
 
 section.treeSearch .container .results span.no-results {
     /* sizing */
