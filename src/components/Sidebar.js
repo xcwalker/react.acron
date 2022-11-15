@@ -10,6 +10,20 @@ export function Sidebar() {
     const currentUser = useAuth();
     const [photoURL, setPhotoURL] = useState("https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png");
     const [toolTip, setToolTip] = useState()
+    const currentPage = document.documentElement.getAttribute("data-current-page");
+
+    useEffect(() => {
+        if (!document.querySelector("menu .container")) return
+
+        document.querySelector("menu .container").querySelectorAll("a")
+            .forEach(link => {
+                if (link.getAttribute("data-page") === currentPage) {
+                    link.setAttribute("data-current-page", "true")
+                } else {
+                    link.setAttribute("data-current-page", "false")
+                }
+            })
+    }, [currentPage])
 
     useEffect(() => {
         document.body.classList.remove("signedIn")
@@ -21,8 +35,8 @@ export function Sidebar() {
 
     const handleMouseEnter = (e) => {
         setToolTip({
-            text: e.target.getAttribute("data-hover-text"), 
-            top: e.target.getBoundingClientRect().top, 
+            text: e.target.getAttribute("data-hover-text"),
+            top: e.target.getBoundingClientRect().top,
             left: e.target.getBoundingClientRect().left
         })
     }
@@ -30,34 +44,34 @@ export function Sidebar() {
     const handleMouseLeave = (e) => {
         setToolTip()
     }
-    
+
     return <>
         {currentUser && <>
             <menu>
                 <div className="container">
                     <ul className="upper">
-                        <Link to="/" className="link material-symbols-outlined" data-hover-text="Home" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>home</Link>
-                        <Link to={routeSearch} className="link material-symbols-outlined" data-hover-text="Search" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>search</Link>
-                        <Link to={routePost} className="link material-symbols-outlined" data-hover-text="Feed" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>dynamic_feed</Link>
-                        <Link to={routePost + "/" + routePostNew} className="link material-symbols-outlined" data-hover-text="New Post" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>add</Link>
+                        <Link to="/" className="link material-symbols-outlined" data-hover-text="Home" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} data-page="home">home</Link>
+                        <Link to={routeSearch} className="link material-symbols-outlined" data-hover-text="Search" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} data-page="search">search</Link>
+                        <Link to={routePost} className="link material-symbols-outlined" data-hover-text="Feed" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} data-page="feed">dynamic_feed</Link>
+                        <Link to={routePost + "/" + routePostNew} className="link material-symbols-outlined" data-hover-text="New Post" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} data-page="feed new post">add</Link>
                         <div className="separator" />
-                        <Link to={routeTree + "/dashboard"} className="link material-symbols-outlined" data-hover-text="TreeDash™" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>account_tree</Link>
-                        <Link to={routeDev + "/dashboard"} className="link material-symbols-outlined" data-hover-text="DevDash™" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>dashboard</Link>
+                        <Link to={routeTree + "/dashboard"} className="link material-symbols-outlined" data-hover-text="TreeDash™" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} data-page="tree dashboard">account_tree</Link>
+                        <Link to={routeDev + "/dashboard"} className="link material-symbols-outlined" data-hover-text="DevDash™" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} data-page="dev dashboard">dashboard</Link>
                     </ul>
                     <ul className="lower">
-                        <Link to={routeAbout} className="link material-symbols-outlined"data-hover-text="Help" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>help</Link>
-                        <Link to={routeDev + "/" + currentUser.uid} className="link material-symbols-outlined" data-hover-text="DevPro™" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>webhook</Link>
-                        <Link to={routeUser + "/" + currentUser.uid} className="avatar" data-hover-text="Profile" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+                        <Link to={routeAbout} className="link material-symbols-outlined" data-hover-text="Help" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} data-page="about">help</Link>
+                        <Link to={routeDev + "/" + currentUser.uid} className="link material-symbols-outlined" data-hover-text="DevPro™" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} data-page="dev user current">webhook</Link>
+                        <Link to={routeUser + "/" + currentUser.uid} className="avatar" data-hover-text="Profile" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} data-page="user current">
                             <img src={photoURL} alt="Avatar" className="avatar" data-hover-text="Profile" />
                         </Link>
-                        <Link to={routeAccount + "/edit"} className="link alt material-symbols-outlined"data-hover-text="Settings" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>settings</Link>
+                        <Link to={routeAccount + "/edit"} className="link alt material-symbols-outlined" data-hover-text="Settings" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} data-page="settings">settings</Link>
                     </ul>
                 </div>
             </menu>
             <section className="sidebar-tooltip">
                 <div className="container">
                     {toolTip && <>
-                    <span style={{top: toolTip.top, right: document.body.clientWidth - toolTip.left + 10}} className="tooltip">{toolTip.text}</span>
+                        <span style={{ top: toolTip.top, right: document.body.clientWidth - toolTip.left + 7.5 }} className="tooltip">{toolTip.text}</span>
                     </>}
                 </div>
             </section>

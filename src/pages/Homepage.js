@@ -8,6 +8,10 @@ import "../style/HomePage.css"
 export function Homepage() {
     const currentUser = useAuth();
 
+    useEffect(() => {
+        document.documentElement.setAttribute("data-current-page", "home")
+    }, [])
+
     return <>
         {/* not logged in */}
         {!currentUser && <>

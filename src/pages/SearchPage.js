@@ -19,6 +19,10 @@ export function SearchPage() {
     const [placeholders, setPlaceholders] = useState()
     const [placeholdersRunning, setPlaceholdersRunning] = useState(false)
     const [placeholder, setPlaceholder] = useState("")
+    
+    useEffect(() => {
+        document.documentElement.setAttribute("data-current-page", "search")
+    }, [])
 
     useEffect(() => {
         fetch("https://raw.githubusercontent.com/baliw/words/master/adjectives.json")

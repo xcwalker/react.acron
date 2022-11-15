@@ -41,6 +41,10 @@ export function AccountLogin() {
 
     const page = "Login"
 
+    useEffect(() => {
+        document.documentElement.setAttribute("data-current-page", page)
+    }, [])
+
     async function handleSubmit(e) {
         e.preventDefault();
         setLoading(true);
@@ -86,6 +90,10 @@ export function AccountRegister() {
     const passwordCheckRef = useRef();
 
     const page = "Register"
+
+    useEffect(() => {
+        document.documentElement.setAttribute("data-current-page", page)
+    }, [])
 
     async function HandleSubmit(e) {
         e.preventDefault();
@@ -134,6 +142,10 @@ export function AccountForgot() {
     const emailRef = useRef();
 
     const page = "Forgot Password"
+
+    useEffect(() => {
+        document.documentElement.setAttribute("data-current-page", page)
+    }, [])
 
     async function handleSubmit(e) {
         e.preventDefault();
@@ -204,6 +216,10 @@ export function AccountSetup() {
     const imageRef = useRef();
 
     const page = "Account Setup"
+
+    useEffect(() => {
+        document.documentElement.setAttribute("data-current-page", page)
+    }, [])
 
     useEffect(() => {
         document.body.classList.add("navHidden")

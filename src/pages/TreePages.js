@@ -29,6 +29,10 @@ export function TreeIndex() {
     const [user, setUser] = useState();
     const [reload, setReload] = useState(0);
     const [loading, setLoading] = useState(true);
+    
+    useEffect(() => {
+        document.documentElement.setAttribute("data-current-page", "tree")
+    }, [])
 
     useEffect(() => {
         getTreeInfo(params.id).then(res => {
@@ -192,6 +196,10 @@ export function TreeDashboard() {
     const [loading, setLoading] = useState();
     const [userTrees, setUserTrees] = useState();
     const [userOwnTrees, setUserOwnTrees] = useState();
+    
+    useEffect(() => {
+        document.documentElement.setAttribute("data-current-page", "tree dashboard")
+    }, [])
 
     useEffect(() => {
         if (!currentUser) return
@@ -261,6 +269,10 @@ export function TreeEdit() {
     const [reload, setReload] = useState(0);
     const [loading, setLoading] = useState(true);
     const [canView, setCanView] = useState(false);
+    
+    useEffect(() => {
+        document.documentElement.setAttribute("data-current-page", "tree")
+    }, [])
 
     useEffect(() => {
         getTreeInfo(params.id).then(res => {

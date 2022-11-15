@@ -58,10 +58,9 @@ export function UserProfile() {
     const [trees, setTrees] = useState();
     const [error, setError] = useState();
 
-
-
     useEffect(() => {
         document.body.classList.remove("navHidden")
+        document.documentElement.setAttribute("data-current-page", "user")
     }, [])
 
     useEffect(() => {
@@ -78,6 +77,9 @@ export function UserProfile() {
     }, [params.id, reload])
 
     useEffect(() => {
+        if (currentUser?.uid === params.id) {
+            document.documentElement.setAttribute("data-current-page", "user current")
+        }
         if (currentUser?.uid === params.id && reload === 1) {
             profileInitial(currentUser)
             setReload(0)
@@ -243,6 +245,10 @@ export function UserProfileEdit() {
     const firstNameRef = useRef();
     const lastNameRef = useRef();
     const statementRef = useRef();
+    
+    useEffect(() => {
+        document.documentElement.setAttribute("data-current-page", "user edit")
+    }, [])
 
     useEffect(() => {
         getUserInfo(params.id).then(res => {

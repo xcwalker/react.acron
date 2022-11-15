@@ -28,10 +28,17 @@ menu .container {
     position: absolute;
     inset: 0;
     left: auto;
+
+    /* variables */
+    --margin: 10px;
+    --padding: 10px;
+    --radius: 10px;
+
     /* sizing */
-    height: 100%;
+    height: calc(100% - (2 * var(--margin)));
     width: 52px;
-    padding: 10px;
+    padding: var(--padding) 0;
+    margin: var(--margin);
 
     /* flex */
     display: flex;
@@ -42,6 +49,7 @@ menu .container {
 
     /* styling */
     background-color: var(--background-color);
+    border-radius: var(--radius);
 
     /* scroll */
     scrollbar-width: none;
@@ -54,12 +62,12 @@ menu .container {
 
 .scrolled menu .container {
     /* translate */
-    translate: 100% 0;
+    translate: calc(100% + (2 * var(--margin))) 0;
 }
 
 .navHidden menu .container {
     /* translate */
-    translate: 100% 0 !important;
+    translate: calc(100% + (2 * var(--margin))) 0 !important;
 }
 
 .scrolled.scrolledUp menu .container,
@@ -70,9 +78,10 @@ menu .container:hover {
 }
 
 menu .container ul {
-    /* spacing */
+    /* sizing */
     margin: 0;
     padding: 0;
+    width: 100%;
 
     /* flex */
     display: flex;
@@ -84,7 +93,7 @@ menu .container ul {
 
 menu .container ul .separator {
     /* sizing */
-    width: calc(100% + 5px);
+    width: calc(100% - 15px);
     height: 2px;
 
     /* styling */
@@ -112,10 +121,45 @@ menu .container ul a.link {
     transition: var(--quick-transition-scale), var(--quick-transition-color), var(--quick-transition-rotate);
 }
 
+menu .container ul a.link::before {
+    /* content */
+    content: "";
+
+    /* position */
+    position: absolute;
+    inset: 0;
+    top: calc(var(--offset) * -1);
+    left: auto;
+    right: calc((var(--padding) * -1) + 0px);
+
+    /* sizing */
+    width: 2px;
+    height: calc(100% + (2 * var(--offset)));
+
+    /* styling */
+    background-color: currentColor;
+    border-top-left-radius: 2px;
+    border-bottom-left-radius: 2px;
+
+    /* variables */
+    --offset: 5px;
+
+    /* transform */
+    translate: 100% 0;
+
+    /* transition */
+    transition: var(--quick-transition-translate);
+}
+
+menu .container ul a.link:hover::before,
+menu .container ul a.link[data-current-page = "true"]::before {
+    /* transform */
+    translate: 0 0;
+}
+
 menu .container ul a.link:hover {
     /* styling */
     color: var(--foreground-alt-color);
-    scale: 1.1;
 }
 
 menu .container ul a.link:focus {
@@ -125,15 +169,10 @@ menu .container ul a.link:focus {
     outline-offset: 4px;
 }
 
+menu .container ul a.link[data-current-page = "true"],
 menu .container ul a.link:active {
     color: var(--selector-color);
     outline: 2px solid transparent;
-    scale: 0.9;
-}
-
-menu .container ul a.link.alt:hover {
-    /* styling */
-    rotate: 90deg;
 }
 
 menu .container ul a.link .hover {
@@ -180,6 +219,7 @@ menu .container ul a.avatar:focus-visible {
     background-color: var(--foreground-color);
 }
 
+menu .container ul a.avatar[data-current-page = "true"],
 menu .container ul a.avatar:active {
     background-color: var(--form-color-selector);
 }
@@ -198,6 +238,7 @@ menu .container ul a.avatar .avatar {
 
 }
 
+menu .container ul a.avatar[data-current-page = "true"] .avatar,
 menu .container ul a.avatar:hover .avatar,
 menu .container ul a.avatar:focus .avatar,
 menu .container ul a.avatar:focus-visible .avatar {
