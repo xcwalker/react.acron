@@ -240,6 +240,11 @@ export async function updateUserInfo(arg, currentUser, setLoading) {
     if (arg.info.location === undefined) { arg.info.location = "" }
     if (arg.links === undefined) { arg.links = [] }
 
+    if (arg.settings === undefined) {arg.settings = {
+        showUserLinks: true,
+        showUserTrees: true,
+        showOrganization: false
+    }}
     if (arg.settings.showUserLinks === undefined) { arg.settings.showUserLinks = true }
     if (arg.settings.showUserTrees === undefined) { arg.settings.showUserTrees = true }
     if (arg.settings.showOrganization === undefined) { arg.settings.showOrganization = false }
