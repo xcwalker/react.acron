@@ -48,7 +48,7 @@ export function Sidebar() {
     return <>
         {currentUser && <>
             <menu>
-                <div className="container">
+                <div className="container" tabIndex="-1">
                     <ul className="upper">
                         <Link to="/" className="link material-symbols-outlined" data-hover-text="Home" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} data-page="home">home</Link>
                         <Link to={routeSearch} className="link material-symbols-outlined" data-hover-text="Search" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} data-page="search">search</Link>

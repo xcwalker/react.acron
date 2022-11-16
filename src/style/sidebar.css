@@ -72,7 +72,8 @@ menu .container {
 
 .scrolled.scrolledUp menu .container,
 menu:hover .container,
-menu .container:hover {
+menu .container:hover,
+menu .container:focus-within {
     /* translate */
     translate: 0 0;
 }
