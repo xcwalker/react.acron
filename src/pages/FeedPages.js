@@ -7,7 +7,7 @@ export function Feed() {
 
     return <>Feed</>
 }
-function FeedPost() { }
+// function FeedPost() {}
 export function FeedNewPost() {
     useEffect(() => {
         document.documentElement.setAttribute("data-current-page", "feed new post")
