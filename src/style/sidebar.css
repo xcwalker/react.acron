@@ -3,7 +3,7 @@ menu {
     position: fixed;
     inset: 0;
     left: auto;
-    z-index: 998;
+    z-index: 999;
 
     /* sizing */
     height: 100%;
@@ -50,6 +50,7 @@ menu .container {
     /* styling */
     background-color: var(--background-color);
     border-radius: var(--radius);
+    box-shadow: 0 0 10px black;
 
     /* scroll */
     scrollbar-width: none;
@@ -258,3 +259,37 @@ main {
 /* body.signedIn:not(.scrolled) main {
     width: calc(100% - 52px);
 } */
+
+/**** tooltip ****/
+span.tooltip {
+    /* position */
+    position: fixed;
+    z-index: 998;
+
+    /* sizing */
+    padding: 10px;
+
+    /* styling */
+    color: var(--foreground-color-200);
+    background-color: var(--background-color-200);
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    box-shadow: 0 0 10px black;
+
+    /* text */
+    font-weight: 600;
+    font-size: 16px;
+
+    /* animation */
+    animation: slide-in 0.125s ease-in-out forwards;
+}
+
+@keyframes slide-in {
+    from {
+        translate: 10px 0;
+    }
+
+    to {
+        translate: 0 0;
+    }
+}
