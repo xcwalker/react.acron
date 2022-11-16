@@ -112,8 +112,8 @@ export function UserProfile() {
     return <>
         {user && <>
             <Helmet>
-                <title>{user.about.displayname + " on " + application + " " + separator + " " + network}</title>
-                <meta name="description" content={user.about.displayname + " on " + application + " " + separator + " A website for listing all of xcwalker's projects " + separator + " " + url} />
+                <title>{user.about.displayname + " " + separator + " " + application + " " + separator + " " + network}</title>
+                <meta name="description" content={user.about.displayname + " " + separator + " " + application + " " + separator + " A website for listing all of xcwalker's projects " + separator + " " + url} />
             </Helmet>
             <section className="user">
                 <div className="container">
