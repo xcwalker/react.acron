@@ -115,6 +115,7 @@ export function UserProfile() {
                 <title>{user.about.displayname + " " + separator + " " + application + " " + separator + " " + network}</title>
                 <meta name="description" content={user.about.displayname + " " + separator + " " + application + " " + separator + " A website for listing all of xcwalker's projects " + separator + " " + url} />
             </Helmet>
+            {console.info(user)}
             <section className="user">
                 <div className="container">
                     <div className="header">

@@ -90,7 +90,7 @@ export function TreeIndex() {
                             {tree.images?.headerURL?.split(".").pop().split("?")[0] === "webm" && <video className="background" src={tree.images?.headerURL} alt="" autoPlay muted loop ></video>}
                             {tree.images?.headerURL?.split(".").pop().split("?")[0] !== "webm" && <img className="background" src={tree.images?.headerURL} alt=""></img>}
                         </div>}
-                        {!tree.images?.headerURL && <div className="spacer" />}
+                        {!tree.images?.headerURL && !currentUser && <div className="spacer" />}
                         <div className="main">
                             <div className="sidebar">
                                 <div className="sidebar-item info">
@@ -451,7 +451,7 @@ export function TreeEdit() {
                                                         <button onClick={() => handleLinkRemove(index)}>Remove</button>
                                                     </div>
                                                     <label htmlFor={"link-imageURL" + index}>ImageURL</label>
-                                                    <input type="url" name={"link-imageURL" + index} id={"link-ImageURL" + index} value={link.imageURL} onChange={(e) => handleLinkImageUrlChange(e, index)} required autoComplete="off" />
+                                                    <input type="url" name={"link-imageURL" + index} id={"link-ImageURL" + index} value={link.imageURL} onChange={(e) => handleLinkImageUrlChange(e, index)} autoComplete="off" />
                                                 </li>
                                             ))}
                                         </>}
