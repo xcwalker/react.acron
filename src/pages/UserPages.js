@@ -32,7 +32,6 @@ export function UserIndexProfile() {
     const [loggedIn, setLoggedIn] = useState()
 
     useEffect(() => {
-        console.log(currentUser)
         if (currentUser && currentUser !== null) { setLoggedIn(1) }
         if (currentUser === null) { setLoggedIn(0) }
     }, [currentUser])
@@ -72,7 +71,6 @@ export function UserProfile() {
             if (res === undefined) {
                 setReload(1)
             }
-            // console.log(res)
         })
     }, [params.id, reload])
 
@@ -115,7 +113,6 @@ export function UserProfile() {
                 <title>{user.about.displayname + " " + separator + " " + application + " " + separator + " " + network}</title>
                 <meta name="description" content={user.about.displayname + " " + separator + " " + application + " " + separator + " A website for listing all of xcwalker's projects " + separator + " " + url} />
             </Helmet>
-            {console.info(user)}
             <section className="user">
                 <div className="container">
                     <div className="header">
@@ -246,7 +243,7 @@ export function UserProfileEdit() {
     const firstNameRef = useRef();
     const lastNameRef = useRef();
     const statementRef = useRef();
-    
+
     useEffect(() => {
         document.documentElement.setAttribute("data-current-page", "user edit")
     }, [])
