@@ -48,7 +48,12 @@ export function TreeIndex() {
         if (tree.settings.useOriginalUserLinks === true) {
             getUserInfo(tree.originalUser).then(res => {
                 setUser(res)
-                setTreeLinks(res.links)
+
+                if (res.settings.showUserLinks === false) {
+                    setTreeLinks([])
+                } else {
+                    setTreeLinks(res.links)
+                }
             })
         }
         if (tree.settings.useOriginalUserLinks !== true) {
