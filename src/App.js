@@ -111,7 +111,7 @@ export const separator = "•"
 export const application = "Console"
 export const network = "XCWALKER"
 export const release = "dev"
-export const url = application + "." + network + "." + release
+export const url = application.toLowerCase() + "." + network.toLowerCase() + "." + release.toLowerCase()
 
 export const contactEmail = "contact@" + network.toLowerCase() + "." + release
 export const contactEmailMainDev = "xander@" + network.toLowerCase() + "." + release
@@ -125,6 +125,7 @@ export const routeTree = "tree"
 export const routePost = "feed"
 export const routePostNew = "post"
 export const routeSearch = "search"
+export const routeImage = "image"
 
 export const toastStyle_default = {
   borderRadius: '5px',
