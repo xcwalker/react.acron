@@ -29,7 +29,7 @@ export function TreeIndex() {
     const [user, setUser] = useState();
     const [reload, setReload] = useState(0);
     const [loading, setLoading] = useState(true);
-    
+
     useEffect(() => {
         document.documentElement.setAttribute("data-current-page", "tree")
     }, [])
@@ -201,7 +201,7 @@ export function TreeDashboard() {
     const [loading, setLoading] = useState();
     const [userTrees, setUserTrees] = useState();
     const [userOwnTrees, setUserOwnTrees] = useState();
-    
+
     useEffect(() => {
         document.documentElement.setAttribute("data-current-page", "tree dashboard")
     }, [])
@@ -229,10 +229,10 @@ export function TreeDashboard() {
                                     <h3>{tree.data.title}</h3>
                                     <span>/{tree.id}</span>
                                     {!tree.data.images?.headerURL && <TreeSearchItemBackground />}
-                                {tree.data.images?.headerURL && <>
-                                    {tree.data.images?.headerURL?.split(".").pop().split("?")[0] === "webm" && <video src={tree.data.images?.headerURL} alt="" autoPlay muted loop ></video>}
-                                    {tree.data.images?.headerURL?.split(".").pop().split("?")[0] !== "webm" && <img src={tree.data.images?.headerURL} alt=""></img>}
-                                </>}
+                                    {tree.data.images?.headerURL && <>
+                                        {tree.data.images?.headerURL?.split(".").pop().split("?")[0] === "webm" && <video src={tree.data.images?.headerURL} alt="" autoPlay muted loop ></video>}
+                                        {tree.data.images?.headerURL?.split(".").pop().split("?")[0] !== "webm" && <img src={tree.data.images?.headerURL} alt=""></img>}
+                                    </>}
                                 </Link>
                             })}
                         </ul>
@@ -274,7 +274,7 @@ export function TreeEdit() {
     const [reload, setReload] = useState(0);
     const [loading, setLoading] = useState(true);
     const [canView, setCanView] = useState(false);
-    
+
     useEffect(() => {
         document.documentElement.setAttribute("data-current-page", "tree")
     }, [])
@@ -419,24 +419,28 @@ export function TreeEdit() {
                         {!headerPictureURL && <div className="spacer" />}
                         <div className="main">
                             <div className="sidebar">
-                                <div className="sidebar-item info">
-                                    <input type="text" value={title} onChange={handleTitleChange}></input>
-                                </div>
-                                <textarea className="sidebar-item markdown" value={description} onChange={handleDescriptionChange} />
+                                <input className="sidebar-item" type="text" value={title} placeholder="Title" onChange={handleTitleChange}></input>
+                                <textarea className="sidebar-item markdown" value={description} placeholder="Description" onChange={handleDescriptionChange} />
                                 <div className="sidebar-item">
-                                    <label htmlFor="profilePicture">Profile Picture</label>
+                                    <label htmlFor="headerPicture">Header Picture</label>
                                     <div >
-                                        <input type="file" id="profilePicture" onChange={handleHeaderChange} accept=".jpg, .jpeg, .png, .apng, .webp, .webm, .gif" />
+                                        <input type="file" id="headerPicture" onChange={handleHeaderChange} accept=".jpg, .jpeg, .png, .apng, .webp, .webm, .gif" />
                                         <button onClick={handleHeaderSave} disabled={!headerPictureFile || loading}>Update</button>
                                     </div>
                                 </div>
-                                <div className="sidebar-item">
-                                    <label htmlFor="showAuthedUser">showAuthedUser</label>
-                                    <input type="checkbox" name="showAuthedUser" id="showAuthedUser" checked={showAuthedUser} onChange={handleShowAuthedUserChange} />
-                                    <label htmlFor="showOriginalUser">showOriginalUser</label>
-                                    <input type="checkbox" name="showOriginalUser" id="showOriginalUser" checked={showOriginalUser} onChange={handleShowOriginalUserChange} />
-                                    <label htmlFor="showOriginalUserLinks">showOriginalUserLinks</label>
-                                    <input type="checkbox" name="showOriginalUserLinks" id="showOriginalUserLinks" checked={showOriginalUserLinks} onChange={handleShowOriginalUserLinksChange} />
+                                <div className="sidebar-item settings">
+                                    <label htmlFor="showAuthedUser">
+                                        showAuthedUser
+                                        <input type="checkbox" name="showAuthedUser" id="showAuthedUser" checked={showAuthedUser} onChange={handleShowAuthedUserChange} />
+                                    </label>
+                                    <label htmlFor="showOriginalUser">
+                                        showOriginalUser
+                                        <input type="checkbox" name="showOriginalUser" id="showOriginalUser" checked={showOriginalUser} onChange={handleShowOriginalUserChange} />
+                                    </label>
+                                    <label htmlFor="showOriginalUserLinks">
+                                        showOriginalUserLinks
+                                        <input type="checkbox" name="showOriginalUserLinks" id="showOriginalUserLinks" checked={showOriginalUserLinks} onChange={handleShowOriginalUserLinksChange} />
+                                    </label>
                                 </div>
                                 <div className="sidebar-item">
                                     <button type="submit">Submit</button>

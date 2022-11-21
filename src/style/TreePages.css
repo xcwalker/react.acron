@@ -546,6 +546,81 @@ section.tree .container .main .sidebar .sidebar-item .avatarPreview {
     border-radius: 50%;
 }
 
+/** Sidebar Settings **/
+section.tree .container .main .sidebar .sidebar-item.settings {
+    /* flex */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: left;
+}
+
+section.tree .container .main .sidebar .sidebar-item.settings label {
+    /* position */
+    position: relative;
+
+    /* sizing */
+    width: 100%;
+    margin: 0;
+    padding: 5px;
+
+    /* flex */
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+    /* styling */
+    border: none;
+    border-radius: 5px;
+
+    /* variables */
+    --hover-color: var(--background-color-300);
+
+    /* no select */
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+section.tree .container .main .sidebar .sidebar-item.settings label:hover {
+    /* styling */
+    background-color: var(--hover-color);
+}
+
+section.tree .container .main .sidebar .sidebar-item.settings label::before {
+    /* content */
+    content: "";
+
+    /* position */
+    position: absolute;
+    bottom: 0;
+    left: var(--spacing);
+    right: var(--spacing);
+
+    /* variables */
+    --spacing: 5px;
+
+    /* sizing */
+    height: 1px;
+    width: calc(100% - (2 * var(--spacing)));
+
+    /* styling */
+    background-color: var(--hover-color);
+}
+
+section.tree .container .main .sidebar .sidebar-item.settings label:last-of-type:before {
+    content: none;
+}
+
+section.tree .container .main .sidebar .sidebar-item.settings label:has(input[type=checkbox]:checked) {
+    color: var(--form-color-selector);
+}
+
+/** Sidebar Controls **/
 section.tree .container .main .sidebar .sidebar-item.controls {
     /* sizing */
     --column-width: 330px;
