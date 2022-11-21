@@ -54,11 +54,16 @@ menu .container {
 
     /* scroll */
     scrollbar-width: none;
+    -ms-overflow-style: none;
     overflow-y: auto;
-    overflow-x: visible;
+    overflow-x: hidden;
 
     /* transition */
     transition: var(--quick-transition-color), var(--quick-transition-background_color), var(--quick-transition-translate);
+}
+
+menu .container::-webkit-scrollbar {
+    display: none;
 }
 
 .scrolled menu .container {
