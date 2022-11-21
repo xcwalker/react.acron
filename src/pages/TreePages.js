@@ -452,15 +452,21 @@ export function TreeEdit() {
                                         {treeLinks && <>
                                             {treeLinks.map((link, index) => (
                                                 <li key={index}>
-                                                    <label htmlFor={"link-title" + index}>Title</label>
-                                                    <input type="text" name={"link-title" + index} id={"link-title" + index} value={link.title} onChange={(e) => handleLinkTitleChange(e, index)} required autoComplete="off" />
-                                                    <label htmlFor={"link" + index}>URL</label>
-                                                    <div className="content-2">
-                                                        <input type="url" name={"link" + index} id={"link" + index} value={link.url} onChange={(e) => handleLinkChange(e, index)} required autoComplete="off" />
-                                                        <button onClick={() => handleLinkRemove(index)}>Remove</button>
+                                                    <div>
+                                                        <fieldset>
+                                                            <label htmlFor={"link-title" + index}>Title</label>
+                                                            <input type="text" name={"link-title" + index} id={"link-title" + index} value={link.title} onChange={(e) => handleLinkTitleChange(e, index)} required autoComplete="off" />
+                                                        </fieldset>
+                                                        <fieldset>
+                                                            <label htmlFor={"link" + index}>URL</label>
+                                                            <input type="url" name={"link" + index} id={"link" + index} value={link.url} onChange={(e) => handleLinkChange(e, index)} required autoComplete="off" />
+                                                        </fieldset>
+                                                        <fieldset>
+                                                            <label htmlFor={"link-imageURL" + index}>ImageURL</label>
+                                                            <input type="url" name={"link-imageURL" + index} id={"link-ImageURL" + index} value={link.imageURL} onChange={(e) => handleLinkImageUrlChange(e, index)} autoComplete="off" />
+                                                        </fieldset>
                                                     </div>
-                                                    <label htmlFor={"link-imageURL" + index}>ImageURL</label>
-                                                    <input type="url" name={"link-imageURL" + index} id={"link-ImageURL" + index} value={link.imageURL} onChange={(e) => handleLinkImageUrlChange(e, index)} autoComplete="off" />
+                                                    <button onClick={() => handleLinkRemove(index)}>Remove</button>
                                                 </li>
                                             ))}
                                         </>}

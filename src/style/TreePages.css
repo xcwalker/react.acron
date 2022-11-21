@@ -836,6 +836,97 @@ section.tree .container .main .mainbar .links ul a span.url {
     color: var(--foreground-color-300);
 }
 
+section.tree .container .main .mainbar .links ul li {
+    /* sizing */
+    padding: 5px;
+
+    /* flex */
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+
+    /* styling */
+    border: 2px solid var(--background-color-300);
+    border-radius: 10px;
+}
+
+section.tree .container .main .mainbar .links ul li div {
+    /* sizing */
+    width: 100%;
+
+    /* flex */
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+section.tree .container .main .mainbar .links ul li fieldset {
+    /* sizing */
+    padding: 0;
+    margin: 0;
+    min-width: 400px;
+    flex-grow: 1;
+
+    /* flex */
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+
+    /* styling */
+    border: none;
+}
+
+section.tree .container .main .mainbar .links ul li fieldset input[type="text"],
+section.tree .container .main .mainbar .links ul li fieldset input[type="url"] {
+    /* sizing */
+    padding: 5px 10px;
+    width: 100%;
+
+    /* styling */
+    border: none;
+    background-color: var(--background-color-100);
+    color: var(--foreground-color-100);
+    border-radius: 5px;
+}
+
+section.tree .container .main .mainbar .links button {
+    /* sizing */
+    padding: 5px;
+    width: 100%;
+
+    /* text */
+    font-size: 16px;
+    font-weight: 600;
+
+    /* styling */
+    border: none;
+    background-color: var(--background-color-300);
+    color: var(--foreground-color-300);
+    border-radius: 10px;
+
+    /* cursor */
+    cursor: pointer;
+}
+
+section.tree .container .main .mainbar .links button:hover,
+section.tree .container .main .mainbar .links button:focus,
+section.tree .container .main .mainbar .links button:focus-visible {
+    outline: 1px solid currentColor;
+    background-color: transparent;
+}
+
+section.tree .container .main .mainbar .links button:active {
+    color: var(--form-color-selector);
+}
+
 /*** TreeSearch ***/
 section.treeSearch,
 section.treeUser {
