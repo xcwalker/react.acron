@@ -872,6 +872,7 @@ section.tree .container .main .mainbar .links ul li fieldset {
     margin: 0;
     min-width: 400px;
     flex-grow: 1;
+    flex-basis: 0;
 
     /* flex */
     display: flex;
