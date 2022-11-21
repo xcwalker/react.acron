@@ -1,7 +1,7 @@
 // css
 import { Helmet } from 'react-helmet';
 import { Link } from 'react-router-dom';
-import { routeDev, routeAccount, url, application, network, separator } from '../App';
+import { routeDev, routeAccount, url, application, network, separator, routeUser } from '../App';
 import { useAuth } from '../Firebase';
 import '../style/ErrorPages.css';
 
@@ -22,8 +22,8 @@ export function Error403() {
         <h2>{errorMessage}</h2>
         <div className='actions'>
           <Link to="/">Home</Link>
-          {currentUser && <Link to={"user/" + currentUser.uid}>Profile</Link>}
-          {!currentUser && <Link to={routeAccount + "/login"}>Login</Link>}
+          {currentUser && <Link to={"/" + routeUser + "/" + currentUser.uid}>Profile</Link>}
+          {!currentUser && <Link to={"/" + routeAccount + "/login"}>Login</Link>}
         </div>
         {currentUser && <Link to={routeDev + "/dashboard"}>DevDash™</Link>}
       </div>
@@ -49,8 +49,8 @@ export function Error404() {
         <h2>{errorMessage}</h2>
         <div className='actions'>
           <Link to="/">Home</Link>
-          {currentUser && <Link to={"user/" + currentUser.uid}>Profile</Link>}
-          {!currentUser && <Link to={routeAccount + "/login"}>Login</Link>}
+          {currentUser && <Link to={"/" + routeUser + "/" + currentUser.uid}>Profile</Link>}
+          {!currentUser && <Link to={"/" + routeAccount + "/login"}>Login</Link>}
         </div>
         {currentUser && <Link to={routeDev + "/dashboard"}>DevDash™</Link>}
       </div>
