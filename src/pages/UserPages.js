@@ -60,15 +60,15 @@ export function UserProfile() {
     const [error, setError] = useState();
 
     const image = document.querySelector('section.user .container .header img.background');
+    const imageContainer = document.querySelector('section.user .container')
     useEffect(() => {
-        if (!image) return
+        if (!image || !imageContainer) return
         const fac = new FastAverageColor();
-        const container = document.querySelector('section.user .container')
 
         fac.getColorAsync(image, { mode: "speed", algorithm: "simple" })
             .then(color => {
-                container.style.setProperty("--auto-color-simple", color.rgba);
-                container.style.setProperty("--auto-color-simple-faded", "rgba(" + color.value[0] + ", " + color.value[1] + ", " + color.value[2] + ", 0.2)");
+                imageContainer.style.setProperty("--auto-color-simple", color.rgba);
+                imageContainer.style.setProperty("--auto-color-simple-faded", "rgba(" + color.value[0] + ", " + color.value[1] + ", " + color.value[2] + ", 0.2)");
                 console.info(color)
             })
             .catch(e => {
@@ -77,16 +77,16 @@ export function UserProfile() {
 
         fac.getColorAsync(image, { mode: "speed", algorithm: "dominant" })
             .then(color => {
-                container.style.setProperty("--auto-color-dominant", color.rgba);
+                imageContainer.style.setProperty("--auto-color-dominant", color.rgba);
 
-                container.style.setProperty("--auto-color-dominant-text", color.isDark ? 'var(--dnu-light-color-200)' : 'var(--dnu-dark-color-200)');
-                container.style.setProperty("--auto-color-dominant-text-alt", color.isDark ? 'var(--dnu-light-color-300)' : 'var(--dnu-dark-color-300)');
+                imageContainer.style.setProperty("--auto-color-dominant-text", color.isDark ? 'var(--dnu-light-color-200)' : 'var(--dnu-dark-color-200)');
+                imageContainer.style.setProperty("--auto-color-dominant-text-alt", color.isDark ? 'var(--dnu-light-color-300)' : 'var(--dnu-dark-color-300)');
                 console.info(color)
             })
             .catch(e => {
                 console.log(e);
             });
-    }, [image, user])
+    }, [image, imageContainer])
 
     useEffect(() => {
         document.body.classList.remove("navHidden")
