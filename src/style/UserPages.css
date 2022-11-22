@@ -15,6 +15,12 @@ section.user .container {
     display: flex;
     flex-direction: column;
     gap: var(--gap);
+
+    /* styling */
+    background: rgb(0, 0, 0);
+    background: -moz-linear-gradient(135deg, var(--auto-color-simple) 0%, var(--auto-color-simple-faded) 100%);
+    background: -webkit-linear-gradient(135deg, var(--auto-color-simple) 0%, var(--auto-color-simple-faded) 100%);
+    background: linear-gradient(135deg, var(--auto-color-simple) 0%, var(--auto-color-simple-faded) 100%);
 }
 
 /*** background ***/
@@ -132,8 +138,10 @@ section.user .container .main .sidebar .sidebar-item {
 
     /* styling */
     border-radius: 10px;
-    background-color: var(--background-color-200);
-    color: var(--foreground-color-200);
+    background-color: var(--background-color-200); /* fallback */
+    background-color: var(--auto-color-dominant);
+    color: var(--foreground-color-200); /* fallback */
+    color: var(--auto-color-dominant-text);
 
     /* transition */
     transition: var(--default-transition-color), var(--default-transition-background_color);
@@ -231,7 +239,8 @@ section.user .container .main .sidebar .sidebar-item.user .content h2 {
 
 section.user .container .main .sidebar .sidebar-item.user .content span {
     /* text */
-    color: var(--foreground-color-300);
+    color: var(--foreground-color-300); /* fallback */
+    color: var(--auto-color-dominant-text-alt);
     font-weight: 600;
     font-size: 12px;
 
@@ -564,7 +573,8 @@ section.user .container .main .sidebar .sidebar-item.controls button {
 section.user .container .main .sidebar .sidebar-item.controls a {
     /* styling */
     background-color: var(--form-color-invalid-hold-opac);
-    color: var(--foreground-color-300);
+    color: var(--foreground-color-300); /* fallback */
+    color: var(--auto-color-dominant-text-alt);
     border: 2px solid var(--form-color-invalid-hold);
 }
 
@@ -587,7 +597,8 @@ section.user .container .main .sidebar .sidebar-item.controls button:active {
 section.user .container .main .sidebar .sidebar-item.controls button {
     /* styling */
     background-color: var(--form-color-invalid-opac);
-    color: var(--foreground-color-300);
+    color: var(--foreground-color-300); /* fallback */
+    color: var(--auto-color-dominant-text-alt);
     border: 2px solid var(--form-color-invalid);
 }
 

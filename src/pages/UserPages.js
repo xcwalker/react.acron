@@ -5,6 +5,8 @@ import ReactMarkdown from 'react-markdown'
 import { application, network, routeAccount, routeUser, routeDev, routeTree, url, separator } from "../App";
 import { getUserInfo, getUsersOwnTrees, logout, profileInitial, updateUserInfo, uploadHeaderBackgroundPicture, uploadProfilePicture, useAuth } from "../Firebase";
 
+import { FastAverageColor } from 'fast-average-color';
+
 import "../style/UserPages.css"
 import { Error403, Error404 } from "./ErrorPages";
 
@@ -56,6 +58,35 @@ export function UserProfile() {
     const [date, setDate] = useState();
     const [trees, setTrees] = useState();
     const [error, setError] = useState();
+
+    const image = document.querySelector('section.user .container .header img.background');
+    useEffect(() => {
+        if (!image) return
+        const fac = new FastAverageColor();
+        const container = document.querySelector('section.user .container')
+
+        fac.getColorAsync(image, { mode: "speed", algorithm: "simple" })
+            .then(color => {
+                container.style.setProperty("--auto-color-simple", color.rgba);
+                container.style.setProperty("--auto-color-simple-faded", "rgba(" + color.value[0] + ", " + color.value[1] + ", " + color.value[2] + ", 0.2)");
+                console.info(color)
+            })
+            .catch(e => {
+                console.log(e);
+            });
+
+        fac.getColorAsync(image, { mode: "speed", algorithm: "dominant" })
+            .then(color => {
+                container.style.setProperty("--auto-color-dominant", color.rgba);
+
+                container.style.setProperty("--auto-color-dominant-text", color.isDark ? 'var(--dnu-light-color-200)' : 'var(--dnu-dark-color-200)');
+                container.style.setProperty("--auto-color-dominant-text-alt", color.isDark ? 'var(--dnu-light-color-300)' : 'var(--dnu-dark-color-300)');
+                console.info(color)
+            })
+            .catch(e => {
+                console.log(e);
+            });
+    }, [image, user])
 
     useEffect(() => {
         document.body.classList.remove("navHidden")
@@ -116,8 +147,8 @@ export function UserProfile() {
             <section className="user">
                 <div className="container">
                     <div className="header">
-                        {user.images.headerURL?.split(".").pop().split("?")[0] === "webm" && <video className="background" src={user.images.headerURL} alt="" autoPlay muted loop ></video>}
-                        {user.images.headerURL?.split(".").pop().split("?")[0] !== "webm" && <img className="background" src={user.images.headerURL} alt=""></img>}
+                        {user.images.headerURL?.split(".").pop().split("?")[0] === "webm" && <video className="background" src={user.images.headerURL} alt="" autoPlay muted loop crossOrigin="anonymous" ></video>}
+                        {user.images.headerURL?.split(".").pop().split("?")[0] !== "webm" && <img className="background" src={user.images.headerURL} alt="" crossOrigin="anonymous" ></img>}
                     </div>
                     <div className="main">
                         <div className="sidebar">
