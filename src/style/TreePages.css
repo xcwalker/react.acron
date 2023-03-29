@@ -1515,7 +1515,14 @@ section.tree.edit .container .main .mainbar .links ul li {
     /* flex */
     display: flex;
     flex-direction: row;
+    flex-wrap: unset;
+    align-items: unset;
+    justify-content: unset;
     gap: 5px;
+
+    /* sizing */
+    padding: 0;
+    border: none;
 }
 
 section.tree.edit .container .main .mainbar .links ul li>fieldset {
@@ -1524,10 +1531,14 @@ section.tree.edit .container .main .mainbar .links ul li>fieldset {
     flex-direction: column;
     gap: 5px;
     flex-grow: 1;
+    align-items: unset;
+    justify-content: unset;
+    flex-basis: unset;
 
     /* sizing */
     margin: 0;
     padding: 0;
+    min-width: unset;
 
     /* styling */
     border: none;
