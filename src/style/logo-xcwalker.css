@@ -90,6 +90,7 @@
     line-height: 1.1;
     text-transform: uppercase;
     color: currentColor;
+    text-decoration: none !important;
 
     /* pointer events */
     pointer-events: none;

@@ -117,8 +117,36 @@ section.tree .container .main .sidebar .sidebar-item h3 {
     transition: var(--default-transition-color), var(--default-transition-background_color);
 }
 
+/*** sidebar icon ***/
+section.tree .container .main .sidebar .sidebar-item.icon {
+    /* flex */
+    display: flex;
+
+    /* sizing */
+    padding: 0;
+    height: 120px;
+
+    /* styling */
+    overflow: hidden;
+}
+
+section.tree .container .main .sidebar .sidebar-item.icon img,
+section.tree .container .main .sidebar .sidebar-item.icon video {
+    /* sizing */
+    width: 100%;
+    height: 100%;
+
+    /* styling */
+    object-fit: cover;
+}
+
 /*** sidebar info ***/
-section.tree .container .main .sidebar .sidebar-item.info h2 {
+section.tree .container .main .sidebar .sidebar-item.info h2,
+section.tree .container .main .sidebar .sidebar-item.info-icon h2 {
+    /* position */
+    position: relative;
+    z-index: 1;
+
     /* spacing */
     margin: 0;
     padding: 0;
@@ -131,7 +159,12 @@ section.tree .container .main .sidebar .sidebar-item.info h2 {
     transition: var(--default-transition-color), var(--default-transition-background_color);
 }
 
-section.tree .container .main .sidebar .sidebar-item.info span {
+section.tree .container .main .sidebar .sidebar-item.info span,
+section.tree .container .main .sidebar .sidebar-item.info-icon span {
+    /* position */
+    position: relative;
+    z-index: 1;
+
     /* spacing */
     padding-left: 5px;
 
@@ -142,6 +175,38 @@ section.tree .container .main .sidebar .sidebar-item.info span {
 
     /* transition */
     transition: var(--default-transition-color), var(--default-transition-background_color);
+}
+
+/*** sidebar info-icon ***/
+section.tree .container .main .sidebar .sidebar-item.info-icon {
+    /* position */
+    position: relative;
+
+    /* flex */
+    display: flex;
+    flex-direction: column;
+
+    /* sizing */
+    height: 120px;
+
+    /* styling */
+    overflow: hidden;
+}
+
+section.tree .container .main .sidebar .sidebar-item.info-icon img,
+section.tree .container .main .sidebar .sidebar-item.info-icon video {
+    /* position */
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+
+    /* sizing */
+    width: 100%;
+    height: 100%;
+
+    /* styling */
+    object-fit: cover;
+    opacity: 0.7;
 }
 
 /*** sidebar markdown ***/
@@ -914,11 +979,9 @@ section.treeUser .container ul {
     padding: 0;
     margin: 0;
 
-    /* flex */
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    flex-wrap: wrap;
+    /* grid */
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
     gap: 10px;
 }
 
@@ -938,7 +1001,7 @@ section.treeUser .container ul .search-item {
 
     /* sizing */
     padding: 10px;
-    width: min(282px, 100%);
+    width: 100%;
     height: 120px;
     overflow: hidden;
 
@@ -1140,11 +1203,11 @@ section.treeSearch .container .results ul .search-item .background .item,
 section.treeUser .container ul .search-item .background .item {
     /* position */
     position: absolute;
-    left: 75%;
+    right: -175px;
     bottom: -30%;
 
     /* sizing */
-    width: 100%;
+    width: 225px;
     height: 100%;
 
     /* styling */
@@ -1161,7 +1224,7 @@ section.treeUser .container ul .search-item .background .item {
 section.treeSearch .container .results ul .search-item .background .item:nth-child(1),
 section.treeUser .container ul .search-item .background .item:nth-child(1) {
     /* position */
-    left: 65%;
+    right: -145px;
 
     /* styling */
     color: var(--form-color-valid-hold);
@@ -1170,7 +1233,7 @@ section.treeUser .container ul .search-item .background .item:nth-child(1) {
 section.treeSearch .container .results ul .search-item .background .item:nth-child(2),
 section.treeUser .container ul .search-item .background .item:nth-child(2) {
     /* position */
-    left: 55%;
+    right: -115px;
 
     /* styling */
     color: var(--form-color-selector);
@@ -1179,8 +1242,367 @@ section.treeUser .container ul .search-item .background .item:nth-child(2) {
 section.treeSearch .container .results ul .search-item .background .item:nth-child(3),
 section.treeUser .container ul .search-item .background .item:nth-child(3) {
     /* position */
-    left: 45%;
+    right: -85px;
 
     /* styling */
     color: var(--form-color-invalid);
+}
+
+/**** tree-edit ****/
+/*** tree-edit submit+add ***/
+section.tree.edit .container .main .sidebar .sidebar-item.submit,
+section.tree.edit .container .main .sidebar .sidebar-item.images label[type="file"],
+section.tree.edit .container .main .sidebar button[type="add"],
+section.tree.edit .container .main .mainbar .links ul button[type="add"] {
+    /* sizing */
+    height: 36.25px;
+
+    /* flex */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    /* styling */
+    border: none;
+    border-radius: 4px;
+    background-color: var(--form-color-selector);
+    color: var(--foreground-color-100);
+
+    /* text */
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 16px;
+
+    /* cursor */
+    cursor: pointer;
+
+    transition-duration: 0s !important;
+}
+
+section.tree.edit .container .main .sidebar .sidebar-item.submit:hover,
+section.tree.edit .container .main .sidebar .sidebar-item.images label[type="file"]:hover,
+section.tree.edit .container .main .sidebar button[type="add"]:hover,
+section.tree.edit .container .main .mainbar .links ul button[type="add"]:hover {
+    /* styling */
+    color: var(--form-color-selector);
+    background-color: var(--foreground-color-100);
+}
+
+/*** tree-edit title ***/
+section.tree.edit .container .main .sidebar .sidebar-item.title:invalid {
+    /* styling */
+    border: 2px solid var(--form-color-invalid);
+    background-color: var(--form-color-invalid-opac);
+}
+
+section.tree.edit .container .main .sidebar .sidebar-item.title:valid {
+    /* styling */
+    border: 2px solid var(--form-color-valid);
+    background-color: var(--form-color-valid-opac);
+}
+
+section.tree.edit .container .main .sidebar .sidebar-item.title:focus {
+    outline: 2px solid transparent;
+    border-color: var(--form-color-selector);
+}
+
+/*** tree-edit markdown ***/
+section.tree.edit .container .main .sidebar .sidebar-item.markdown {
+    /* styling */
+    border: 2px solid var(--foreground-color-200);
+    color: var(--foreground-color-200);
+    background-color: var(--background-color-200);
+}
+
+section.tree.edit .container .main .sidebar .sidebar-item.markdown:focus {
+    outline: 2px solid transparent;
+    border-color: var(--form-color-selector);
+}
+
+/*** tree-edit settings ***/
+section.tree.edit .container .main .sidebar .sidebar-item.settings {}
+
+section.tree.edit .container .main .sidebar .sidebar-item.settings fieldset {
+    /* sizing */
+    margin: 0;
+    padding: 0;
+
+    /* styling */
+    border: none;
+}
+
+section.tree.edit .container .main .sidebar .sidebar-item.settings fieldset label {}
+
+section.tree.edit .container .main .sidebar .sidebar-item.settings fieldset input[type="checkbox"] {}
+
+/*** tree-edit links ***/
+section.tree.edit .container .main .mainbar .links ul {
+    /* flex */
+    gap: 10px;
+
+    /* styling */
+    list-style: none;
+}
+
+section.tree.edit .container .main .mainbar .links ul li {
+    /* flex */
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+}
+
+section.tree.edit .container .main .mainbar .links ul li>fieldset {
+    /* flex */
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    flex-grow: 1;
+
+    /* sizing */
+    margin: 0;
+    padding: 0;
+
+    /* styling */
+    border: none;
+}
+
+section.tree.edit .container .main .mainbar .links ul li>fieldset>fieldset[type="text"] {
+    /* flex */
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+
+    /* sizing */
+    margin: 0;
+    padding: 0;
+
+    /* text */
+    font-size: 14px;
+    font-weight: 500;
+
+    /* styling */
+    border: 2px solid var(--foreground-color-200);
+    color: var(--foreground-color-200);
+    background-color: var(--background-color-200);
+    border-radius: 5px;
+}
+
+section.tree.edit .container .main .mainbar .links ul li>fieldset>fieldset[type="text"]:invalid {
+    /* styling */
+    border: 2px solid var(--form-color-invalid);
+    background-color: var(--form-color-invalid-opac);
+}
+
+section.tree.edit .container .main .mainbar .links ul li>fieldset>fieldset[type="text"]:valid {
+    /* styling */
+    border: 2px solid var(--form-color-valid);
+    background-color: var(--form-color-valid-opac);
+}
+
+section.tree.edit .container .main .mainbar .links ul li>fieldset>fieldset[type="text"] label {
+    /* sizing */
+    padding: 5px;
+    padding-right: 0;
+
+    /* text */
+    font-weight: 600;
+}
+
+section.tree.edit .container .main .mainbar .links ul li>fieldset>fieldset[type="text"] input[type="text"],
+section.tree.edit .container .main .mainbar .links ul li>fieldset>fieldset[type="text"] input[type="url"] {
+    /* sizing */
+    margin: 0;
+    padding: 0;
+    padding-left: 5px;
+    height: 100%;
+    width: 100%;
+
+    /* styling */
+    border: none;
+    background-color: transparent;
+    color: inherit;
+}
+
+section.tree.edit .container .main .mainbar .links ul li>fieldset>fieldset[type="text"]:focus-within {
+    border-color: var(--form-color-selector);
+    outline: 2px solid transparent;
+}
+
+section.tree.edit .container .main .mainbar .links ul li>fieldset>fieldset[type="text"] input[type="text"]:focus,
+section.tree.edit .container .main .mainbar .links ul li>fieldset>fieldset[type="text"] input[type="url"]:focus {
+    outline: none;
+}
+
+section.tree.edit .container .main .mainbar .links ul li button[type="remove"] {
+    /* sizing */
+    width: 34.3333px;
+
+    /* flex */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    /* text */
+    font-size: 13.3333px;
+    font-weight: 400;
+    line-height: 1;
+
+    /* styling */
+    border-radius: 5px;
+    background-color: var(--form-color-selector);
+    color: var(--foreground-color-100);
+    border: none;
+}
+
+section.tree.edit .container .main .mainbar .links ul li button[type="remove"]:hover,
+section.tree.edit .container .main .mainbar .links ul li button[type="remove"]:focus {
+    /* styling */
+    color: var(--form-color-selector);
+    background-color: var(--foreground-color-100);
+}
+
+/*** tree-edit images ***/
+section.tree.edit .container .main .sidebar .sidebar-item.images {
+    /* flex */
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+section.tree.edit .container .main .sidebar .sidebar-item.images input[type="file"] {
+    /* display */
+    display: none;
+}
+
+/*** tree-edit contributors ***/
+section.tree.edit .container .main .sidebar .sidebar-item.contributors {
+    /* flex */
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+section.tree.edit .container .main .sidebar .sidebar-item.contributors .authedUsers {
+    grid-template-columns: 1fr;
+}
+
+section.tree.edit .container .main .sidebar .sidebar-item.contributors .authedUsers button {
+    /* position */
+    position: relative;
+
+    /* sizing */
+    width: 100%;
+    padding: var(--padding);
+
+    /* flex */
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    gap: var(--gap);
+
+    /* text */
+    text-decoration: none;
+
+    /* styling */
+    border-radius: 10px;
+    color: var(--foreground-color-200);
+    background-color: transparent;
+    border: none;
+
+    /* transition */
+    transition: var(--quick-transition-color), var(--quick-transition-background_color);
+}
+
+section.tree.edit .container .main .sidebar .sidebar-item.contributors .authedUsers button:hover {
+    background-color: var(--background-color-300);
+}
+
+section.tree.edit .container .main .sidebar .sidebar-item.contributors .authedUsers button:focus,
+section.tree.edit .container .main .sidebar .sidebar-item.contributors .authedUsers button:focus-visible {
+    background-color: var(--background-color-300);
+    outline-offset: 3px;
+    outline: 2px solid currentColor;
+}
+
+section.tree.edit .container .main .sidebar .sidebar-item.contributors .authedUsers button:active {
+    color: var(--form-color-selector);
+}
+
+section.tree.edit .container .main .sidebar .sidebar-item.contributors .authedUsers button .avatar {
+    /* sizing */
+    --size: 35px;
+    width: var(--size);
+    height: var(--size);
+    flex-shrink: 0;
+}
+
+section.tree.edit .container .main .sidebar .sidebar-item.contributors .authedUsers button .avatar img {
+    /* sizing */
+    width: 100%;
+    height: 100%;
+
+    /* styling */
+    border-radius: 50%;
+}
+
+section.tree.edit .container .main .sidebar .sidebar-item.contributors .authedUsers button .content {
+    /* flex */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+section.tree.edit .container .main .sidebar .sidebar-item.contributors .authedUsers button span.type-1 {
+    /* text */
+    color: var(--foreground-color-200);
+    font-weight: 700;
+    font-size: 14px;
+    text-align: left;
+
+    /* transition */
+    transition: var(--default-transition-color), var(--default-transition-background_color);
+}
+
+section.tree.edit .container .main .sidebar .sidebar-item.contributors .authedUsers button span.type-2 {
+    /* text */
+    color: var(--foreground-color-300);
+    font-weight: 600;
+    font-size: 11px;
+    text-align: left;
+
+    /* transition */
+    transition: var(--default-transition-color), var(--default-transition-background_color);
+}
+
+section.tree.edit .container .main .sidebar .sidebar-item.contributors .authedUsers button span.open {
+    /* position */
+    position: absolute;
+    top: 10px;
+    right: 10px;
+
+    /* text */
+    font-size: 18px;
+}
+
+section.tree.edit .container .main .sidebar .sidebar-item.contributors input[type="text"] {
+    /* sizing */
+    margin: 0;
+    padding: 0;
+    padding-left: 5px;
+    height: 32px;
+    width: 100%;
+
+    /* styling */
+    border: 2px solid var(--foreground-color-200);
+    color: var(--foreground-color-200);
+    background-color: var(--background-color-200);
+    border-radius: 5px;
+}
+
+section.tree.edit .container .main .sidebar .sidebar-item.contributors input[type="text"]:focus {
+    outline: 2px solid transparent;
+    border-color: var(--form-color-selector);
 }

@@ -241,17 +241,17 @@ section.accounts button {
     font-weight: 600;
 
     /* styling */
-    background: transparent;
+    background-color: var(--form-color-selector);
     border: 2px solid transparent;
     border-radius: var(--border-radius);
-    color: var(--primary-text-color);
-    backdrop-filter: brightness(.6) blur(15px) opacity(1);
+    color: var(--foreground-color-100);
 }
 
 section.accounts button:hover,
 section.accounts button:focus,
 section.accounts button:focus-visible {
-    background: var(--form-color-selector);
+    background: var(--foreground-color-100);
+    color: var(--form-color-selector);
 }
 
 section.accounts button:active {

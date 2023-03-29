@@ -17,32 +17,6 @@ section.user .container {
     gap: var(--gap);
 }
 
-/*** background ***/
-section.user .container .background {
-    /* position */
-    position: absolute;
-    inset: 0;
-    z-index: -2;
-
-    /* sizing */
-    width: 100%;
-    height: 100%;
-}
-
-section.user .container .background img,
-section.user .container .background video {
-    /* position */
-    position: sticky;
-    inset: 0;
-
-    /* sizing */
-    width: 100%;
-    height: 100vh;
-
-    /* image */
-    object-fit: cover;
-}
-
 /*** header ***/
 section.user .container .header {
     /* position */
@@ -139,68 +113,171 @@ section.user .container .main .sidebar .sidebar-item {
     transition: var(--default-transition-color), var(--default-transition-background_color);
 }
 
+/*** markdown ***/
 section.user .container .main .sidebar .sidebar-item.markdown {
-    /* whitespace */
-    white-space: pre-line;
-
     /* flex */
     display: flex;
     flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: var(--gap);
 }
 
 section.user .container .main .sidebar .sidebar-item.markdown p {
-    /* flex */
-    display: flex;
-}
-
-section.user .container .main .sidebar .sidebar-item.markdown ul {
-    /* spacing */
+    /* sizing */
     margin: 0;
-    padding-left: 20px;
+    width: 100%;
 
-    /* whitespace */
-    white-space: initial;
-}
-
-section.user .container .main .sidebar .sidebar-item.markdown ul li {
-    /* whitespace */
+    /* text */
     white-space: pre-line;
 }
 
-section.user .container .main .sidebar .sidebar-item.markdown p:has(img) {
+/*** Headings ***/
+section.user .container .main .sidebar .sidebar-item.markdown h1,
+section.user .container .main .sidebar .sidebar-item.markdown h2,
+section.user .container .main .sidebar .sidebar-item.markdown h3,
+section.user .container .main .sidebar .sidebar-item.markdown h4,
+section.user .container .main .sidebar .sidebar-item.markdown h5 {
     /* sizing */
-    margin: 5px 0 !important;
+    width: 100%;
+    height: fit-content;
+    padding: 0 var(--gap);
+    margin: 0;
+
+    /* text */
+    line-height: 1;
 }
 
+section.user .container .main .sidebar .sidebar-item.markdown h1 {
+    /* text */
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1.4;
+
+    /* styling */
+    border-bottom: 1px solid currentColor;
+}
+
+section.user .container .main .sidebar .sidebar-item.markdown h2 {
+    /* text */
+    font-size: 22px;
+    font-weight: 700;
+}
+
+section.user .container .main .sidebar .sidebar-item.markdown h3 {
+    /* text */
+    font-size: 20px;
+    font-weight: 700;
+}
+
+section.user .container .main .sidebar .sidebar-item.markdown h4 {
+    /* text */
+    font-size: 18px;
+    font-weight: 700;
+}
+
+section.user .container .main .sidebar .sidebar-item.markdown h5 {
+    /* text */
+    font-size: 16px;
+    font-weight: 700;
+}
+
+/*** Styling ***/
+section.user .container .main .sidebar .sidebar-item.markdown strong {
+    /* display */
+    display: inline;
+
+    /* text */
+    font-weight: 600;
+}
+
+section.user .container .main .sidebar .sidebar-item.markdown em {}
+
+section.user .container .main .sidebar .sidebar-item.markdown del {}
+
+section.user .container .main .sidebar .sidebar-item.markdown blockquote {
+    /* sizing */
+    width: 100%;
+    margin: 0;
+    padding: var(--gap) calc(var(--gap) * 2);
+
+    /* styling */
+    border-left: 2px solid currentColor;
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+/*** Lists ***/
+section.user .container .main .sidebar .sidebar-item.markdown ol {}
+
+section.user .container .main .sidebar .sidebar-item.markdown ul {}
+
+section.user .container .main .sidebar .sidebar-item.markdown ol,
+section.user .container .main .sidebar .sidebar-item.markdown ul {
+    /* spacing */
+    margin: 0;
+    margin-left: calc(var(--gap) * 3);
+    padding: 0;
+}
+
+section.user .container .main .sidebar .sidebar-item.markdown .contains-task-list {
+    /* spacing */
+    margin: 0;
+    padding: 0;
+
+    /* list */
+    list-style: none;
+}
+
+/*** Image ***/
 section.user .container .main .sidebar .sidebar-item.markdown img {
     /* sizing */
     width: 100%;
+    margin-top: var(--gap);
 
     /* styling */
     border-radius: 10px;
 }
 
-section.user .container .main .sidebar .sidebar-item.markdown img[alt*="logo"] {
-    /* styling */
-    border-radius: unset;
+section.user .container .main .sidebar .sidebar-item.markdown p img:first-child {
+    margin-top: 0;
 }
 
-section.user .container .main .sidebar .sidebar-item.markdown p:has(img):first-child {
+section.user .container .main .sidebar .sidebar-item.markdown p img:last-child {
+    margin-top: var(--gap);
+}
+
+/*** Table ***/
+section.user .container .main .sidebar .sidebar-item.markdown table {
     /* sizing */
-    margin-top: 0 !important;
+    display: block;
+    width: 100%;
+
+    /* overflow */
+    overflow-x: scroll;
+    overflow-y: visible;
 }
 
-section.user .container .main .sidebar .sidebar-item.markdown p:has(img):last-child {
-    /* sizing */
-    margin-bottom: 0 !important;
+section.user .container .main .sidebar .sidebar-item.markdown table {
+    background-color: transparent;
+    border-collapse: collapse;
+    border-spacing: 0
 }
 
-
-section.user .container .main .sidebar .sidebar-item.markdown a {
-    /* styling */
-    color: inherit;
+section.user .container .main .sidebar .sidebar-item.markdown table td,
+section.user .container .main .sidebar .sidebar-item.markdown table th {
+    border-right: 1px solid var(--foreground-color-500);
+    padding: 8px 12px
 }
 
+section.user .container .main .sidebar .sidebar-item.markdown table td:last-child,
+section.user .container .main .sidebar .sidebar-item.markdown table th:last-child {
+    border-right: 0
+}
+
+section.user .container .main .sidebar .sidebar-item.markdown table td {
+    border-top: 1px solid var(--foreground-color-500)
+}
+/*** /markdown  ***/
 section.user .container .main .sidebar .sidebar-item.user {
     /* flex */
     display: flex;
@@ -254,12 +331,6 @@ section.user .container .main .sidebar .sidebar-item.user .avatar img {
 
     /* styling */
     border-radius: 50%;
-}
-
-section.user .container .main .sidebar .sidebar-item.markdown *:not(ul) {
-    /* spacing */
-    margin: 0;
-    padding: 0;
 }
 
 section.user .container .main .sidebar .sidebar-item.roles {
@@ -514,15 +585,6 @@ section.user .container .main .sidebar .sidebar-item.trees a {
 section.user .container .main .sidebar .sidebar-item.trees a:hover {
     /* text */
     text-decoration: underline;
-}
-
-section.user .container .main .sidebar .sidebar-item .avatarPreview {
-    /* sizing */
-    width: 100%;
-    aspect-ratio: 1/1;
-
-    /* stling */
-    border-radius: 50%;
 }
 
 section.user .container .main .sidebar .sidebar-item.controls {

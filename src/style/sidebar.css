@@ -55,7 +55,7 @@ menu .container {
     /* scroll */
     scrollbar-width: none;
     overflow-y: auto;
-    overflow-x: visible;
+    overflow-x: clip;
 
     /* transition */
     transition: var(--quick-transition-color), var(--quick-transition-background_color), var(--quick-transition-translate);

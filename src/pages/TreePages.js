@@ -1,9 +1,11 @@
+import { useRef } from "react";
 import { forwardRef, useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
+import { toast } from "react-hot-toast";
 import ReactMarkdown from "react-markdown";
 import { Link, Navigate, useParams } from "react-router-dom";
 import { application, network, routeUser, separator, url } from "../App";
-import { claimTree, deleteTree, getTreeInfo, getUserInfo, getUsersOwnTrees, getUsersTrees, updateTree, uploadTreeHeader, useAuth } from "../Firebase";
+import { claimTree, deleteTree, getTreeInfo, getUserInfo, getUsersOwnTrees, getUsersTrees, updateTree, useAuth } from "../Firebase";
 
 import "../style/TreePages.css"
 import { Error403 } from "./ErrorPages";
@@ -29,7 +31,7 @@ export function TreeIndex() {
     const [user, setUser] = useState();
     const [reload, setReload] = useState(0);
     const [loading, setLoading] = useState(true);
-    
+
     useEffect(() => {
         document.documentElement.setAttribute("data-current-page", "tree")
     }, [])
@@ -93,10 +95,17 @@ export function TreeIndex() {
                         {!tree.images?.headerURL && !currentUser && <div className="spacer" />}
                         <div className="main">
                             <div className="sidebar">
-                                <div className="sidebar-item info">
+                                {tree.images?.iconURL && <div className="sidebar-item info-icon">
                                     <h2>{tree.title}</h2>
                                     <span>/{params.id}</span>
-                                </div>
+                                    {tree.images?.iconURL?.split(".").pop().split("?")[0] === "webm" && <video src={tree.images?.iconURL} alt="" autoPlay muted loop ></video>}
+                                    {tree.images?.iconURL?.split(".").pop().split("?")[0] !== "webm" && <img src={tree.images?.iconURL} alt=""></img>}
+                                </div>}
+                                {!tree.images?.iconURL && <div className="sidebar-item info">
+                                    <h2>{tree.title}</h2>
+                                    <span>/{params.id}</span>
+                                </div>}
+
                                 {tree.description && <ReactMarkdown className="sidebar-item markdown">
                                     {tree.description}
                                 </ReactMarkdown>}
@@ -196,7 +205,7 @@ export function TreeDashboard() {
     const [loading, setLoading] = useState();
     const [userTrees, setUserTrees] = useState();
     const [userOwnTrees, setUserOwnTrees] = useState();
-    
+
     useEffect(() => {
         document.documentElement.setAttribute("data-current-page", "tree dashboard")
     }, [])
@@ -223,11 +232,11 @@ export function TreeDashboard() {
                                 return <Link to={"../" + tree.id} key={index} className="search-item">
                                     <h3>{tree.data.title}</h3>
                                     <span>/{tree.id}</span>
-                                    {!tree.data.images?.headerURL && <TreeSearchItemBackground />}
-                                {tree.data.images?.headerURL && <>
-                                    {tree.data.images?.headerURL?.split(".").pop().split("?")[0] === "webm" && <video src={tree.data.images?.headerURL} alt="" autoPlay muted loop ></video>}
-                                    {tree.data.images?.headerURL?.split(".").pop().split("?")[0] !== "webm" && <img src={tree.data.images?.headerURL} alt=""></img>}
-                                </>}
+                                    {!tree.data.images?.iconURL && <TreeSearchItemBackground />}
+                                    {tree.data.images?.iconURL && <>
+                                        {tree.data.images?.iconURL?.split(".").pop().split("?")[0] === "webm" && <video src={tree.data.images?.iconURL} alt="" autoPlay muted loop ></video>}
+                                        {tree.data.images?.iconURL?.split(".").pop().split("?")[0] !== "webm" && <img src={tree.data.images?.iconURL} alt=""></img>}
+                                    </>}
                                 </Link>
                             })}
                         </ul>
@@ -239,10 +248,10 @@ export function TreeDashboard() {
                             return <Link to={"../" + tree.id} key={index} className="search-item">
                                 <h3>{tree.data.title}</h3>
                                 <span>/{tree.id}</span>
-                                {!tree.data.images?.headerURL && <TreeSearchItemBackground />}
-                                {tree.data.images?.headerURL && <>
-                                    {tree.data.images?.headerURL?.split(".").pop().split("?")[0] === "webm" && <video src={tree.data.images?.headerURL} alt="" autoPlay muted loop ></video>}
-                                    {tree.data.images?.headerURL?.split(".").pop().split("?")[0] !== "webm" && <img src={tree.data.images?.headerURL} alt=""></img>}
+                                {!tree.data.images?.iconURL && <TreeSearchItemBackground />}
+                                {tree.data.images?.iconURL && <>
+                                    {tree.data.images?.iconURL?.split(".").pop().split("?")[0] === "webm" && <video src={tree.data.images?.iconURL} alt="" autoPlay muted loop ></video>}
+                                    {tree.data.images?.iconURL?.split(".").pop().split("?")[0] !== "webm" && <img src={tree.data.images?.iconURL} alt=""></img>}
                                 </>}
                             </Link>
                         })}
@@ -262,14 +271,20 @@ export function TreeEdit() {
     const [description, setDescription] = useState("");
     const [headerPictureFile, setHeaderPictureFile] = useState();
     const [headerPictureURL, setHeaderPictureURL] = useState();
-    const [authedUser, setAuthedUser] = useState();
+    const [iconPictureFile, setIconPictureFile] = useState();
+    const [iconPictureURL, setIconPictureURL] = useState();
+    const [authedUsers, setAuthedUsers] = useState();
+    const [contributors, setContributors] = useState();
     const [showOriginalUser, setShowOriginalUser] = useState(true);
     const [showAuthedUser, setShowAuthedUser] = useState(true);
     const [showOriginalUserLinks, setShowOriginalUserLinks] = useState(true);
     const [reload, setReload] = useState(0);
     const [loading, setLoading] = useState(true);
+    const [updated, setUpdated] = useState(false);
     const [canView, setCanView] = useState(false);
-    
+
+    const contributorNewRef = useRef();
+
     useEffect(() => {
         document.documentElement.setAttribute("data-current-page", "tree")
     }, [])
@@ -280,13 +295,15 @@ export function TreeEdit() {
                 setTree(res)
                 setTitle(res.title)
                 setDescription(res.description)
-                setAuthedUser(res.authedUser)
+                setAuthedUsers(res.authedUser)
+                setContributors(res.authedUser)
                 setShowAuthedUser(res.settings.showAuthedUser)
                 if (res.settings.useOriginalUserLinks !== undefined) {
                     setShowOriginalUserLinks(res.settings.useOriginalUserLinks)
                 }
                 if (!res.showOriginalUserLinks) { setTreeLinks(res.links) }
                 if (res.images?.headerURL) { setHeaderPictureURL(res.images.headerURL) }
+                if (res.images?.iconURL) { setIconPictureURL(res.images.iconURL) }
             }
             setLoading(false)
             setReload(0)
@@ -294,14 +311,14 @@ export function TreeEdit() {
     }, [params.id, reload])
 
     useEffect(() => {
-        if (!currentUser || !authedUser) return
-        if (authedUser.includes(currentUser.uid)) { setCanView(true) }
-    }, [currentUser, authedUser])
+        if (!currentUser || !authedUsers) return
+        if (authedUsers.includes(currentUser.uid)) { setCanView(true) }
+    }, [currentUser, authedUsers])
 
     function handleSubmit(e) {
         e.preventDefault()
         if (!tree || !currentUser) return
-        updateTree(params.id, currentUser, setLoading, setReload, tree.originalUser, {
+        const update = updateTree(params.id, currentUser, setLoading, tree.originalUser, {
             title: title,
             description: description,
             settings: {
@@ -309,8 +326,25 @@ export function TreeEdit() {
                 showOriginalUser: showOriginalUser,
                 showAuthedUser: showAuthedUser,
             },
-            authedUser: [],
+            authedUser: contributors,
+            images: {
+                headerURL: headerPictureURL,
+                iconURL: iconPictureURL,
+            },
             links: treeLinks
+        }, headerPictureFile, iconPictureFile)
+
+        toast.promise(update, {
+            loading: 'Uploading',
+            success: 'Update Complete',
+            error: 'Error Updating',
+        }, {
+            className: "toast-item",
+            position: "bottom-center",
+        });
+
+        update.then(() => {
+            setUpdated(true)
         })
     }
 
@@ -370,14 +404,49 @@ export function TreeEdit() {
     const handleLinkAdd = (e) => {
         e.preventDefault();
         if (showOriginalUserLinks) {
-            console.error("Cannot add to links while showing current user links.")
-            alert("Cannot add to links while showing current user links.")
-            return
+            setShowOriginalUserLinks(false)
+            toast.success("No longer using creator's links", {
+                className: "toast-item",
+                position: "bottom-center",
+            })
+
         }
-        if (showOriginalUserLinks) return
 
         if (!treeLinks) { setTreeLinks([""]) }
         if (treeLinks) { setTreeLinks([...treeLinks, { title: "", url: "", imageURL: "" }]) };
+    };
+
+    const handleContributorRemove = (index) => {
+        const list = [...contributors];
+        list.splice(index, 1);
+        setContributors(list);
+    };
+
+    const handleContributorsAdd = (e) => {
+        e.preventDefault();
+
+        if (contributors.includes(contributorNewRef.current.value)) {
+            contributorNewRef.current.value = "";
+            toast.error("User already added.", {
+                className: "toast-item",
+                position: "bottom-center",
+            })
+            return
+        }
+
+        if (contributorNewRef.current.value === "") {
+            contributorNewRef.current.value = "";
+            toast.error("User ID not stated.", {
+                className: "toast-item",
+                position: "bottom-center",
+            })
+            return
+        }
+
+        if (!contributors) { setContributors([contributorNewRef.current.value]) };
+        if (contributors) { setContributors([...contributors, contributorNewRef.current.value]) };
+
+        contributorNewRef.current.value = ""
     };
 
     const handleHeaderChange = (e) => {
@@ -385,9 +454,9 @@ export function TreeEdit() {
         setHeaderPictureFile(e.target.files[0])
     }
 
-    const handleHeaderSave = (e) => {
+    const handleIconChange = (e) => {
         e.preventDefault();
-        uploadTreeHeader(headerPictureFile, params.id, setLoading)
+        setIconPictureFile(e.target.files[0])
     }
 
     useEffect(() => {
@@ -401,11 +470,22 @@ export function TreeEdit() {
         return () => URL.revokeObjectURL(objectUrl)
     }, [headerPictureFile])
 
+    useEffect(() => {
+        if (!iconPictureFile) return
+
+        // create the preview
+        const objectUrl = URL.createObjectURL(iconPictureFile)
+        setIconPictureURL(objectUrl)
+
+        // free memory when ever this component is unmounted
+        return () => URL.revokeObjectURL(objectUrl)
+    }, [iconPictureFile])
+
     return <>
+        {updated && <Navigate to="../" />}
         {!loading && <>
             {canView && tree && <>
-                {console.log(tree.images?.headerURL)}
-                <section className="tree">
+                <section className="tree edit">
                     <form className="container" onSubmit={handleSubmit}>
                         {headerPictureURL && <div className="header">
                             {headerPictureURL?.split(".").pop().split("?")[0] === "webm" && <video className="background" src={headerPictureURL} alt="" autoPlay muted loop ></video>}
@@ -414,28 +494,45 @@ export function TreeEdit() {
                         {!headerPictureURL && <div className="spacer" />}
                         <div className="main">
                             <div className="sidebar">
-                                <div className="sidebar-item info">
-                                    <input type="text" value={title} onChange={handleTitleChange}></input>
+                                {iconPictureURL && <div className="sidebar-item icon">
+                                    {iconPictureURL?.split(".").pop().split("?")[0] === "webm" && <video className="background" src={iconPictureURL} alt="" autoPlay muted loop ></video>}
+                                    {iconPictureURL?.split(".").pop().split("?")[0] !== "webm" && <img className="background" src={iconPictureURL} alt=""></img>}
+                                </div>}
+                                <input className="sidebar-item title" type="text" value={title} required onChange={handleTitleChange} placeholder="Title"></input>
+                                <textarea className="sidebar-item markdown" value={description} onChange={handleDescriptionChange} placeholder="Description" />
+                                <div className="sidebar-item images">
+                                    <label type="file" htmlFor="headerPicture">Upload Header Picture</label>
+                                    <input type="file" id="headerPicture" onChange={handleHeaderChange} accept=".jpg, .jpeg, .png, .apng, .webp, .webm, .gif" />
+                                    <label type="file" htmlFor="iconPicture">Upload Icon Picture</label>
+                                    <input type="file" id="iconPicture" onChange={handleIconChange} accept=".jpg, .jpeg, .png, .apng, .webp, .webm, .gif" />
                                 </div>
-                                <textarea className="sidebar-item markdown" value={description} onChange={handleDescriptionChange} />
-                                <div className="sidebar-item">
-                                    <label htmlFor="profilePicture">Profile Picture</label>
-                                    <div >
-                                        <input type="file" id="profilePicture" onChange={handleHeaderChange} accept=".jpg, .jpeg, .png, .apng, .webp, .webm, .gif" />
-                                        <button onClick={handleHeaderSave} disabled={!headerPictureFile || loading}>Update</button>
-                                    </div>
+                                <div className="sidebar-item settings">
+                                    <fieldset>
+                                        <input type="checkbox" name="showAuthedUser" id="showAuthedUser" checked={showAuthedUser} onChange={handleShowAuthedUserChange} />
+                                        <label htmlFor="showAuthedUser">Show Contributors</label>
+                                    </fieldset>
+                                    <fieldset>
+                                        <input type="checkbox" name="showOriginalUser" id="showOriginalUser" checked={showOriginalUser} onChange={handleShowOriginalUserChange} />
+                                        <label htmlFor="showOriginalUser">Show Creator</label>
+                                    </fieldset>
+                                    <fieldset>
+                                        <input type="checkbox" name="showOriginalUserLinks" id="showOriginalUserLinks" checked={showOriginalUserLinks} onChange={handleShowOriginalUserLinksChange} />
+                                        <label htmlFor="showOriginalUserLinks">Use Creator's Links</label>
+                                    </fieldset>
                                 </div>
-                                <div className="sidebar-item">
-                                    <label htmlFor="showAuthedUser">showAuthedUser</label>
-                                    <input type="checkbox" name="showAuthedUser" id="showAuthedUser" checked={showAuthedUser} onChange={handleShowAuthedUserChange} />
-                                    <label htmlFor="showOriginalUser">showOriginalUser</label>
-                                    <input type="checkbox" name="showOriginalUser" id="showOriginalUser" checked={showOriginalUser} onChange={handleShowOriginalUserChange} />
-                                    <label htmlFor="showOriginalUserLinks">showOriginalUserLinks</label>
-                                    <input type="checkbox" name="showOriginalUserLinks" id="showOriginalUserLinks" checked={showOriginalUserLinks} onChange={handleShowOriginalUserLinksChange} />
+                                <div className="sidebar-item contributors">
+                                    {contributors && <div className="authedUsers">
+                                        {console.info(contributors)}
+                                        {contributors.map((user, index) => {
+                                            return <button onClick={() => handleContributorRemove(index)} key={index}>
+                                                <Contributor userID={user} />
+                                            </button>
+                                        })}
+                                    </div>}
+                                    <input type="text" name="contributorNew" id="contributorNew" ref={contributorNewRef} placeholder="User ID"/>
+                                    <button onClick={handleContributorsAdd} type="add">Add Contributor</button>
                                 </div>
-                                <div className="sidebar-item">
-                                    <button type="submit">Submit</button>
-                                </div>
+                                <button className="sidebar-item submit" type="submit">Save</button>
                             </div>
                             <div className="mainbar">
                                 <div className="links">
@@ -443,19 +540,25 @@ export function TreeEdit() {
                                         {treeLinks && <>
                                             {treeLinks.map((link, index) => (
                                                 <li key={index}>
-                                                    <label htmlFor={"link-title" + index}>Title</label>
-                                                    <input type="text" name={"link-title" + index} id={"link-title" + index} value={link.title} onChange={(e) => handleLinkTitleChange(e, index)} required autoComplete="off" />
-                                                    <label htmlFor={"link" + index}>URL</label>
-                                                    <div className="content-2">
-                                                        <input type="url" name={"link" + index} id={"link" + index} value={link.url} onChange={(e) => handleLinkChange(e, index)} required autoComplete="off" />
-                                                        <button onClick={() => handleLinkRemove(index)}>Remove</button>
-                                                    </div>
-                                                    <label htmlFor={"link-imageURL" + index}>ImageURL</label>
-                                                    <input type="url" name={"link-imageURL" + index} id={"link-ImageURL" + index} value={link.imageURL} onChange={(e) => handleLinkImageUrlChange(e, index)} autoComplete="off" />
+                                                    <fieldset>
+                                                        <fieldset type="text">
+                                                            <label htmlFor={"link-title" + index}>Name:</label>
+                                                            <input type="text" name={"link-title" + index} id={"link-title" + index} value={link.title} onChange={(e) => handleLinkTitleChange(e, index)} required autoComplete="off" />
+                                                        </fieldset>
+                                                        <fieldset type="text">
+                                                            <label htmlFor={"link" + index}>URL:</label>
+                                                            <input type="url" name={"link" + index} id={"link" + index} value={link.url} onChange={(e) => handleLinkChange(e, index)} required autoComplete="off" />
+                                                        </fieldset>
+                                                        <fieldset type="text">
+                                                            <label htmlFor={"link-imageURL" + index}>ImageURL:</label>
+                                                            <input type="url" name={"link-imageURL" + index} id={"link-imageURL" + index} value={link.imageURL} onChange={(e) => handleLinkImageUrlChange(e, index)} autoComplete="off" />
+                                                        </fieldset>
+                                                    </fieldset>
+                                                    <button onClick={() => handleLinkRemove(index)} type="remove" ><span class="material-symbols-outlined">close</span></button>
                                                 </li>
                                             ))}
                                         </>}
-                                        <button onClick={handleLinkAdd}>Add</button>
+                                        <button onClick={handleLinkAdd} type="add">Add</button>
                                     </ul>
                                 </div>
                             </div>
@@ -492,5 +595,44 @@ const AuthedUser = forwardRef(({ userID }, ref) => {
                 <span className="type-2">{user.about.displayname}</span>
             </div>
         </Link>}
+    </>
+})
+
+const Contributor = forwardRef(({ userID }, ref) => {
+    const [user, setUser] = useState();
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState();
+
+    useEffect(() => {
+        getUserInfo(userID).then(res => {
+            if (res === undefined) {
+                setError({code: 404, title: "User Not Found"})
+                return
+            } else {
+                setUser(res)
+            }
+            setLoading(false)
+        })
+    }, [userID])
+
+    return <>
+        {loading && error && <>
+            <span className="material-symbols-outlined open">close</span>
+            <div className="content">
+                <span className="type-1">{error.code}</span>
+                <span className="type-2">{error.title}</span>
+            </div>
+
+        </>}
+        {!loading && <>
+            <span className="material-symbols-outlined open">close</span>
+            <div className="avatar">
+                <img src={user.images.photoURL} alt="" />
+            </div>
+            <div className="content">
+                <span className="type-1">{user.about.firstname} {user.about.lastname}</span>
+                <span className="type-2">{user.about.displayname}</span>
+            </div>
+        </>}
     </>
 })

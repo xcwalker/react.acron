@@ -35,11 +35,12 @@ export function Navbar() {
     return <>
         {!currentUser && <header onLoad={navScroll()}>
             <div className="container">
-                <LogoXCWalker />
+                <Link to="/" className="logo">
+                    <LogoXCWalker />
+                </Link>
                 <div className="nav">
                     <nav>
                         <ul>
-                            <Link to="/">Home</Link>
                             <Link to={routeAccount + "/register"}>Register</Link>
                             <Link className="alt" to={routeAccount + "/login"}>Login</Link>
                         </ul>

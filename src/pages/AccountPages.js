@@ -3,12 +3,13 @@ import { useEffect, useRef, useState } from "react";
 import { Link, Navigate, useSearchParams } from "react-router-dom";
 import { Helmet } from "react-helmet";
 
-import { error, forgot, getUserInfo, login, register, updateUserInfo, uploadHeaderBackgroundPicture, uploadProfilePicture, useAuth } from "../Firebase";
-import { application, network, release, routeUser, separator, url } from "../App";
+import { error, forgot, getUserInfo, login, register, updateUserInfo, uploadHeaderBackgroundPicture, uploadProfilePicture, useAuth, userSetup } from "../Firebase";
+import { application, network, release, routeUser, separator, simpleUrl } from "../App";
 
 // css
 import "../style/AccountPages.css"
 import ReactMarkdown from "react-markdown";
+import { toast } from "react-hot-toast";
 
 export function AccountIndex() {
     const currentUser = useAuth(null);
@@ -55,7 +56,7 @@ export function AccountLogin() {
     return <>
         <Helmet>
             <title>{page} {separator} {application} {separator} {network}</title>
-            <meta name="description" content={page + " for an " + release + " " + application + " account. " + separator + " A website for listing all of xcwalker's projects " + separator + " " + url} />
+            <meta name="description" content={page + " for an " + release + " " + application + " account. " + separator + " A website for listing all of xcwalker's projects " + separator + " " + simpleUrl} />
         </Helmet>
         <section className="accounts">
             <div className="container">
@@ -66,7 +67,7 @@ export function AccountLogin() {
                     {error && <div className="error">Error: {error}</div>}
                     <div className="group">
                         <label htmlFor="email">Email</label>
-                        <input type="email" id="email" ref={emailRef} placeholder={"example@" + url} pattern="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?" required />
+                        <input type="email" id="email" ref={emailRef} placeholder={"example@" + simpleUrl} pattern="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?" required />
                     </div>
                     <div className="group">
                         <label htmlFor="password">Password <Link className="forgot" to={"../forgot"}>Forgot Password</Link></label>
@@ -105,7 +106,7 @@ export function AccountRegister() {
     return <>
         <Helmet>
             <title>{page} {separator} {application} {separator} {network}</title>
-            <meta name="description" content={page + " for an " + release + " " + application + " account. " + separator + " A website for listing all of xcwalker's projects " + separator + " " + url} />
+            <meta name="description" content={page + " for an " + release + " " + application + " account. " + separator + " A website for listing all of xcwalker's projects " + separator + " " + simpleUrl} />
         </Helmet>
         <section className="accounts">
             <div className="container">
@@ -115,7 +116,7 @@ export function AccountRegister() {
                     {error && <div className="error">Error: {error}</div>}
                     <div className="group">
                         <label htmlFor="email">Email</label>
-                        <input type="email" id="email" ref={emailRef} placeholder={"example@" + url} pattern="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?" required />
+                        <input type="email" id="email" ref={emailRef} placeholder={"example@" + simpleUrl} pattern="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?" required />
                     </div>
                     <div className="group">
                         <label htmlFor="password">Password</label>
@@ -157,7 +158,7 @@ export function AccountForgot() {
     return <>
         <Helmet>
             <title>{page} {separator} {application} {separator} {network}</title>
-            <meta name="description" content={page + " for an " + release + " " + application + " account. " + separator + " A website for listing all of xcwalker's projects " + separator + " " + url} />
+            <meta name="description" content={page + " for an " + release + " " + application + " account. " + separator + " A website for listing all of xcwalker's projects " + separator + " " + simpleUrl} />
         </Helmet>
         <section className="accounts">
             <div className="container">
@@ -167,7 +168,7 @@ export function AccountForgot() {
                     {error && <div className="error">Error: {error}</div>}
                     <div className="group">
                         <label htmlFor="email">Email</label>
-                        <input type="email" id="email" ref={emailRef} placeholder={"example@" + url} pattern="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?" required />
+                        <input type="email" id="email" ref={emailRef} placeholder={"example@" + simpleUrl} pattern="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?" required />
                     </div>
                     <button disabled={loading || currentUser} type="submit">{page}</button>
                 </form>
@@ -372,25 +373,88 @@ export function AccountSetup() {
             locationIn = "";
         }
 
-        updateUserInfo({
-            firstname: firstname,
-            lastname: lastname,
-            displayname: username,
-            statement: statement,
-            info: {
-                gender: genderIn,
-                pronouns: pronounsIn,
-                location: locationIn,
-                joined: currentUser.metadata.createdAt,
-            },
-            settings: {
-                showUserLinks: true,
-                showUserTrees: true,
-                showOrganization: false
-            },
-        }, currentUser, setLoading).then(() => {
-            setComplete(true)
-        })
+        let images = {};
+        if (profilePicture === "skipped") {
+            images.photoURL = "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png"
+        } else {
+            images.photoURL = profilePictureURL;
+        }
+
+        if (headerPicture === "skipped") {
+            images.headerURL = "https://images.unsplash.com/photo-1646974708582-3dced57e0a25?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8"
+        } else {
+            images.headerURL = headerPictureURL;
+        }
+
+        if (headerPicture === "skipped" && profilePicture === "skipped") {
+            const setup = userSetup({
+                about: {
+                    firstname: firstname,
+                    lastname: lastname,
+                    displayname: username,
+                    statement: statement,
+                },
+                info: {
+                    gender: genderIn,
+                    pronouns: pronounsIn,
+                    location: locationIn,
+                    joined: currentUser.metadata.createdAt,
+                },
+                images: images,
+                settings: {
+                    showUserLinks: true,
+                    showUserTrees: true,
+                    showOrganization: false
+                },
+            }, currentUser, setLoading)
+
+            toast.promise(setup, {
+                loading: 'Uploading',
+                success: 'Update Complete',
+                error: 'Error Updating',
+            }, {
+                className: "toast-item",
+                position: "bottom-center",
+            });
+
+            setup.then(() => {
+                setComplete(true)
+            })
+        } else {
+            const setup = updateUserInfo({
+                about: {
+                    firstname: firstname,
+                    lastname: lastname,
+                    displayname: username,
+                    statement: statement,
+                },
+                info: {
+                    gender: genderIn,
+                    pronouns: pronounsIn,
+                    location: locationIn,
+                    joined: currentUser.metadata.createdAt,
+                },
+                images: images,
+                settings: {
+                    showUserLinks: true,
+                    showUserTrees: true,
+                    showOrganization: false
+                },
+            }, currentUser, setLoading)
+
+            toast.promise(setup, {
+                loading: 'Uploading',
+                success: 'Update Complete',
+                error: 'Error Updating',
+            }, {
+                className: "toast-item",
+                position: "bottom-center",
+            });
+
+            setup.then(() => {
+                setComplete(true)
+            })
+        }
     }
 
     return <section className="accounts">
@@ -398,7 +462,6 @@ export function AccountSetup() {
             {loading && <>
                 <h2>Please Wait</h2>
             </>}
-            {console.log(searchParams.get("firstname"), firstname)}
             {!loading && <>
                 {(start === "true" || start === null) && <>
                     <form action="" onSubmit={(e) => { e.preventDefault(); handleStart() }}>
@@ -485,8 +548,10 @@ export function AccountSetup() {
                 {start === "false" && username !== null && firstname !== null && lastname !== null && gender !== null && pronouns !== null && location !== null && description !== null && profilePicture !== null && headerPicture !== null && <>
                     <form action="" className="last" onSubmit={(e) => { e.preventDefault(); handleSave() }}>
                         <div className="header">
-                            <img src={headerPictureURL} className="background" alt="" />
-                            <img src={profilePictureURL} className="profile" alt="" />
+                            {headerPictureURL && <img src={headerPictureURL} className="background" alt="" />}
+                            {!headerPictureURL && <img src="https://images.unsplash.com/photo-1646974708582-3dced57e0a25?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8" className="background" alt="" />}
+                            {profilePictureURL && <img src={profilePictureURL} className="profile" alt="" />}
+                            {!profilePictureURL && <img src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png" className="profile" alt="" />}
                         </div>
                         <div className="about">
                             <h2>{firstname} {lastname}</h2>

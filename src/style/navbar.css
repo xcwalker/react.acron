@@ -88,10 +88,22 @@ header a:hover {
     text-decoration: underline;
 }
 
+header a.logo:hover {
+    /* text */
+    text-decoration: none;
+}
+
 header a:focus,
 header a:focus-visible {
     /* text */
     text-decoration: underline;
+    outline: 2px solid var(--form-color-selector);
+    outline-offset: 5px;
+}
+
+header a.logo:focus,
+header a.logo:focus-visible {
+    /* text */
     outline: 2px solid var(--form-color-selector);
     outline-offset: 5px;
 }

@@ -74,6 +74,47 @@ export function profileInitial(currentUser) {
     })
 }
 
+export async function userSetup(arg, currentUser, setLoading) {
+    if (setLoading) setLoading(true);
+
+    if (arg.info.gender === undefined) { arg.info.gender = "" }
+    if (arg.info.pronouns === undefined) { arg.info.pronouns = "" }
+    if (arg.info.location === undefined) { arg.info.location = "" }
+    if (arg.links === undefined) { arg.links = [] }
+
+    if (arg.settings === undefined) {
+        arg.settings = {
+            showUserLinks: true,
+            showUserTrees: true,
+            showOrganization: false
+        }
+    }
+    if (arg.settings.showUserLinks === undefined) { arg.settings.showUserLinks = true }
+    if (arg.settings.showUserTrees === undefined) { arg.settings.showUserTrees = true }
+    if (arg.settings.showOrganization === undefined) { arg.settings.showOrganization = false }
+
+    updateProfile(currentUser, { displayName: arg.displayname });
+    try {
+        await setDoc(doc(db, "users", currentUser.uid), {
+            about: arg.about,
+            info: arg.info,
+            settings: arg.settings,
+            images: arg.images,
+            links: arg.links
+        })
+    } catch (e) {
+        console.error("Error adding document (dN): ", e);
+        if (setLoading) setLoading(false);
+        return
+    }
+
+    toast('Updated User!', {
+        icon: 'check_circle',
+        style: toastStyle_success,
+    });
+    if (setLoading) setLoading(false);
+}
+
 export function login(email, password) {
     return signInWithEmailAndPassword(auth, email, password)
         .then(() => {
@@ -160,6 +201,21 @@ export function useAuth(falseValue) {
     return currentUser;
 }
 
+export async function uploadImageNewName(file, route, ID, type) {
+    const fileEXT = file.name.split(".").pop();
+    if (fileEXT !== "jpg" && fileEXT !== "jpeg" && fileEXT !== "png" && fileEXT !== "apng" && "fileEXT" !== "webp" && fileEXT !== "webm" && fileEXT !== "gif" && fileEXT === "mp4") {
+        console.error("Unsupported Format");
+        alert("Unsupported Format")
+        return
+    }
+
+    const fileRef = ref(storage, route + "/" + ID + '-' + type + "." + fileEXT);
+    await uploadBytes(fileRef, file);
+    const photoURL = await getDownloadURL(fileRef);
+
+    return photoURL
+}
+
 // Storage
 export async function uploadProfilePicture(file, currentUser, setLoading) {
     const fileEXT = file.name.split(".").pop();
@@ -232,7 +288,7 @@ export async function uploadHeaderBackgroundPicture(file, currentUser, setLoadin
     });
 }
 
-export async function updateUserInfo(arg, currentUser, setLoading) {
+export async function updateUserInfo(arg, currentUser, setLoading, profilePictureFile, headerPictureFile) {
     if (setLoading) setLoading(true);
 
     if (arg.info.gender === undefined) { arg.info.gender = "" }
@@ -240,51 +296,56 @@ export async function updateUserInfo(arg, currentUser, setLoading) {
     if (arg.info.location === undefined) { arg.info.location = "" }
     if (arg.links === undefined) { arg.links = [] }
 
-    if (arg.settings === undefined) {arg.settings = {
-        showUserLinks: true,
-        showUserTrees: true,
-        showOrganization: false
-    }}
+    if (arg.settings === undefined) {
+        arg.settings = {
+            showUserLinks: true,
+            showUserTrees: true,
+            showOrganization: false
+        }
+    }
     if (arg.settings.showUserLinks === undefined) { arg.settings.showUserLinks = true }
     if (arg.settings.showUserTrees === undefined) { arg.settings.showUserTrees = true }
     if (arg.settings.showOrganization === undefined) { arg.settings.showOrganization = false }
 
+    var profilePictureURL;
+    var headerPictureURL;
+
+    if (profilePictureFile !== undefined) {
+        await uploadImageNewName(profilePictureFile, "images/profile/", currentUser.uid, "profilePicture")
+            .then(res => {
+                profilePictureURL = res;
+            })
+    } else {
+        profilePictureURL = arg.images.iconURL;
+    }
+
+    if (headerPictureFile !== undefined) {
+        await uploadImageNewName(headerPictureFile, "images/profile/", currentUser.uid, "header")
+            .then(res => {
+                headerPictureURL = res;
+            })
+    } else {
+        headerPictureURL = arg.images.headerURL;
+    }
+
     updateProfile(currentUser, { displayName: arg.displayname });
     try {
         await updateDoc(doc(db, "users", currentUser.uid), {
-            about: {
-                firstname: arg.firstname,
-                lastname: arg.lastname,
-                displayname: arg.displayname,
-                statement: arg.statement,
+            about: arg.about,
+            info: arg.info,
+            settings: arg.settings,
+            images: {
+                photoURL: profilePictureURL,
+                headerURL: headerPictureURL,
             },
-            info: {
-                gender: arg.info.gender,
-                pronouns: arg.info.pronouns,
-                location: arg.info.location,
-                joined: arg.info.joined,
-            },
-            settings: {
-                showUserLinks: arg.settings.showUserLinks,
-                showUserTrees: arg.settings.showUserTrees,
-                showOrganization: arg.settings.showOrganization
-            },
-            links: arg.links
+            links: arg.links,
         })
     } catch (e) {
-        console.error("Error adding document (dN): ", e);
-        toast('Error Updating User!', {
-            icon: 'error',
-            style: toastStyle_error,
-        });
+        console.error("Error updating user (dN): ", e);
         if (setLoading) setLoading(false);
         return
     }
 
-    toast('Updated User!', {
-        icon: 'check_circle',
-        style: toastStyle_success,
-    });
     if (setLoading) setLoading(false);
 }
 
@@ -382,8 +443,29 @@ export async function deleteTree(treeID, setReload) {
     if (setReload) { setReload(3) }
 }
 
-export async function updateTree(treeID, currentUser, setLoading, setReload, originalUserID, treeArr) {
+export async function updateTree(treeID, currentUser, setLoading, originalUserID, treeArr, headerPictureFile, iconPictureFile) {
     setLoading(true);
+
+    var headerPictureURL;
+    var iconPictureURL;
+
+    if (headerPictureFile !== undefined) {
+        await uploadImageNewName(headerPictureFile, "images/tree/", treeID, "header")
+            .then(res => {
+                headerPictureURL = res;
+            })
+    } else {
+        headerPictureURL = treeArr.images.headerURL;
+    }
+
+    if (iconPictureFile !== undefined) {
+        await uploadImageNewName(iconPictureFile, "images/tree/", treeID, "icon")
+            .then(res => {
+                iconPictureURL = res;
+            })
+    } else {
+        iconPictureURL = treeArr.images.iconURL;
+    }
 
     if (treeArr.title === "") { treeArr.title = treeID }
     if (treeArr.authedUser === []) { treeArr.authedUser = [originalUserID] }
@@ -398,59 +480,19 @@ export async function updateTree(treeID, currentUser, setLoading, setReload, ori
             authedUser: treeArr.authedUser,
             links: treeArr.links,
             settings: treeArr.settings,
+            images: {
+                headerURL: headerPictureURL,
+                iconURL: iconPictureURL,
+            }
         })
     } catch (e) {
         console.error("Error updating tree (tE): ", e);
-        toast('Error Updating Tree!', {
-            icon: 'error',
-            style: toastStyle_error,
-        });
+
         setLoading(false);
         return
     }
 
-    setReload(1);
     setLoading(false);
-
-    toast('Tree Updated!', {
-        icon: 'check_circle',
-        style: toastStyle_success,
-    });
-}
-
-export async function uploadTreeHeader(file, treeID, setLoading) {
-    const fileEXT = file.name.split(".").pop();
-    if (fileEXT !== "jpg" && fileEXT !== "jpeg" && fileEXT !== "png" && fileEXT !== "apng" && fileEXT !== "webp" && fileEXT !== "webm" && fileEXT !== "gif") {
-        console.error("Unsupported Format");
-        alert("Unsupported Format")
-        return
-    }
-    const fileRef = ref(storage, "images/tree/" + treeID + '-header.' + fileEXT);
-
-    if (setLoading) setLoading(true);
-
-    await uploadBytes(fileRef, file);
-    const photoURL = await getDownloadURL(fileRef);
-
-    try {
-        await updateDoc(doc(db, "trees", treeID), {
-            "images.headerURL": photoURL
-        })
-    } catch (e) {
-        console.error("Error adding document (tE): ", e);
-        toast('Error Updating Tree Header!', {
-            icon: 'error',
-            style: toastStyle_error,
-        });
-        if (setLoading) setLoading(false);
-        return
-    }
-
-    if (setLoading) setLoading(false);
-    toast('Updated Tree Header!', {
-        icon: 'check_circle',
-        style: toastStyle_success,
-    });
 }
 
 export async function getUsersOwnTrees(currentUser, setLoading) {

@@ -2,11 +2,14 @@ import { useEffect, useRef, useState } from "react";
 import { Helmet } from "react-helmet";
 import { Link, Navigate, useParams } from "react-router-dom";
 import ReactMarkdown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
 import { application, network, routeAccount, routeUser, routeDev, routeTree, url, separator } from "../App";
 import { getUserInfo, getUsersOwnTrees, logout, profileInitial, updateUserInfo, uploadHeaderBackgroundPicture, uploadProfilePicture, useAuth } from "../Firebase";
 
-import "../style/UserPages.css"
+import "../style/user/index.css"
+import "../style/user/edit.css"
 import { Error403, Error404 } from "./ErrorPages";
+import { toast } from "react-hot-toast";
 
 export function UserIndex() {
     const currentUser = useAuth(null);
@@ -140,7 +143,7 @@ export function UserProfile() {
                                     })}
                                 </ul>
                             </div>}
-                            {user.about.statement && <ReactMarkdown className="sidebar-item markdown">
+                            {user.about.statement && <ReactMarkdown className="sidebar-item markdown" remarkPlugins={[remarkGfm]}>
                                 {user.about.statement}
                             </ReactMarkdown>}
                             <div className="sidebar-item">
@@ -327,19 +330,9 @@ export function UserProfileEdit() {
         setProfilePictureFile(e.target.files[0])
     }
 
-    function handleProfilePictureClick(e) {
-        e.preventDefault();
-        uploadProfilePicture(profilePictureFile, currentUser, setLoading)
-    }
-
     const handleHeaderPictureChange = (e) => {
         e.preventDefault();
         setHeaderPictureFile(e.target.files[0])
-    }
-
-    function handleHeaderPictureClick(e) {
-        e.preventDefault();
-        uploadHeaderBackgroundPicture(headerPictureFile, currentUser, setLoading)
     }
 
     useEffect(() => {
@@ -366,11 +359,13 @@ export function UserProfileEdit() {
 
     function handleSubmit(e) {
         e.preventDefault();
-        updateUserInfo({
-            firstname: firstname,
-            lastname: lastname,
-            displayname: displayname,
-            statement: statement,
+        const update = updateUserInfo({
+            about: {
+                firstname: firstname,
+                lastname: lastname,
+                displayname: displayname,
+                statement: statement,
+            },
             info: {
                 gender: gender,
                 pronouns: pronouns,
@@ -379,6 +374,15 @@ export function UserProfileEdit() {
             },
             links: linkList
         }, currentUser, setLoading)
+
+        toast.promise(update, {
+            loading: 'Uploading',
+            success: 'Update Complete',
+            error: 'Error Updating',
+        }, {
+            className: "toast-item",
+            position: "bottom-center",
+        });
     }
 
     return <>
@@ -389,111 +393,82 @@ export function UserProfileEdit() {
                     <title>{user.about?.displayname + " on " + application + " " + separator + " " + network}</title>
                     <meta name="description" content={user.about?.firstname + " " + user.about?.lastname + " " + separator + " A website for listing all of xcwalker's projects " + separator + " " + url} />
                 </Helmet>
-                <section className="user">
+                <section className="user edit">
                     <div className="container">
                         <div className="header">
                             {headerPicture?.split(".").pop().split("?")[0] === "webm" && <video className="background" src={headerPicture} alt="" autoPlay muted loop ></video>}
                             {headerPicture?.split(".").pop().split("?")[0] !== "webm" && <img className="background" src={headerPicture} alt=""></img>}
                         </div>
-                        <div className="main">
-                            <div className="sidebar">
-                                <div className="sidebar-item">
-                                    <img src={profilePicture} alt="" className="avatarPreview" />
+                        <form action="" className="main" onSubmit={handleSubmit}>
+                            <div className="item user">
+                                <div className="avatar">
+                                    <img src={profilePicture} alt="" />
                                 </div>
-                                <div className="sidebar-item">
-                                    <label htmlFor="profilePicture">Profile Picture</label>
-                                    <form action="" onSubmit={handleProfilePictureClick}>
-                                        <input type="file" id="profilePicture" onChange={handleProfilePictureChange} accept=".jpg, .jpeg, .png, .apng, .webp, .webm, .gif" />
-                                        <button type="submit" disabled={!profilePictureFile || loading}>Update</button>
-                                    </form>
-                                    <label htmlFor="headerPicture">Header Picture</label>
-                                    <form action="" onSubmit={handleHeaderPictureClick}>
-                                        <input type="file" id="headerPicture" onChange={handleHeaderPictureChange} accept=".jpg, .jpeg, .png, .apng, .webp, .webm, .gif" />
-                                        <button type="submit" disabled={!headerPictureFile || loading}>Update</button>
-                                    </form>
+                                <div className="content">
+                                    <span className="large"><label htmlFor="firstname">{firstname}</label> <label htmlFor="lastname">{lastname}</label></span>
+                                    <label htmlFor="displayname">{displayname}</label>
                                 </div>
-                                <form action="" onSubmit={handleSubmit}>
-                                    <div className="sidebar-item">
-                                        <label htmlFor="firstname">Firstname</label>
-                                        <div>
-                                            <input type="text" name="firstname" ref={firstNameRef} id="firstname" value={firstname} onChange={handleFirstNChange} autoComplete="off" required />
-                                        </div>
-                                        <label htmlFor="lastname">Lastname</label>
-                                        <div>
-                                            <input type="text" name="lastname" ref={lastNameRef} id="lastname" value={lastname} onChange={handleLastNChange} autoComplete="off" required />
-                                        </div>
-                                        <label htmlFor="displayname">Displayname</label>
-                                        <div>
-                                            <input type="text" name="displayname" ref={displayNameRef} id="displayname" value={displayname} onChange={handleDisplayNChange} autoComplete="off" required />
-                                        </div>
-                                    </div>
-                                    <div className="sidebar-item">
-                                        <div>
-                                            <textarea name="statement" id="statement" ref={statementRef} cols="30" rows="10" value={statement} onChange={handleStatementChange} autoComplete="off"></textarea>
-                                        </div>
-                                    </div>
-                                    <div className="sidebar-item">
-                                        <ul>
-                                            <li>
-                                                <span className="material-symbols-outlined">wc</span>
-                                                <div className="content">
-                                                    <label htmlFor="gender">Gender</label>
-                                                    <div>
-                                                        <input type="text" name="gender" onChange={handleGenderChange} id="gender" value={gender} autoComplete="off" />
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <svg width="24" height="24" viewBox="0 0 40 39" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <circle cx="12" cy="26.2803" r="10" stroke="currentColor" strokeWidth="4" />
-                                                    <circle cx="28" cy="26.2803" r="10" stroke="currentColor" strokeWidth="4" />
-                                                    <circle cx="20" cy="12.2002" r="10" stroke="currentColor" strokeWidth="4" />
-                                                </svg>
-                                                <div className="content">
-                                                    <label htmlFor="pronouns">Pronouns</label>
-                                                    <div>
-                                                        <input type="text" name="pronouns" onChange={handlePronounsChange} id="pronouns" value={pronouns} autoComplete="off" />
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <span className="material-symbols-outlined">map</span>
-                                                <div className="content">
-                                                    <label htmlFor="location">Location</label>
-                                                    <div>
-                                                        <input type="text" name="location" onChange={handleLocationChange} id="location" value={location} autoComplete="off" />
-                                                    </div>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    <div className="sidebar-item">
-                                        <ul>
-                                            {linkList && linkList.map((link, index) => (
-                                                <li key={index}>
-
-                                                    <label htmlFor={"link" + index}>Link</label>
-                                                    <div className="content-2">
-                                                        <input type="url" name={"link" + index} id={"link" + index} value={link} onChange={(e) => handleLinkChange(e, index)} required autoComplete="off" />
-                                                        <button onClick={() => handleLinkRemove(index)}>Remove</button>
-                                                    </div>
-                                                </li>
-                                            ))}
-                                            <div className="buttons">
-                                                <button onClick={handleLinkAdd}>Add</button>
-                                            </div>
-                                        </ul>
-                                    </div>
-                                    <div className="sidebar-item">
-                                        <button disabled={loading} type="submit">Submit</button>
-                                    </div>
-                                </form>
                             </div>
-                            <div className="mainbar"></div>
-                        </div>
+                            <div className="item images">
+                                <label type="file" htmlFor="profilePicture">Upload Profile Picture</label>
+                                <input type="file" id="profilePicture" onChange={handleProfilePictureChange} accept=".jpg, .jpeg, .png, .apng, .webp, .webm, .gif" />
+                                <label type="file" htmlFor="headerPicture">Upload Header Picture</label>
+                                <input type="file" id="headerPicture" onChange={handleHeaderPictureChange} accept=".jpg, .jpeg, .png, .apng, .webp, .webm, .gif" />
+                            </div>
+                            <div className="item names">
+                                <fieldset>
+                                    <label htmlFor="firstname">Firstname</label>
+                                    <input type="text" name="firstname" ref={firstNameRef} id="firstname" value={firstname} onChange={handleFirstNChange} autoComplete="off" required />
+                                </fieldset>
+                                <fieldset>
+                                    <label htmlFor="lastname">Lastname</label>
+                                    <input type="text" name="lastname" ref={lastNameRef} id="lastname" value={lastname} onChange={handleLastNChange} autoComplete="off" required />
+                                </fieldset>
+                                <fieldset>
+                                    <label htmlFor="displayname">Displayname</label>
+                                    <input type="text" name="displayname" ref={displayNameRef} id="displayname" value={displayname} onChange={handleDisplayNChange} autoComplete="off" required />
+                                </fieldset>
+                            </div>
+                            <textarea name="statement" className="item markdown" id="statement" ref={statementRef} value={statement} onChange={handleStatementChange} autoComplete="off"></textarea>
+                            <div className="item info">
+                                <ul>
+                                    <li>
+                                        <label htmlFor="gender"><span className="material-symbols-outlined" title="Gender">wc</span></label>
+                                        <input type="text" name="gender" onChange={handleGenderChange} id="gender" value={gender} autoComplete="off" placeholder="Gender" title="Gender" />
+                                    </li>
+                                    <li>
+                                        <label htmlFor="pronouns" title="Pronouns">
+                                            <svg width="24" height="24" viewBox="0 0 40 39" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <circle cx="12" cy="26.2803" r="10" stroke="currentColor" strokeWidth="4" />
+                                                <circle cx="28" cy="26.2803" r="10" stroke="currentColor" strokeWidth="4" />
+                                                <circle cx="20" cy="12.2002" r="10" stroke="currentColor" strokeWidth="4" />
+                                            </svg>
+                                        </label>
+                                        <input type="text" name="pronouns" onChange={handlePronounsChange} id="pronouns" value={pronouns} autoComplete="off" placeholder="Pronouns" title="Pronouns" />
+                                    </li>
+                                    <li>
+                                        <label htmlFor="location"><span className="material-symbols-outlined" title="Location">map</span></label>
+                                        <input type="text" name="location" onChange={handleLocationChange} id="location" value={location} autoComplete="off" placeholder="Location" title="Location" />
+                                    </li>
+                                </ul>
+                            </div>
+                            <div className="item links">
+                                <ul>
+                                    {linkList && linkList.map((link, index) => (
+                                        <li key={index}>
+                                            <input type="url" name={"link" + index} id={"link" + index} value={link} onChange={(e) => handleLinkChange(e, index)} required autoComplete="off" placeholder="https://www.example.com" />
+                                            <button onClick={() => handleLinkRemove(index)} type="remove"><span class="material-symbols-outlined">close</span></button>
+                                        </li>
+                                    ))}
+                                    <button onClick={handleLinkAdd} type="add">Add Link</button>
+                                </ul>
+                            </div>
+                            <button disabled={loading} className="item" type="submit">Save</button>
+                        </form>
                     </div>
                 </section>
             </>}
-        </>}
+        </>
+        }
     </>
 }

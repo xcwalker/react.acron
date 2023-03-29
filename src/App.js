@@ -108,10 +108,11 @@ function ScrollToTop() {
 export default App;
 
 export const separator = "•"
-export const application = "Console"
-export const network = "XCWALKER"
+export const application = "Acron"
+export const network = "xcwalker"
 export const release = "dev"
-export const url = application + "." + network + "." + release
+export const url = application.toLowerCase() + "." + network + "." + release
+export const simpleUrl = network + "." + release
 
 export const contactEmail = "contact@" + network.toLowerCase() + "." + release
 export const contactEmailMainDev = "xander@" + network.toLowerCase() + "." + release

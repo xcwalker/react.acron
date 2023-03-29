@@ -19,7 +19,7 @@ export function SearchPage() {
     const [placeholders, setPlaceholders] = useState()
     const [placeholdersRunning, setPlaceholdersRunning] = useState(false)
     const [placeholder, setPlaceholder] = useState("")
-    
+
     useEffect(() => {
         document.documentElement.setAttribute("data-current-page", "search")
     }, [])
@@ -36,7 +36,6 @@ export function SearchPage() {
         if (!searchParams.get("q")) return
         searchTrees(searchParams.get("q"), setSearchLoading)
             .then(res => {
-                console.info(res)
                 setSearchResults(res)
                 if (res.some(e => e.id === searchParams.get("q"))) return
                 setCanClaim(true)
@@ -59,7 +58,18 @@ export function SearchPage() {
             setTimeout(function () {
                 if (placeholderStr === "") {
                     placeholderState = "adding"
-                    placeholderCompleteStr = placeholders[Math.floor(Math.random() * placeholders.length) - 1] + "...";
+                    function newString() {
+                        var str = placeholders[Math.floor(Math.random() * placeholders.length) - 1] + "...";
+
+                        if (str !== placeholderCompleteStr) {
+                            placeholderCompleteStr = str;
+                            return;
+                        } else {
+                            newString();
+                        }
+                    }
+
+                    newString();
                     placeholderStr = placeholderCompleteStr.substring(0, 1)
                 }
 
@@ -196,8 +206,11 @@ export function SearchPage() {
                                         </>}
                                         <h3>{result.data.title}</h3>
                                         <span>/{result.id}</span>
-                                        {!result.data.images?.backgroundURL && <ItemBackground />}
-                                        {result.data.images?.backgroundURL && <img src={result.data.images.backgroundURL} alt="" />}
+                                        {!result.data.images?.iconURL && <ItemBackground />}
+                                        {result.data.images?.iconURL && <>
+                                            {result.data.images?.iconURL?.split(".").pop().split("?")[0] === "webm" && <video src={result.data.images?.iconURL} alt="" autoPlay muted loop ></video>}
+                                            {result.data.images?.iconURL?.split(".").pop().split("?")[0] !== "webm" && <img src={result.data.images?.iconURL} alt=""></img>}
+                                        </>}
                                     </Link>
                                 })}
                             </>}
