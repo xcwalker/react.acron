@@ -1,5 +1,4 @@
-# Console
-### Formerly '**code**'
+# React.Acron
 Created by [**xcwalker.dev**](https://xcwalker.dev) 
 
 ## Features

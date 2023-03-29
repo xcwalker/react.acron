@@ -611,6 +611,81 @@ section.tree .container .main .sidebar .sidebar-item .avatarPreview {
     border-radius: 50%;
 }
 
+/** Sidebar Settings **/
+section.tree .container .main .sidebar .sidebar-item.settings {
+    /* flex */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: left;
+}
+
+section.tree .container .main .sidebar .sidebar-item.settings label {
+    /* position */
+    position: relative;
+
+    /* sizing */
+    width: 100%;
+    margin: 0;
+    padding: 5px;
+
+    /* flex */
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+    /* styling */
+    border: none;
+    border-radius: 5px;
+
+    /* variables */
+    --hover-color: var(--background-color-300);
+
+    /* no select */
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+section.tree .container .main .sidebar .sidebar-item.settings label:hover {
+    /* styling */
+    background-color: var(--hover-color);
+}
+
+section.tree .container .main .sidebar .sidebar-item.settings label::before {
+    /* content */
+    content: "";
+
+    /* position */
+    position: absolute;
+    bottom: 0;
+    left: var(--spacing);
+    right: var(--spacing);
+
+    /* variables */
+    --spacing: 5px;
+
+    /* sizing */
+    height: 1px;
+    width: calc(100% - (2 * var(--spacing)));
+
+    /* styling */
+    background-color: var(--hover-color);
+}
+
+section.tree .container .main .sidebar .sidebar-item.settings label:last-of-type:before {
+    content: none;
+}
+
+section.tree .container .main .sidebar .sidebar-item.settings label:has(input[type=checkbox]:checked) {
+    color: var(--form-color-selector);
+}
+
+/** Sidebar Controls **/
 section.tree .container .main .sidebar .sidebar-item.controls {
     /* sizing */
     --column-width: 330px;
@@ -824,6 +899,98 @@ section.tree .container .main .mainbar .links ul a span.url {
 
     /* styling */
     color: var(--foreground-color-300);
+}
+
+section.tree .container .main .mainbar .links ul li {
+    /* sizing */
+    padding: 5px;
+
+    /* flex */
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+
+    /* styling */
+    border: 2px solid var(--background-color-300);
+    border-radius: 10px;
+}
+
+section.tree .container .main .mainbar .links ul li div {
+    /* sizing */
+    width: 100%;
+
+    /* flex */
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+section.tree .container .main .mainbar .links ul li fieldset {
+    /* sizing */
+    padding: 0;
+    margin: 0;
+    min-width: 400px;
+    flex-grow: 1;
+    flex-basis: 0;
+
+    /* flex */
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+
+    /* styling */
+    border: none;
+}
+
+section.tree .container .main .mainbar .links ul li fieldset input[type="text"],
+section.tree .container .main .mainbar .links ul li fieldset input[type="url"] {
+    /* sizing */
+    padding: 5px 10px;
+    width: 100%;
+
+    /* styling */
+    border: none;
+    background-color: var(--background-color-100);
+    color: var(--foreground-color-100);
+    border-radius: 5px;
+}
+
+section.tree .container .main .mainbar .links button {
+    /* sizing */
+    padding: 5px;
+    width: 100%;
+
+    /* text */
+    font-size: 16px;
+    font-weight: 600;
+
+    /* styling */
+    border: none;
+    background-color: var(--background-color-300);
+    color: var(--foreground-color-300);
+    border-radius: 10px;
+
+    /* cursor */
+    cursor: pointer;
+}
+
+section.tree .container .main .mainbar .links button:hover,
+section.tree .container .main .mainbar .links button:focus,
+section.tree .container .main .mainbar .links button:focus-visible {
+    outline: 1px solid currentColor;
+    background-color: transparent;
+}
+
+section.tree .container .main .mainbar .links button:active {
+    color: var(--form-color-selector);
 }
 
 /*** TreeSearch ***/

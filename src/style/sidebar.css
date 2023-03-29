@@ -50,15 +50,20 @@ menu .container {
     /* styling */
     background-color: var(--background-color);
     border-radius: var(--radius);
-    box-shadow: 0 0 10px black;
+    box-shadow: 0 0 10px 1px black;
 
     /* scroll */
     scrollbar-width: none;
+    -ms-overflow-style: none;
     overflow-y: auto;
     overflow-x: clip;
 
     /* transition */
     transition: var(--quick-transition-color), var(--quick-transition-background_color), var(--quick-transition-translate);
+}
+
+menu .container::-webkit-scrollbar {
+    display: none;
 }
 
 .scrolled menu .container {
@@ -274,7 +279,7 @@ span.tooltip {
     background-color: var(--background-color-200);
     border-top-left-radius: 10px;
     border-bottom-left-radius: 10px;
-    box-shadow: 0 0 10px black;
+    box-shadow: 0 0 10px 1px black;
 
     /* text */
     font-weight: 600;

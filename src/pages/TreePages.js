@@ -32,6 +32,7 @@ export function TreeIndex() {
     const [reload, setReload] = useState(0);
     const [loading, setLoading] = useState(true);
 
+
     useEffect(() => {
         document.documentElement.setAttribute("data-current-page", "tree")
     }, [])
@@ -50,7 +51,12 @@ export function TreeIndex() {
         if (tree.settings.useOriginalUserLinks === true) {
             getUserInfo(tree.originalUser).then(res => {
                 setUser(res)
-                setTreeLinks(res.links)
+
+                if (res.settings.showUserLinks === false) {
+                    setTreeLinks([])
+                } else {
+                    setTreeLinks(res.links)
+                }
             })
         }
         if (tree.settings.useOriginalUserLinks !== true) {

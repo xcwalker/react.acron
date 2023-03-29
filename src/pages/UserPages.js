@@ -119,8 +119,8 @@ export function UserProfile() {
             <section className="user">
                 <div className="container">
                     <div className="header">
-                        {user.images.headerURL?.split(".").pop().split("?")[0] === "webm" && <video className="background" src={user.images.headerURL} alt="" autoPlay muted loop ></video>}
-                        {user.images.headerURL?.split(".").pop().split("?")[0] !== "webm" && <img className="background" src={user.images.headerURL} alt=""></img>}
+                        {user.images.headerURL?.split(".").pop().split("?")[0] === "webm" && <video className="background" src={user.images.headerURL} alt="" autoPlay muted loop crossOrigin="anonymous" ></video>}
+                        {user.images.headerURL?.split(".").pop().split("?")[0] !== "webm" && <img className="background" src={user.images.headerURL} alt="" crossOrigin="anonymous" ></img>}
                     </div>
                     <div className="main">
                         <div className="sidebar">

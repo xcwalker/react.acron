@@ -1,19 +1,36 @@
+html /* colors */ {    
+        /** DO NOT USE **/
+        /* foreground */
+        --dnu-light-color-100: hsl(0, 0%, 93%);
+        --dnu-light-color-200: hsl(0, 0%, 87%);
+        --dnu-light-color-300: hsl(0, 0%, 81%);
+        --dnu-light-color-400: hsl(0, 0%, 75%);
+        --dnu-light-color-500: hsl(0, 0%, 69%);
+
+        /* background */
+        --dnu-dark-color-100: hsl(0, 0%, 7%);
+        --dnu-dark-color-200: hsl(0, 0%, 13%);
+        --dnu-dark-color-300: hsl(0, 0%, 19%);
+        --dnu-dark-color-400: hsl(0, 0%, 25%);
+        --dnu-dark-color-500: hsl(0, 0%, 31%);
+}
+
 @media (prefers-color-scheme: dark) {
     html {
         /** colors **/
         /* foreground */
-        --foreground-color-100: hsl(0, 0%, 93%);
-        --foreground-color-200: hsl(0, 0%, 87%);
-        --foreground-color-300: hsl(0, 0%, 81%);
-        --foreground-color-400: hsl(0, 0%, 75%);
-        --foreground-color-500: hsl(0, 0%, 69%);
+        --foreground-color-100: var(--dnu-light-color-100);
+        --foreground-color-200: var(--dnu-light-color-200);
+        --foreground-color-300: var(--dnu-light-color-300);
+        --foreground-color-400: var(--dnu-light-color-400);
+        --foreground-color-500: var(--dnu-light-color-500);
 
         /* background */
-        --background-color-100: hsl(0, 0%, 7%);
-        --background-color-200: hsl(0, 0%, 13%);
-        --background-color-300: hsl(0, 0%, 19%);
-        --background-color-400: hsl(0, 0%, 25%);
-        --background-color-500: hsl(0, 0%, 31%);
+        --background-color-100: var(--dnu-dark-color-100);
+        --background-color-200: var(--dnu-dark-color-200);
+        --background-color-300: var(--dnu-dark-color-300);
+        --background-color-400: var(--dnu-dark-color-400);
+        --background-color-500: var(--dnu-dark-color-500);
 
         /* selector */
         --selector-color: hsl(214, 100%, 44%);
@@ -37,18 +54,18 @@
     html {
         /** colors **/
         /* foreground */
-        --foreground-color-100: hsl(0, 0%, 7%);
-        --foreground-color-200: hsl(0, 0%, 13%);
-        --foreground-color-300: hsl(0, 0%, 19%);
-        --foreground-color-400: hsl(0, 0%, 25%);
-        --foreground-color-500: hsl(0, 0%, 31%);
+        --foreground-color-100: var(--dnu-dark-color-100);
+        --foreground-color-200: var(--dnu-dark-color-200);
+        --foreground-color-300: var(--dnu-dark-color-300);
+        --foreground-color-400: var(--dnu-dark-color-400);
+        --foreground-color-500: var(--dnu-dark-color-500);
 
         /* background */
-        --background-color-100: hsl(0, 0%, 93%);
-        --background-color-200: hsl(0, 0%, 87%);
-        --background-color-300: hsl(0, 0%, 81%);
-        --background-color-400: hsl(0, 0%, 75%);
-        --background-color-500: hsl(0, 0%, 69%);
+        --background-color-100: var(--dnu-light-color-100);
+        --background-color-200: var(--dnu-light-color-200);
+        --background-color-300: var(--dnu-light-color-300);
+        --background-color-400: var(--dnu-light-color-400);
+        --background-color-500: var(--dnu-light-color-500);
 
         /* selector */
         --selector-color: hsl(214, 100%, 44%);

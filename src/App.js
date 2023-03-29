@@ -111,7 +111,7 @@ export const separator = "•"
 export const application = "Acron"
 export const network = "xcwalker"
 export const release = "dev"
-export const url = application.toLowerCase() + "." + network + "." + release
+export const url = application.toLowerCase() + "." + network.toLowerCase() + "." + release.toLowerCase()
 export const simpleUrl = network + "." + release
 
 export const contactEmail = "contact@" + network.toLowerCase() + "." + release
@@ -126,6 +126,7 @@ export const routeTree = "tree"
 export const routePost = "feed"
 export const routePostNew = "post"
 export const routeSearch = "search"
+export const routeImage = "image"
 
 export const toastStyle_default = {
   borderRadius: '5px',
