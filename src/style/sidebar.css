@@ -59,7 +59,7 @@ menu .container {
     overflow-x: clip;
 
     /* transition */
-    transition: var(--quick-transition-color), var(--quick-transition-background_color), var(--quick-transition-translate);
+    transition: var(--quick-transition-color), var(--default-transition-background_color), var(--quick-transition-translate);
 }
 
 menu .container::-webkit-scrollbar {
@@ -105,6 +105,9 @@ menu .container ul .separator {
 
     /* styling */
     background-color: var(--foreground-color-300);
+
+    /* transition */
+    transition: var(--quick-transition-background_color);
 }
 
 menu .container ul.upper {

@@ -66,8 +66,8 @@ section.search .container .results .header {
     background-color: var(--background-color-200);
 
     /* transition */
-    transition: var(--quick-transition-color), 
-    var(--quick-transition-background_color), 
+    transition: var(--default-transition-color), 
+    var(--default-transition-background_color), 
     var(--quick-transition-translate),
     padding ease-in-out 0.25s,
     border-radius ease-in-out 0.25s,
@@ -217,6 +217,10 @@ section.search .container .results .content[data-view="list"] ul {
     /* text */
     text-decoration: none;
 
+    /* transition */
+    transition: var(--default-transition-background_color),
+    var(--default-transition-color);
+
     /* pointer */
     cursor: pointer;
 }
@@ -253,6 +257,10 @@ section.search .container .results .content[data-view="list"] ul {
 
     /* styling */
     color: var(--foreground-color-300);
+
+    /* transition */
+    transition: var(--default-transition-background_color),
+    var(--default-transition-color);
 }
 
 .search-item span.material-symbols-outlined {
@@ -279,6 +287,10 @@ section.search .container .results .content[data-view="list"] ul {
     border-radius: 50%;
     background-color: var(--background-color-300);
     color: var(--foreground-color-300);
+
+    /* transition */
+    transition: var(--default-transition-background_color),
+    var(--default-transition-color);
 }
 
 .search-item span.hover {
@@ -309,7 +321,10 @@ section.search .container .results .content[data-view="list"] ul {
     opacity: 0;
 
     /* transition */
-    transition: translate 0.125s ease-in-out, opacity 0.125s ease-in-out;
+    transition: translate 0.125s ease-in-out, 
+    opacity 0.125s ease-in-out,
+    var(--default-transition-background_color),
+    var(--default-transition-color);
 }
 
 .search-item span.material-symbols-outlined:hover+span.hover {
@@ -522,7 +537,7 @@ section.search .container .results .content[data-view="list"] ul {
     font-weight: 500;
 
     /* transition */
-    transition: var(--quick-transition-background_color), var(--quick-transition-color);
+    transition: var(--default-transition-background_color), var(--default-transition-color);
 }
 
 .searchBar input:focus {
@@ -558,9 +573,4 @@ section.search .container .results .content[data-view="list"] ul {
     /* styling */
     color: var(--form-color-selector);
     background-color: var(--foreground-color-200);
-}
-
-.searchBar button:focus {
-    /* text */
-    font-size: 18px;
 }

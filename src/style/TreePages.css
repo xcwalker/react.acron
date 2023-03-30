@@ -437,6 +437,12 @@ section.tree .container .main .sidebar .sidebar-item .authedUsers span.open {
 
     /* text */
     font-size: 18px;
+
+    /* styling */
+    color: var(--foreground-color-200);
+
+    /* transition */
+    transition: var(--default-transition-color);
 }
 
 /*** markdown ***/
@@ -727,6 +733,9 @@ section.tree .container .main .sidebar .sidebar-item.controls a {
     background-color: var(--form-color-invalid-hold-opac);
     color: var(--foreground-color-300);
     border: 2px solid var(--form-color-invalid-hold);
+
+    /* transition */
+    transition: var(--default-transition-color);
 }
 
 section.tree .container .main .sidebar .sidebar-item.controls a:hover,
@@ -750,6 +759,9 @@ section.tree .container .main .sidebar .sidebar-item.controls button {
     background-color: var(--form-color-invalid-opac);
     color: var(--foreground-color-300);
     border: 2px solid var(--form-color-invalid);
+
+    /* transition */
+    transition: var(--default-transition-color);
 }
 
 section.tree .container .main .sidebar .sidebar-item.controls button:hover,
@@ -889,6 +901,9 @@ section.tree .container .main .mainbar .links ul a span.title {
 
     /* styling */
     color: var(--foreground-color-200);
+
+    /* transition */
+    transition: var(--default-transition-color);
 }
 
 section.tree .container .main .mainbar .links ul a span.url {
@@ -899,6 +914,9 @@ section.tree .container .main .mainbar .links ul a span.url {
 
     /* styling */
     color: var(--foreground-color-300);
+
+    /* transition */
+    transition: var(--default-transition-color);
 }
 
 section.tree .container .main .mainbar .links ul li {
