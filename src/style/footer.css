@@ -100,7 +100,7 @@ footer .application {
     border-radius: 5px;
 
     /* text */
-    text-transform: lowercase;
+    text-transform: capitalize;
     font-weight: 600;
 
     /* transition*/

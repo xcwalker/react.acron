@@ -4,11 +4,11 @@ import { Helmet } from "react-helmet";
 import { toast } from "react-hot-toast";
 import ReactMarkdown from "react-markdown";
 import { Link, Navigate, useParams } from "react-router-dom";
-import { application, network, routeUser, separator, url } from "../App";
+import { application, routeUser, separator, url } from "../App";
 import { claimTree, deleteTree, getTreeInfo, getUserInfo, getUsersOwnTrees, getUsersTrees, updateTree, useAuth } from "../Firebase";
 
 import "../style/TreePages.css"
-import { Error403 } from "./ErrorPages";
+import { Error } from "./ErrorPages";
 
 export function TreeForward() {
     return <Navigate to="./dashboard" />
@@ -89,7 +89,7 @@ export function TreeIndex() {
         {!loading && <>
             {tree && <>
                 <Helmet>
-                    <title>{tree.title + " " + separator + " tree " + separator + " " + application + " " + separator + " " + network}</title>
+                    <title>{tree.title + " " + separator + " tree " + separator + " " + application}</title>
                     <meta name="description" content={tree.title + " " + separator + " tree" + separator + "A website for listing all of xcwalker's projects" + separator + " " + url} />
                 </Helmet>
                 <section className="tree">
@@ -195,7 +195,7 @@ export function TreeIndex() {
             </>}
             {!tree && <>
                 <Helmet>
-                    <title>{params.id + "Unowned " + separator + " tree " + separator + " " + application + " " + separator + " " + network}</title>
+                    <title>{params.id + "Unowned " + separator + " tree " + separator + " " + application}</title>
                     <meta name="description" content={params.id + " " + separator + " Unowned tree " + separator + " A website for listing all of xcwalker's projects " + separator + " " + url} />
                 </Helmet>
                 <h1>unowned</h1>
@@ -572,7 +572,7 @@ export function TreeEdit() {
                     </form>
                 </section>
             </>}
-            {!canView && <Error403 />}
+            {!canView && <Error code="403" message="Forbidden" />}
         </>
         }
     </>

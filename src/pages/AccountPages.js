@@ -4,7 +4,7 @@ import { Link, Navigate, useSearchParams } from "react-router-dom";
 import { Helmet } from "react-helmet";
 
 import { error, forgot, getUserInfo, login, register, updateUserInfo, uploadHeaderBackgroundPicture, uploadProfilePicture, useAuth, userSetup } from "../Firebase";
-import { application, network, release, routeUser, separator, simpleUrl } from "../App";
+import { application, release, routeUser, separator, simpleUrl } from "../App";
 
 // css
 import "../style/AccountPages.css"
@@ -55,7 +55,7 @@ export function AccountLogin() {
 
     return <>
         <Helmet>
-            <title>{page} {separator} {application} {separator} {network}</title>
+            <title>{page} {separator} {application}</title>
             <meta name="description" content={page + " for an " + release + " " + application + " account. " + separator + " A website for listing all of xcwalker's projects " + separator + " " + simpleUrl} />
         </Helmet>
         <section className="accounts">
@@ -105,7 +105,7 @@ export function AccountRegister() {
 
     return <>
         <Helmet>
-            <title>{page} {separator} {application} {separator} {network}</title>
+            <title>{page} {separator} {application}</title>
             <meta name="description" content={page + " for an " + release + " " + application + " account. " + separator + " A website for listing all of xcwalker's projects " + separator + " " + simpleUrl} />
         </Helmet>
         <section className="accounts">
@@ -157,7 +157,7 @@ export function AccountForgot() {
 
     return <>
         <Helmet>
-            <title>{page} {separator} {application} {separator} {network}</title>
+            <title>{page} {separator} {application}</title>
             <meta name="description" content={page + " for an " + release + " " + application + " account. " + separator + " A website for listing all of xcwalker's projects " + separator + " " + simpleUrl} />
         </Helmet>
         <section className="accounts">

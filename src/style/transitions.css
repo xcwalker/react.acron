@@ -1,13 +1,17 @@
 html {
     --default-transition-color: color ease-in-out 0.5s;
     --default-transition-background_color: background-color ease-in-out 0.5s;
+    --default-transition-border_color: border-color ease-in-out 0.5s;
     --default-transition-scale: scale ease-in-out 0.5s;
     --default-transition-translate: translate ease-in-out 0.5s;
+    --default-transition-opacity: opacity ease-in-out 0.5s;
     --default-transition-rotate: rotate ease-in-out 0.5s;
 
     --quick-transition-color: color ease-in-out 0.25s;
     --quick-transition-background_color: background-color ease-in-out 0.25s;
+    --quick-transition-border_color: border-color ease-in-out 0.25s;
     --quick-transition-scale: scale ease-in-out 0.25s;
     --quick-transition-translate: translate ease-in-out 0.25s;
+    --quick-transition-opacity: opacity ease-in-out 0.25s;
     --quick-transition-rotate: rotate ease-in-out 0.25s;
 }

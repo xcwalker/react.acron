@@ -24,7 +24,7 @@ section.user .container .header {
 
     /* sizing */
     width: 100%;
-    height: 352px;
+    height: min(375px, max(100px, 25vh));
 
     /* spacing */
     margin-top: 12px;

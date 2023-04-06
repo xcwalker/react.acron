@@ -1,0 +1,237 @@
+section.feed.new {
+    /* sizing */
+    min-height: 100vh;
+}
+
+section.feed.new>.container {
+    /* sizing */
+    width: 100%;
+    min-height: 100vh;
+    padding: 10px;
+
+    /* flex */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+section.feed.new>.container .pills {
+    /* sizing */
+    margin: 0;
+    padding: 0;
+    max-width: min(100%, 450px);;
+    
+
+    /* flex */
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+section.feed.new>.container .pills .pill {
+    /* variables */
+    --pill-height: 30px;
+    --pill-width: min-content;
+    --pill-icon-size: 20px;
+    --pill-icon-offset-left: 10px;
+    --pill-border-radius: 10px;
+
+    /* position */
+    position: relative;
+    z-index: 996;
+
+    /* sizing */
+    height: var(--pill-height);
+    width: var(--pill-width);
+
+    /* styling */
+    background-color: var(--background-color-200);
+    color: var(--foreground-color-200);
+    border-radius: var(--pill-border-radius);
+    overflow: hidden;
+
+    /* transition */
+    transition: var(--default-transition-color), var(--default-transition-background_color), var(--default-transition-border_color);
+}
+
+section.feed.new>.container .pills .pill.open {
+    /* styling */
+    overflow: visible;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+section.feed.new>.container .pills .pill .selector {
+    /* hiding */
+    display: none;
+
+    /* position */
+    /* position: absolute; */
+    inset: 0;
+    top: var(--pill-height);
+    bottom: auto;
+
+    /* flex */
+    flex-direction: column;
+
+    /* sizing */
+    margin: 0;
+    padding: 0;
+
+    /* styling */
+    list-style: none;
+    background-color: var(--background-color-200);
+    border-bottom-left-radius: var(--pill-border-radius);
+    border-bottom-right-radius: var(--pill-border-radius);
+
+    /* transition */
+    transition: var(--default-transition-color), var(--default-transition-background_color), var(--default-transition-border_color);
+}
+
+section.feed.new>.container .pills .pill.open .selector {
+    /* hiding */
+    display: flex;
+}
+
+section.feed.new>.container .pills .pill .visible {
+    /* styling */
+    border-top-left-radius: var(--pill-border-radius);
+    border-top-right-radius: var(--pill-border-radius);
+}
+
+section.feed.new>.container .pills .pill .selector button:last-of-type {
+    /* styling */
+    border-bottom-left-radius: var(--pill-border-radius);
+    border-bottom-right-radius: var(--pill-border-radius);
+}
+
+section.feed.new>.container .pills .pill .selector button,
+section.feed.new>.container .pills .pill .visible {
+    /* position */
+    position: relative;
+
+    /* sizing */
+    height: var(--pill-height);
+    width: var(--pill-width);
+    min-width: 100%;
+    padding: 5px;
+    padding-left: calc(var(--pill-icon-size) + (var(--pill-icon-offset-left) * 1.5));
+    padding-right: calc(var(--pill-icon-offset-left) * 1.5);
+
+    /* flex */
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+
+    /* styling */
+    background-color: transparent;
+    color: inherit;
+    border: none;
+
+    /* cursor */
+    cursor: pointer;
+}
+
+section.feed.new>.container .pills .pill .selector button:hover,
+section.feed.new>.container .pills .pill .selector button:focus-visible,
+section.feed.new>.container .pills .pill .visible:hover,
+section.feed.new>.container .pills .pill .visible:focus-visible {
+    /* styling */
+    background-color: var(--background-color-300);
+}
+
+section.feed.new>.container .pills .pill .selector button:focus-visible,
+section.feed.new>.container .pills .pill .visible:focus-visible {
+    /* styling */
+    border-left: 5px solid var(--form-color-selector);
+    border-right: 5px solid var(--form-color-selector);
+    outline: none;
+}
+
+section.feed.new>.container .pills .pill.dropdown .visible {
+    padding-right: 35px;
+}
+
+section.feed.new>.container .pills .pill .icon {
+    /* position */
+    position: absolute;
+    inset: 5px;
+    left: 10px;
+    right: auto;
+
+    /* flex */
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+
+    /* sizing */
+    height: var(--pill-icon-size);
+    width: var(--pill-icon-size);
+
+    /* text */
+    font-size: var(--pill-icon-size);
+}
+
+section.feed.new>.container .pills .pill .arrow {
+    /* position */
+    position: absolute;
+    inset: 5px;
+    left: auto;
+
+    /* flex */
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+
+    /* sizing */
+    height: var(--pill-icon-size);
+    width: var(--pill-icon-size);
+
+    /* text */
+    font-size: var(--pill-icon-size);
+}
+
+section.feed.new>.container .pills .pill .title {}
+
+section.feed.new>.container .links {
+    /* sizing */
+    max-width: min(100%, 450px);;
+
+    /* flex */
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+
+section.feed.new>.container .links a {
+    /* sizing */
+    display: block;
+    height: 14px;
+
+    /* text */
+    font-size: 14px;
+    font-weight: 400;
+    text-decoration: none;
+
+    /* styling */
+    color: var(--foreground-color-100);
+
+    /* transition */
+    transition: var(--default-transition-color);
+}
+
+section.feed.new>.container .links a:hover,
+section.feed.new>.container .links a:focus {
+    /* text */
+    text-decoration: underline;
+}

@@ -1,0 +1,18 @@
+section.feed.post {
+    /* sizing */
+    min-height: 100vh;
+}
+
+section.feed.post>.container {
+    /* sizing */
+    width: 100%;
+    min-height: 100vh;
+    padding: 10px;
+
+    /* flex */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}

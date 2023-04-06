@@ -1,0 +1,193 @@
+section.feed.post .container .update {
+    /* sizing */
+    padding: 10px;
+    width: min(100%, 450px);
+
+    /* styling */
+    border-radius: 10px;
+    background-color: var(--background-color-200);
+
+    /* transition */
+    transition:
+        var(--default-transition-color),
+        var(--default-transition-background_color);
+}
+
+section.feed.post .container .update>.container {
+    /* sizing */
+    width: 100%;
+    height: 100%;
+
+    /* flex */
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+
+}
+
+section.feed.post .container .update .left {
+    /* variables */
+    --size: 40px;
+
+    /* sizing */
+    width: var(--size);
+
+    /* flex */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+section.feed.post .container .update .left a[type="edit"] {
+    /* sizing */
+    height: var(--size);
+    width: var(--size);
+
+    /* flex */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    /* text */
+    font-size: 20px;
+    text-decoration: none;
+
+    /* styling */
+    border-radius: 50%;
+    border: none;
+    background-color: var(--form-color-selector);
+    color: var(--foreground-color-100);
+}
+
+section.feed.post .container .update .left a[type="edit"]:hover,
+section.feed.post .container .update .left a[type="edit"]:focus {
+    /* styling */
+    background-color: var(--foreground-color-100);
+    color: var(--form-color-selector);
+}
+
+section.feed.post .container .update .profilePicture {
+    /* sizing */
+    height: var(--size);
+    width: var(--size);
+
+    /* styling */
+    border-radius: 50%;
+
+    /* image */
+    object-fit: cover;
+}
+
+section.feed.post .container .update .right {
+    /* position */
+    position: relative;
+
+    /* sizing */
+    width: 100%;
+    max-height: 350px;
+    overflow: hidden;
+
+    /* styling */
+    border-radius: 10px;
+    background-color: var(--background-color-100);
+
+    /* transition */
+    transition:
+        var(--default-transition-color),
+        var(--default-transition-background_color);
+}
+
+section.feed.post .container .update .right .content {
+    /* sizing */
+    width: 100%;
+    height: 100%;
+    max-height: 350px;
+    padding: 10px;
+
+    /* overflow */
+    overflow-y: scroll;
+    overflow-x: hidden;
+
+    /* flex */
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+/**** Markdown ****/
+section.feed.post .container .update .right .content p {
+    /* spacing */
+    margin: 0;
+}
+
+section.feed.post .container .update .right .content ol,
+section.feed.post .container .update .right .content ul {
+    /* spacing */
+    margin: 0;
+    padding: 0;
+    padding-left: 25px;
+}
+
+section.feed.post .container .update .right .content blockquote {
+    /* spacing */
+    margin: 0;
+    padding: 10px;
+
+    /* styling */
+    background-color: var(--background-color-200);
+    border-radius: 10px;
+
+    /* transition */
+    transition:
+        var(--default-transition-color),
+        var(--default-transition-background_color);
+}
+
+section.feed.post .container .update .right .content a {
+    /* position */
+    position: relative;
+    z-index: 1;
+
+    /* text */
+    text-decoration: none;
+
+    /* styling */
+    color: inherit;
+}
+
+section.feed.post .container .update .right .content a::after {
+    /* content */
+    content: "";
+
+    /* position */
+    position: absolute;
+    inset: 0 -3px;
+    top: auto;
+    z-index: -1;
+
+    /* sizing */
+    height: 2px;
+
+    /* styling */
+    background-color: var(--background-color-500);
+
+    /* transition */
+    transition: height ease-in-out 0.25s,
+        border-radius ease-in-out 0.25s,
+        var(--default-transition-color),
+        var(--default-transition-background_color);
+}
+
+section.feed.post .container .update .right .content a[data-footnote-ref]::after {
+    top: 0;
+    bottom: auto;
+}
+
+section.feed.post .container .update .right .content a:hover::after {
+    /* sizing */
+    height: 100%;
+
+    /* styling */
+    border-radius: 2px;
+}

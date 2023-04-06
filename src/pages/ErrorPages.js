@@ -1,25 +1,22 @@
 // css
 import { Helmet } from 'react-helmet';
 import { Link } from 'react-router-dom';
-import { routeDev, routeAccount, url, application, network, separator, routeUser } from '../App';
+import { routeDev, routeAccount, url, application, separator, routeUser } from '../App';
 import { useAuth } from '../Firebase';
 import '../style/ErrorPages.css';
 
-export function Error403() {
+export function Error(props) {
   const currentUser = useAuth();
-
-  const errorCode = "403"
-  const errorMessage = "Forbidden"
 
   return <>
     <Helmet>
-      <title>{errorCode} {separator} {errorMessage} {separator} {application} {separator} {network}</title>
-      <meta name="description" content={errorCode + " " + errorMessage + " " + separator + " A website for listing all of xcwalker's projects " + separator + " " + url} />
+      <title>{props.code} {separator} {props.message} {separator} {application}</title>
+      <meta name="description" content={props.code + " " + props.message + " " + separator + " A website for listing all of xcwalker's projects " + separator + " " + url} />
     </Helmet>
     <section className='errorPage'>
       <div className='container'>
-        <span className='code'>{errorCode}</span>
-        <h2>{errorMessage}</h2>
+        <span className='code'>{props.code}</span>
+        <h2>{props.message}</h2>
         <div className='actions'>
           <Link to="/">Home</Link>
           {currentUser && <Link to={"/" + routeUser + "/" + currentUser.uid}>Profile</Link>}
@@ -27,34 +24,7 @@ export function Error403() {
         </div>
         {currentUser && <Link to={routeDev + "/dashboard"}>DevDash™</Link>}
       </div>
-      <Background errorCode={errorCode} errorMessage={errorMessage} />
-    </section>
-  </>
-}
-
-export function Error404() {
-  const currentUser = useAuth();
-
-  const errorCode = "404"
-  const errorMessage = "Page Not Found"
-
-  return <>
-    <Helmet>
-      <title>{errorCode} {separator} {errorMessage} {separator} {application} {separator} {network}</title>
-      <meta name="description" content={errorCode + " " + errorMessage + " " + separator + " A website for listing all of xcwalker's projects " + separator + " " + url} />
-    </Helmet>
-    <section className='errorPage'>
-      <div className='container'>
-        <span className='code'>{errorCode}</span>
-        <h2>{errorMessage}</h2>
-        <div className='actions'>
-          <Link to="/">Home</Link>
-          {currentUser && <Link to={"/" + routeUser + "/" + currentUser.uid}>Profile</Link>}
-          {!currentUser && <Link to={"/" + routeAccount + "/login"}>Login</Link>}
-        </div>
-        {currentUser && <Link to={routeDev + "/dashboard"}>DevDash™</Link>}
-      </div>
-      <Background errorCode={errorCode} errorMessage={errorMessage} />
+      <Background errorCode={props.code} errorMessage={props.message} />
     </section>
   </>
 }
@@ -63,7 +33,7 @@ function Background(props) {
   return <div className='background'>
     <div className="item i1" />
     <div className="item i2" />
-    <span className='bigCode'>{props.errorCode}</span>
+    <span className='bigCode'>{props.code}</span>
     <div className="item i3" />
     <div className="item i4" />
   </div>
