@@ -3,7 +3,7 @@ import { url } from "../App"
 import { LogoXCWalker } from "../components/Logo"
 import { getUserInfo, useAuth } from "../Firebase";
 
-import "../style/HomePage.css"
+import "../style/homepage.css"
 
 export function Homepage() {
     const currentUser = useAuth();

@@ -162,7 +162,7 @@ export function SearchPage() {
         <section className="search">
             <div className="container">
                 {!searchResults && !canClaim && <div className="no-results">
-                    <h1>Let's Search For Something...</h1>
+                    <h1>Let's Search For Something</h1>
                     <form action="" onSubmit={handleSearch} className="searchBar">
                         <input type="search" name="" id="" value={searchQuery} placeholder={placeholder} onChange={handleSearchUpdate} />
                         <button type="submit" disabled={searchLoading || !searchQuery}>Search</button>

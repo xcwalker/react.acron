@@ -4,7 +4,7 @@ import { Link, Navigate, useParams } from "react-router-dom";
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import { application, network, routeAccount, routeUser, routeDev, routeTree, url, separator } from "../App";
-import { getUserInfo, getUsersOwnTrees, logout, profileInitial, updateUserInfo, uploadHeaderBackgroundPicture, uploadProfilePicture, useAuth } from "../Firebase";
+import { getUserInfo, getUsersOwnTrees, logout, profileInitial, updateUserInfo, useAuth } from "../Firebase";
 
 import "../style/user/index.css"
 import "../style/user/edit.css"

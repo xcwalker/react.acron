@@ -3,7 +3,7 @@ import { forwardRef, useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import { toast } from "react-hot-toast";
 import ReactMarkdown from "react-markdown";
-import { Link, Navigate, useParams } from "react-router-dom";
+import { Link, Navigate, useParams, useSearchParams } from "react-router-dom";
 import { application, network, routeUser, separator, url } from "../App";
 import { claimTree, deleteTree, getTreeInfo, getUserInfo, getUsersOwnTrees, getUsersTrees, updateTree, useAuth } from "../Firebase";
 
@@ -26,11 +26,13 @@ function TreeSearchItemBackground() {
 export function TreeIndex() {
     const params = useParams();
     const currentUser = useAuth();
+    const [searchParams, setSearchParams] = useSearchParams();
     const [tree, setTree] = useState();
     const [treeLinks, setTreeLinks] = useState();
     const [user, setUser] = useState();
     const [reload, setReload] = useState(0);
     const [loading, setLoading] = useState(true);
+    const [viewState, setViewState] = useState(searchParams.get("view"))
 
 
     useEffect(() => {
@@ -71,6 +73,15 @@ export function TreeIndex() {
     const handleDelete = (e) => {
         e.preventDefault();
         deleteTree(params.id, setReload)
+    }
+
+    const setView = (view) => {
+        setViewState(view)
+
+        let updatedSearchParams = new URLSearchParams(searchParams.toString());
+        updatedSearchParams.set('view', view);
+        setSearchParams(updatedSearchParams.toString());
+        Event.preventDefault();
     }
 
     // useEffect(() => {
@@ -141,6 +152,19 @@ export function TreeIndex() {
                                 </>}
                             </div>
                             <div className="mainbar">
+                                <div className="controls">
+                                    <div className="set">
+                                        {viewState === "grid" && <span className="material-symbols-outlined active">grid_view</span>}
+                                        {viewState !== "grid" && <button onClick={() => { setView("grid") }}><span className="material-symbols-outlined">grid_view</span></button>}
+                                        {(!viewState || viewState === "list") && <span className="material-symbols-outlined active">view_list</span>}
+                                        {(viewState && viewState !== "list") && <button onClick={(e) => { setView("list") }}><span className="material-symbols-outlined">view_list</span></button>}
+                                        {viewState === "carousel" && <span className="material-symbols-outlined active">view_carousel</span>}
+                                        {viewState !== "carousel" && <button onClick={() => { setView("carousel") }}><span className="material-symbols-outlined">view_carousel</span></button>}
+                                    </div>
+                                </div>
+                                {(!viewState || viewState === "list") && <div className="list" />}
+                                {viewState === "carousel" && <div className="carousel" />}
+                                {viewState === "grid" && <div className="grid" />}
                                 <div className="links">
                                     <ul>
                                         {tree.settings.useOriginalUserLinks === true && treeLinks !== undefined && <>
@@ -270,7 +294,7 @@ export function TreeDashboard() {
 
 export function TreeEdit() {
     const params = useParams();
-    const currentUser = useAuth();
+    const currentUser = useAuth(null);
     const [tree, setTree] = useState();
     const [treeLinks, setTreeLinks] = useState([]);
     const [title, setTitle] = useState("");
@@ -287,7 +311,7 @@ export function TreeEdit() {
     const [reload, setReload] = useState(0);
     const [loading, setLoading] = useState(true);
     const [updated, setUpdated] = useState(false);
-    const [canView, setCanView] = useState(false);
+    const [canView, setCanView] = useState();
 
     const contributorNewRef = useRef();
 
@@ -317,13 +341,14 @@ export function TreeEdit() {
     }, [params.id, reload])
 
     useEffect(() => {
-        if (!currentUser || !authedUsers) return
-        if (authedUsers.includes(currentUser.uid)) { setCanView(true) }
+        if (currentUser === undefined || currentUser === null || !authedUsers) return
+        if (authedUsers.includes(currentUser.uid)) { setCanView(true) } else { setCanView(false) }
     }, [currentUser, authedUsers])
 
     function handleSubmit(e) {
         e.preventDefault()
         if (!tree || !currentUser) return
+        console.log(treeLinks)
         const update = updateTree(params.id, currentUser, setLoading, tree.originalUser, {
             title: title,
             description: description,
@@ -490,7 +515,10 @@ export function TreeEdit() {
     return <>
         {updated && <Navigate to="../" />}
         {!loading && <>
-            {canView && tree && <>
+            {canView === true && tree && <>
+                <Helmet>
+                    <title>{"Edit /" + params.id + " " + separator + " " + application}</title>
+                </Helmet>
                 <section className="tree edit">
                     <form className="container" onSubmit={handleSubmit}>
                         {headerPictureURL && <div className="header">
@@ -528,14 +556,13 @@ export function TreeEdit() {
                                 </div>
                                 <div className="sidebar-item contributors">
                                     {contributors && <div className="authedUsers">
-                                        {console.info(contributors)}
                                         {contributors.map((user, index) => {
                                             return <button onClick={() => handleContributorRemove(index)} key={index}>
                                                 <Contributor userID={user} />
                                             </button>
                                         })}
                                     </div>}
-                                    <input type="text" name="contributorNew" id="contributorNew" ref={contributorNewRef} placeholder="User ID"/>
+                                    <input type="text" name="contributorNew" id="contributorNew" ref={contributorNewRef} placeholder="User ID" />
                                     <button onClick={handleContributorsAdd} type="add">Add Contributor</button>
                                 </div>
                                 <button className="sidebar-item submit" type="submit">Save</button>
@@ -572,7 +599,7 @@ export function TreeEdit() {
                     </form>
                 </section>
             </>}
-            {!canView && <Error403 />}
+            {canView === false && <Error403 />}
         </>
         }
     </>
@@ -612,7 +639,7 @@ const Contributor = forwardRef(({ userID }, ref) => {
     useEffect(() => {
         getUserInfo(userID).then(res => {
             if (res === undefined) {
-                setError({code: 404, title: "User Not Found"})
+                setError({ code: 404, title: "User Not Found" })
                 return
             } else {
                 setUser(res)

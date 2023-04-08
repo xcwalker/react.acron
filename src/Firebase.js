@@ -448,6 +448,7 @@ export async function updateTree(treeID, currentUser, setLoading, originalUserID
 
     var headerPictureURL;
     var iconPictureURL;
+    var images = {};
 
     if (headerPictureFile !== undefined) {
         await uploadImageNewName(headerPictureFile, "images/tree/", treeID, "header")
@@ -458,6 +459,10 @@ export async function updateTree(treeID, currentUser, setLoading, originalUserID
         headerPictureURL = treeArr.images.headerURL;
     }
 
+    if (headerPictureURL !== undefined) {
+        images.headerURL = headerPictureURL
+    }
+
     if (iconPictureFile !== undefined) {
         await uploadImageNewName(iconPictureFile, "images/tree/", treeID, "icon")
             .then(res => {
@@ -465,6 +470,10 @@ export async function updateTree(treeID, currentUser, setLoading, originalUserID
             })
     } else {
         iconPictureURL = treeArr.images.iconURL;
+    }
+
+    if (iconPictureURL !== undefined) {
+        images.iconPictureURL = iconPictureURL
     }
 
     if (treeArr.title === "") { treeArr.title = treeID }
@@ -480,10 +489,7 @@ export async function updateTree(treeID, currentUser, setLoading, originalUserID
             authedUser: treeArr.authedUser,
             links: treeArr.links,
             settings: treeArr.settings,
-            images: {
-                headerURL: headerPictureURL,
-                iconURL: iconPictureURL,
-            }
+            images: images,
         })
     } catch (e) {
         console.error("Error updating tree (tE): ", e);
