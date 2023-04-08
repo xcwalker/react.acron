@@ -1,0 +1,272 @@
+section.feed.new>.container .ballot {
+    /* sizing */
+    padding: 10px;
+    width: min(100%, 450px);
+
+    /* flex */
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 10px;
+
+    /* styling */
+    border-radius: 10px;
+    background-color: var(--background-color-200);
+}
+
+section.feed.new>.container .ballot .left {
+    /* variables */
+    --size: 40px;
+
+    /* sizing */
+    height: 100%;
+    width: var(--size);
+
+    /* flex */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+section.feed.new>.container .ballot .profilePicture {
+    /* sizing */
+    height: var(--size);
+    width: var(--size);
+
+    /* styling */
+    border-radius: 50%;
+
+    /* image */
+    object-fit: cover;
+}
+
+section.feed.new>.container .ballot .right {
+    /* sizing */
+    width: 100%;
+
+    /* flex */
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+section.feed.new>.container .ballot .right .container {
+    /* position */
+    position: relative;
+
+    /* sizing */
+    width: 100%;
+    max-height: 350px;
+    overflow: hidden;
+    border-radius: 10px;
+    border: 2px solid var(--background-color-100);
+    background-color: var(--background-color-100);
+}
+
+section.feed.new>.container .ballot .right .container textarea {
+    /* sizing */
+    resize: none;
+    width: 100%;
+    min-height: 155px;
+    max-height: 350px;
+    padding: 8px;
+    padding-bottom: 10px;
+    margin: 0;
+
+    /* styling */
+    background-color: transparent;
+    color: var(--foreground-color-100);
+    border: none;
+}
+
+section.feed.new>.container .ballot .right .container:focus-within {
+    border-color: var(--form-color-selector);
+    outline: 2px solid transparent;
+}
+
+section.feed.new>.container .ballot .right ul {
+    /* sizing */
+    margin: 0;
+    padding: 0;
+
+    /* flex */
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    /* styling */
+    list-style: none;
+}
+
+section.feed.new>.container .ballot .right ul li {
+    /* sizing */
+    --size: 30px;
+    width: 100%;
+    height: var(--size);
+
+    /* flex */
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+}
+
+section.feed.new>.container .ballot .right ul li input[type="text"] {
+    /* sizing */
+    width: 100%;
+    height: var(--size);
+    padding: 5px;
+
+    /* text */
+    font-size: 14px;
+    font-weight: 500;
+
+    /* styling */
+    border: 2px solid var(--foreground-color-200);
+    color: var(--foreground-color-200);
+    background-color: var(--background-color-200);
+    border-radius: 5px;
+}
+
+section.feed.new>.container .ballot .right ul li input[type="text"]:invalid {
+    /* styling */
+    border: 2px solid var(--form-color-invalid);
+    background-color: var(--form-color-invalid-opac);
+}
+
+section.feed.new>.container .ballot .right ul li input[type="text"]:valid {
+    /* styling */
+    border: 2px solid var(--form-color-valid);
+    background-color: var(--form-color-valid-opac);
+}
+
+section.feed.new>.container .ballot .right ul li input[type="text"]:focus {
+    /* styling */
+    border: 2px solid var(--form-color-selector);
+    outline: 2px solid transparent;
+}
+
+section.feed.new>.container .ballot .right ul li button[type="remove"] {
+    /* sizing */
+    width: var(--size);
+    height: var(--size);
+
+    /* flex */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    /* styling */
+    border-radius: 5px;
+    border: none;
+    background-color: var(--form-color-selector);
+    color: var(--foreground-color-100);
+}
+
+section.feed.new>.container .ballot .right button[type="remove"]:hover,
+section.feed.new>.container .ballot .right button[type="remove"]:focus {
+    color: var(--form-color-selector);
+    background-color: var(--foreground-color-200);
+}
+
+section.feed.new>.container .ballot .right .side-by-side {
+    /* flex */
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+
+section.feed.new>.container .ballot .right button[type="submit"] {
+    /* sizing */
+    height: 30px;
+    width: 75px;
+    padding: 0;
+
+    /* flex */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+
+    /* text */
+    font-size: 20px;
+
+    /* styling */
+    border-radius: 10px;
+    border: none;
+    background-color: var(--form-color-selector);
+    color: var(--foreground-color-100);
+}
+
+section.feed.new>.container .ballot .right button[type="submit"]:hover,
+section.feed.new>.container .ballot .right button[type="submit"]:focus {
+    color: var(--form-color-selector);
+    background-color: var(--foreground-color-200);
+}
+
+section.feed.new>.container .ballot button[type="submit"] .material-symbols-outlined {
+    font-size: inherit;
+}
+
+section.feed.new .container .ballot button[type="submit"][data-loading="true"] .material-symbols-outlined {
+    animation: spin infinite 2.5s linear;
+}
+
+section.feed.new .container .ballot .right button[type="submit"]:disabled {
+    color: var(--foreground-color-100);
+    background-color: var(--background-color-100);
+}
+
+@keyframes spin {
+    from {
+        transform:rotate(0deg);
+    }
+    to {
+        transform:rotate(360deg);
+    }
+}
+
+section.feed.new>.container .ballot .right button[type="add"] {
+    /* position */
+    position: relative;
+
+    /* sizing */
+    height: 30px;
+    width: 100%;
+    padding: 0;
+
+    /* flex */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    /* text */
+    font-size: 14px;
+    font-weight: 600;
+
+    /* styling */
+    border-radius: 10px;
+    border: none;
+    background-color: var(--form-color-selector);
+    color: var(--foreground-color-100);
+    opacity: 1;
+
+    /* transition */
+    transition: var(--quick-transition-translate), var(--quick-transition-opacity);
+}
+
+section.feed.new>.container .ballot .right button[type="add"]:hover,
+section.feed.new>.container .ballot .right button[type="add"]:focus {
+    color: var(--form-color-selector);
+    background-color: var(--foreground-color-200);
+}
+
+section.feed.new>.container .ballot button[type="add"] .material-symbols-outlined {
+    /* position */
+    position: absolute;
+    inset: 5px;
+    right: auto;
+
+    /* text */
+    font-size: 20px;
+}

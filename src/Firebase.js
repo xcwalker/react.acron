@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { initializeApp } from "firebase/app";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut, updateProfile, sendPasswordResetEmail } from "firebase/auth";
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
-import { collection, deleteDoc, doc, getDoc, getDocs, getFirestore, query, setDoc, updateDoc, where } from "firebase/firestore";
+import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, getFirestore, query, setDoc, updateDoc, where } from "firebase/firestore";
 import toast from "react-hot-toast";
 import { toastStyle_error, toastStyle_success } from "./App";
 
@@ -199,6 +199,21 @@ export function useAuth(falseValue) {
     if (currentUser === undefined && falseValue) { setCurrentUser(falseValue) }
 
     return currentUser;
+}
+
+export async function uploadImage(file, route, currentUser) {
+    const fileEXT = file.name.split(".").pop();
+    if (fileEXT !== "jpg" && fileEXT !== "jpeg" && fileEXT !== "png" && fileEXT !== "apng" && "fileEXT" !== "webp" && fileEXT !== "webm" && fileEXT !== "gif" && fileEXT === "mp4") {
+        console.error("Unsupported Format");
+        alert("Unsupported Format")
+        return
+    }
+
+    const fileRef = ref(storage, route + "/" + currentUser.uid + '-' + Date.now() + file.name);
+    await uploadBytes(fileRef, file);
+    const photoURL = await getDownloadURL(fileRef);
+
+    return photoURL
 }
 
 export async function uploadImageNewName(file, route, ID, type) {
@@ -546,4 +561,55 @@ export async function searchTrees(q, setLoading) {
 
     setLoading(false)
     return arr
+}
+
+export async function createPost(postOBJ, settings, images, currentUser, setLoading) {
+    var imagesArray = [];
+    const date = new Date();
+
+    if (images !== undefined) {
+        for (let i = 0; images.length > i; i++) {
+            await uploadImage(images[i], "images/post/", currentUser)
+                .then(res => {
+                    imagesArray.push(res);
+                })
+        }
+    }
+
+    setLoading(true)
+    try {
+        const docSnap = await addDoc(collection(db, "posts"), {
+            data: postOBJ,
+            images: imagesArray,
+            info: {
+                user: currentUser.uid,
+                settings: settings,
+                dates: {
+                    createdAt: date.toJSON(),
+                }
+            }
+        });
+
+        console.log("Document written with ID: ", docSnap.id);
+        setLoading(false);
+        return { id: docSnap.id }
+    } catch (e) {
+        console.error("Error adding document: ", e);
+        setLoading(false);
+        return { error: e }
+    }
+}
+
+export async function getPost(ID, setLoading) {
+    if (setLoading) setLoading(true)
+
+    try {
+        const docSnap = await getDoc(doc(db, "posts", ID));
+        if (setLoading) setLoading(false)
+        return docSnap.data();
+    } catch (e) {
+        console.error("Error getting post (pE): ", e);
+        if (setLoading) setLoading(false)
+        return
+    }
 }

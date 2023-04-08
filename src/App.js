@@ -17,19 +17,19 @@ import { useEffect } from 'react';
 import { Navbar } from './components/Navbar'
 import { Footer } from './components/Footer'
 import { Homepage } from './pages/Homepage';
-import { Error404 } from './pages/ErrorPages';
+import { Error } from './pages/ErrorPages';
 import { AccountIndex, AccountForgot, AccountLogin, AccountRegister, AccountEdit, AccountSetup } from "./pages/AccountPages";
 import { UserIndex, UserIndexProfile, UserProfile, UserProfileEdit } from "./pages/UserPages";
 import { TreeIndex, TreeEdit, TreeDashboard, TreeForward } from "./pages/TreePages";
 import { Toaster } from "react-hot-toast";
-import { Feed, FeedNewPost, FeedViewPost, FeedViewPostComment } from "./pages/FeedPages";
+import { Feed, FeedEditPost, FeedNewPost, FeedViewPost, FeedViewPostComment } from "./pages/FeedPages";
 import { Sidebar } from "./components/Sidebar";
 import { SearchPage } from "./pages/SearchPage";
 
 function App() {
   return (<>
     <Helmet>
-      <title>{application} {separator} {network}</title>
+      <title>{application}</title>
       <meta name="description" content={"A website for listing all of xcwalker's projects {separator} " + url} />
     </Helmet>
     <Router>
@@ -79,18 +79,20 @@ function App() {
           <Route path={routePost} >
             <Route index element={<Feed />} />
             <Route path={routePostNew} element={<FeedNewPost />} />
-            <Route path=':postID' element={<FeedViewPost />} >
+            <Route path=':postID'>
+              <Route index element={<FeedViewPost />} />
+              <Route path='edit' element={<FeedEditPost />} />
               <Route path=':commentID' element={<FeedViewPostComment />} />
             </Route>
           </Route>
           {/* search */}
           <Route path={routeSearch} element={<SearchPage />} />
           {/* 404 */}
-          <Route path='*' element={<Error404 />} />
+          <Route path='*' element={<Error code="404" message="Page Not Found" />} />
         </Routes>
       </main>
       <Footer />
-    </Router>
+    </Router >
   </>
   );
 }
@@ -104,6 +106,16 @@ function ScrollToTop() {
 
   return null;
 }
+
+String.prototype.toProperCase = function () {
+  return this.replace(/\w\S*/g, function (txt) { return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase(); });
+};
+
+Number.prototype.addLeadingZero = function () {
+  var num = this.toString();
+  while (num.length < 2) num = "0" + num;
+  return num;
+};
 
 export default App;
 

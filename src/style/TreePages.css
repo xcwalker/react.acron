@@ -27,7 +27,7 @@ section.tree .container .header {
 
     /* sizing */
     width: 100%;
-    height: 375px;
+    height: min(375px, max(100px, 25vh));
 
     /* flex */
     display: flex;
@@ -919,7 +919,6 @@ section.tree .container .main .mainbar .links ul li fieldset {
     /* sizing */
     padding: 0;
     margin: 0;
-    min-width: 400px;
     flex-grow: 1;
     flex-basis: 0;
 
@@ -1667,15 +1666,16 @@ section.tree.edit .container .main .mainbar .links ul li>fieldset {
 }
 
 section.tree.edit .container .main .mainbar .links ul li>fieldset>fieldset[type="text"] {
+    /* sizing */
+    margin: 0;
+    padding: 0;
+
     /* flex */
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
     align-items: center;
-
-    /* sizing */
-    margin: 0;
-    padding: 0;
+    gap: 0;
 
     /* text */
     font-size: 14px;

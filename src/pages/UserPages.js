@@ -3,12 +3,12 @@ import { Helmet } from "react-helmet";
 import { Link, Navigate, useParams } from "react-router-dom";
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
-import { application, network, routeAccount, routeUser, routeDev, routeTree, url, separator } from "../App";
+import { application, routeAccount, routeUser, routeDev, routeTree, url, separator } from "../App";
 import { getUserInfo, getUsersOwnTrees, logout, profileInitial, updateUserInfo, useAuth } from "../Firebase";
 
 import "../style/user/index.css"
 import "../style/user/edit.css"
-import { Error403, Error404 } from "./ErrorPages";
+import { Error } from "./ErrorPages";
 import { toast } from "react-hot-toast";
 
 export function UserIndex() {
@@ -113,7 +113,7 @@ export function UserProfile() {
     return <>
         {user && <>
             <Helmet>
-                <title>{user.about.displayname + " " + separator + " " + application + " " + separator + " " + network}</title>
+                <title>{user.about.displayname + " " + separator + " " + application}</title>
                 <meta name="description" content={user.about.displayname + " " + separator + " " + application + " " + separator + " A website for listing all of xcwalker's projects " + separator + " " + url} />
             </Helmet>
             <section className="user">
@@ -219,7 +219,7 @@ export function UserProfile() {
                 </div>
             </section>
         </>}
-        {error === 404 && <Error404 />}
+        {error === 404 && <Error code="404" message="User Not Found" />}
     </>
 }
 
@@ -387,10 +387,10 @@ export function UserProfileEdit() {
 
     return <>
         {currentUser && <>
-            {params.id !== currentUser.uid && <Error403 />}
+            {params.id !== currentUser.uid && <Error code="403" message="Forbidden" />}
             {user && params.id === currentUser.uid && <>
                 <Helmet>
-                    <title>{user.about?.displayname + " on " + application + " " + separator + " " + network}</title>
+                    <title>{user.about?.displayname + " on " + application}</title>
                     <meta name="description" content={user.about?.firstname + " " + user.about?.lastname + " " + separator + " A website for listing all of xcwalker's projects " + separator + " " + url} />
                 </Helmet>
                 <section className="user edit">
